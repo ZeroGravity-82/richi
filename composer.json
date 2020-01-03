@@ -12,6 +12,7 @@
         "symfony/yaml": "4.4.*"
     },
     "require-dev": {
+        "symfony/web-server-bundle": "4.4.*"
     },
     "config": {
         "preferred-install": {
