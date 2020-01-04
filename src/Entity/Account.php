@@ -39,9 +39,20 @@ class Account
      */
     private $operations;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updatedAt;
+
     public function __construct()
     {
         $this->operations = new ArrayCollection();
+        $this->createdAt  = new \DateTime();
     }
 
     public function getId(): ?int
@@ -112,6 +123,23 @@ class Account
                 $operation->setSource(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
