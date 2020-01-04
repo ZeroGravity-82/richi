@@ -45,10 +45,16 @@ class User implements UserInterface
      */
     private $accounts;
 
+    /**
+     * @var @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
     public function __construct()
     {
         $this->operations = new ArrayCollection();
-        $this->accounts = new ArrayCollection();
+        $this->accounts   = new ArrayCollection();
+        $this->createdAt  = new \DateTime();
     }
 
     public function getId(): ?int
@@ -189,5 +195,10 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
     }
 }
