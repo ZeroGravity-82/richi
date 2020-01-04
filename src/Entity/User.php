@@ -36,12 +36,18 @@ class User implements UserInterface
     private $password;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Operation", mappedBy="user", orphanRemoval=true)
+     */
+    private $operations;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Account", mappedBy="user", orphanRemoval=true)
      */
     private $accounts;
 
     public function __construct()
     {
+        $this->operations = new ArrayCollection();
         $this->accounts = new ArrayCollection();
     }
 
@@ -121,6 +127,37 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection|Operation[]
+     */
+    public function getOperations(): Collection
+    {
+        return $this->operations;
+    }
+
+    public function addOperation(Operation $operation): self
+    {
+        if (!$this->operations->contains($operation)) {
+            $this->operations[] = $operation;
+            $operation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOperation(Operation $operation): self
+    {
+        if ($this->operations->contains($operation)) {
+            $this->operations->removeElement($operation);
+            // set the owning side to null (unless already changed)
+            if ($operation->getUser() === $this) {
+                $operation->setUser(null);
+            }
+        }
+
+        return $this;
     }
 
     /**

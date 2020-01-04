@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +33,16 @@ class Account
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $icon;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Operation", mappedBy="source")
+     */
+    private $operations;
+
+    public function __construct()
+    {
+        $this->operations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -69,6 +81,37 @@ class Account
     public function setIcon(?string $icon): self
     {
         $this->icon = $icon;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Operation[]
+     */
+    public function getOperations(): Collection
+    {
+        return $this->operations;
+    }
+
+    public function addOperation(Operation $operation): self
+    {
+        if (!$this->operations->contains($operation)) {
+            $this->operations[] = $operation;
+            $operation->setSource($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOperation(Operation $operation): self
+    {
+        if ($this->operations->contains($operation)) {
+            $this->operations->removeElement($operation);
+            // set the owning side to null (unless already changed)
+            if ($operation->getSource() === $this) {
+                $operation->setSource(null);
+            }
+        }
 
         return $this;
     }
