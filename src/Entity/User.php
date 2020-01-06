@@ -52,11 +52,19 @@ class User implements UserInterface
      */
     private $createdAt;
 
+    /**
+     * @var @ORM\Column(type="datetime")
+     */
+    private $updatedAt;
+
     public function __construct()
     {
         $this->operations = new ArrayCollection();
         $this->accounts   = new ArrayCollection();
-        $this->createdAt  = new \DateTime();
+
+        $now              = new \DateTime();
+        $this->createdAt  = $now;
+        $this->updatedAt  = $now;
     }
 
     public function getId(): ?int
@@ -202,5 +210,17 @@ class User implements UserInterface
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 }
