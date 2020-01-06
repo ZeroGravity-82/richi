@@ -52,7 +52,10 @@ class Account
     public function __construct()
     {
         $this->operations = new ArrayCollection();
-        $this->createdAt  = new \DateTime();
+
+        $now              = new \DateTime();
+        $this->createdAt  = $now;
+        $this->updatedAt  = $now;
     }
 
     public function getId(): ?int
