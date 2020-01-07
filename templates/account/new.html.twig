@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New account{% endblock %}
+
+{% block body %}
+    <h1>Create new account:</h1>
+    {{ form_start(accountForm) }}
+    {{ form_widget(accountForm) }}
+    <button type="submit">Save new account</button>
+    {{ form_end(accountForm) }}
+{% endblock %}
+ 

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Account list{% endblock %}
+
+{% block body %}
+    <ul>Account list:
+    {% for account in accounts %}
+        <li>{{ account.name }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
+ 
