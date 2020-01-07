@@ -15,6 +15,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class User implements UserInterface
 {
     /**
+     * @var integer
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -22,33 +24,44 @@ class User implements UserInterface
     private $id;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
 
     /**
+     * @var array
+     *
      * @ORM\Column(type="json")
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
+     *
      * @ORM\Column(type="string")
      */
     private $password;
 
     /**
+     * @var ArrayCollection
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Operation", mappedBy="user", orphanRemoval=true)
      */
     private $operations;
 
     /**
+     * @var ArrayCollection
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Account", mappedBy="user", orphanRemoval=true)
      */
     private $accounts;
 
     /**
-     * @var @ORM\Column(type="datetime")
+     * @var \DateTimeInterface
+     *
+     * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
@@ -57,6 +70,11 @@ class User implements UserInterface
      */
     private $updatedAt;
 
+    /**
+     * User constructor.
+     *
+     * @throws \Exception
+     */
     public function __construct()
     {
         $this->operations = new ArrayCollection();
@@ -67,16 +85,27 @@ class User implements UserInterface
         $this->updatedAt  = $now;
     }
 
+    /**
+     * @return integer|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * @param string $email
+     *
+     * @return User
+     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -87,6 +116,8 @@ class User implements UserInterface
     /**
      * A visual identifier that represents this user.
      *
+     * @return string
+     *
      * @see UserInterface
      */
     public function getUsername(): string
@@ -95,6 +126,8 @@ class User implements UserInterface
     }
 
     /**
+     * @return array
+     *
      * @see UserInterface
      */
     public function getRoles(): array
@@ -106,6 +139,11 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param array $roles
+     *
+     * @return User
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -114,6 +152,8 @@ class User implements UserInterface
     }
 
     /**
+     * @return string
+     *
      * @see UserInterface
      */
     public function getPassword(): string
@@ -121,6 +161,11 @@ class User implements UserInterface
         return (string) $this->password;
     }
 
+    /**
+     * @param string $password
+     *
+     * @return User
+     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -129,17 +174,21 @@ class User implements UserInterface
     }
 
     /**
+     * @return void
+     *
      * @see UserInterface
      */
-    public function getSalt()
+    public function getSalt(): void
     {
         // not needed when using the "bcrypt" algorithm in security.yaml
     }
 
     /**
+     * @return void
+     *
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
@@ -153,6 +202,11 @@ class User implements UserInterface
         return $this->operations;
     }
 
+    /**
+     * @param Operation $operation
+     *
+     * @return User
+     */
     public function addOperation(Operation $operation): self
     {
         if (!$this->operations->contains($operation)) {
@@ -163,6 +217,11 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Operation $operation
+     *
+     * @return User
+     */
     public function removeOperation(Operation $operation): self
     {
         if ($this->operations->contains($operation)) {
@@ -184,6 +243,11 @@ class User implements UserInterface
         return $this->accounts;
     }
 
+    /**
+     * @param Account $account
+     *
+     * @return User
+     */
     public function addAccount(Account $account): self
     {
         if (!$this->accounts->contains($account)) {
@@ -194,6 +258,11 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Account $account
+     *
+     * @return User
+     */
     public function removeAccount(Account $account): self
     {
         if ($this->accounts->contains($account)) {
@@ -207,16 +276,27 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
     }
 
+    /**
+     * @param \DateTimeInterface $updatedAt
+     *
+     * @return User
+     */
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
