@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Operation list{% endblock %}
+
+{% block body %}
+    <ul>Operation list:
+        {% for operation in operations %}
+{#            <li>{{ operation.name }}</li>#}
+        {% endfor %}
+    </ul>
+{% endblock %}

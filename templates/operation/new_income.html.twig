@@ -3,5 +3,10 @@
 {% block title %}New income{% endblock %}
 
 {% block body %}
-    {{ form(operationForm) }}
+    {{ form_start(operationForm) }}
+        {{ form_row(operationForm.target) }}
+        {{ form_row(operationForm.amount) }}
+        {{ form_row(operationForm._token) }}
+        <button type="submit">Save</button>
+    {{ form_end(operationForm, {'render_rest': false}) }}
 {% endblock %}
