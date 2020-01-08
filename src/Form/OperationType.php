@@ -52,6 +52,7 @@ class OperationType extends AbstractType
                 'choice_label' => 'name',
             ])
             ->add('amount')
+            ->add('description')
         ;
     }
 
