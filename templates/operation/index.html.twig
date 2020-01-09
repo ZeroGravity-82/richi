@@ -3,9 +3,29 @@
 {% block title %}Operation list{% endblock %}
 
 {% block body %}
-    <ul>Operation list:
-        {% for operation in operations %}
-{#            <li>{{ operation.name }}</li>#}
-        {% endfor %}
-    </ul>
+    <h1>Operation list:</h1>
+    <table>
+        <thead>
+            <th>Date</th>
+            <th>Source</th>
+            <th>Target</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>Created</th>
+            <th>Updated</th>
+        </thead>
+        <tbody>
+            {% for operation in operations %}
+                <tr>
+                    <td>{{ operation.date|date('d.m.Y') }}</td>
+                    <td>{% if operation.source is not null %}{{ operation.source.name }}{% endif %}</td>
+                    <td>{% if operation.target is not null %}{{ operation.target.name }}{% endif %}</td>
+                    <td>{{ operation.amount }}</td>
+                    <td>{{ operation.description }}</td>
+                    <td>{{ operation.createdAt|date('d.m.Y H:i:s') }}</td>
+                    <td>{{ operation.updatedAt|date('d.m.Y H:i:s') }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
