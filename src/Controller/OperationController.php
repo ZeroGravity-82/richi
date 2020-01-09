@@ -39,13 +39,14 @@ class OperationController extends AbstractController
     }
 
     /**
-     * @Route("/new/income", name="operation_new_income", methods={"GET", "POST"})
+     * @Route("/new/{type}", name="operation_new", methods={"GET", "POST"})
      *
      * @param Request $request
+     * @param string  $type
      *
      * @return Response
      */
-    public function newIncome(Request $request): Response
+    public function new(Request $request, string $type): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -67,7 +68,7 @@ class OperationController extends AbstractController
             return $this->redirectToRoute('operation_index');
         }
 
-        return $this->render('operation/new_income.html.twig', [
+        return $this->render('operation/new_'.$type.'.html.twig', [
             'operationForm' => $form->createView(),
         ]);
 
