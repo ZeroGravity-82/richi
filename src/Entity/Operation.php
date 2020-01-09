@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OperationRepository")
@@ -45,6 +46,8 @@ class Operation
      * @var integer
      *
      * @ORM\Column(type="integer")
+     *
+     * @Assert\GreaterThanOrEqual(value=0)
      */
     private $amount;
 
