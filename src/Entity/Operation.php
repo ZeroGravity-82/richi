@@ -29,6 +29,13 @@ class Operation
     private $user;
 
     /**
+     * @var \DateTimeInterface
+     *
+     * @ORM\Column(name="`date`", type="date")
+     */
+    private $date;
+
+    /**
      * @var Account
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Account", inversedBy="operations")
@@ -80,6 +87,7 @@ class Operation
     public function __construct()
     {
         $now             = new \DateTime();
+        $this->date      = $now;
         $this->createdAt = $now;
         $this->updatedAt = $now;
     }
@@ -108,6 +116,26 @@ class Operation
     public function setUser(?UserInterface $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTimeInterface|null
+     */
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param \DateTimeInterface|null $date
+     *
+     * @return Operation
+     */
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }

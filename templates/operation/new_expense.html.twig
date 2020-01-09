@@ -4,6 +4,7 @@
 
 {% block body %}
     {{ form_start(operationForm) }}
+        {{ form_row(operationForm.date) }}
         {{ form_row(operationForm.source) }}
         {{ form_row(operationForm.amount) }}
         {{ form_row(operationForm.description) }}
