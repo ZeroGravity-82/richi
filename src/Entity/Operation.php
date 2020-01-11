@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OperationRepository")
@@ -246,5 +247,22 @@ class Operation
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function validateFields(ExecutionContextInterface $context)
+    {
+        if (!$this->source && !$this->target) {
+            $context
+                ->buildViolation('The operation must have a source or target, or both')
+                ->atPath('source')
+                ->addViolation();
+            $context
+                ->buildViolation('The operation must have a source or target, or both')
+                ->atPath('target')
+                ->addViolation();
+        }
     }
 }
