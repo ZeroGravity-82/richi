@@ -37,6 +37,13 @@ class Operation
     private $date;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="`type`", type="string")
+     */
+    private $type;
+
+    /**
      * @var Account
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Account", inversedBy="operations")
@@ -130,13 +137,33 @@ class Operation
     }
 
     /**
-     * @param \DateTimeInterface|null $date
+     * @param \DateTimeInterface $date
      *
      * @return Operation
      */
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getType(): ?string
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return Operation
+     */
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }
