@@ -1,0 +1,8 @@
+{% if app.user is null %}
+    <a href="{{ path('app_login') }}">Login</a>/<a href="{{ path('app_register') }}">Register</a>
+{% else %}
+    {{ app.user.username }}/<a href="{{ path('app_logout') }}">Logout</a><br>
+    <a href="{{ path('operation_index') }}">Operation</a><br>
+    <a href="{{ path('account_index') }}">Account</a>
+{% endif %}
+<hr>

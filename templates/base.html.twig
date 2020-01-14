@@ -6,12 +6,7 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        {% if app.user is null %}
-            <a href="{{ path('app_login') }}">Login</a>/<a href="{{ path('app_register') }}">Register</a>
-        {% else %}
-            {{ app.user.username }}/<a href="{{ path('app_logout') }}">Logout</a>
-        {% endif %}
-        <hr>
+        {% include '_navbar.html.twig' %}
 
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
