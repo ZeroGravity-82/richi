@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Operation;
 use App\Entity\User;
+use App\Enum\OperationTypeEnum;
 use App\Form\OperationType;
 use App\Repository\OperationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -39,16 +41,22 @@ class OperationController extends AbstractController
     }
 
     /**
-     * @Route("/new/{type}", name="operation_new", methods={"GET", "POST"})
+     * @Route("/new/{operationName}", name="operation_new", methods={"GET", "POST"})
      *
      * @param Request $request
-     * @param string  $type
+     * @param string  $operationName
      *
      * @return Response
      */
-    public function new(Request $request, string $type): Response
+    public function new(Request $request, string $operationName): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
+
+        try {
+            $operationType = OperationTypeEnum::getTypeByName($operationName);
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
 
         $operation = new Operation();
         $form      = $this->createForm(OperationType::class, $operation);
@@ -60,6 +68,7 @@ class OperationController extends AbstractController
             /** @var Operation $operation */
             $operation = $form->getData();
             $operation->setUser($user);
+            $operation->setType($operationType);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($operation);
@@ -68,7 +77,7 @@ class OperationController extends AbstractController
             return $this->redirectToRoute('operation_index');
         }
 
-        return $this->render('operation/new_'.$type.'.html.twig', [
+        return $this->render('operation/new_'.$operationName.'.html.twig', [
             'operationForm' => $form->createView(),
         ]);
 

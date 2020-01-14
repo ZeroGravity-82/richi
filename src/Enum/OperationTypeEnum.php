@@ -13,7 +13,7 @@ final class OperationTypeEnum
     const TYPE_TRANSFER = 3;
 
     /** @var array User friendly named type */
-    private static $typeName = [
+    private static $typeNames = [
         self::TYPE_INCOME   => 'income',
         self::TYPE_EXPENSE  => 'expense',
         self::TYPE_TRANSFER => 'transfer',
@@ -28,7 +28,7 @@ final class OperationTypeEnum
      */
     public static function getTypeName(int $type): string
     {
-        return self::$typeName[$type];
+        return self::$typeNames[$type];
     }
 
     /**
@@ -38,6 +38,25 @@ final class OperationTypeEnum
      */
     public static function getAvailableTypes(): array
     {
-        return array_keys(self::$typeName);
+        return array_keys(self::$typeNames);
+    }
+
+    /**
+     * Returns operation type for the given operation name.
+     *
+     * @param string $name
+     *
+     * @return integer
+     *
+     * @throws \InvalidArgumentException When invalid operation name provided.
+     */
+    public static function getTypeByName(string $name): int
+    {
+        $type = array_search($name, self::$typeNames);
+        if ($type === false) {
+            throw new \InvalidArgumentException('Invalid operation name.');
+        }
+
+        return $type;
     }
 }

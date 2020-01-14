@@ -88,8 +88,6 @@ class Operation
 
     /**
      * Operation constructor.
-     *
-     * @throws \Exception
      */
     public function __construct()
     {
@@ -163,7 +161,7 @@ class Operation
     public function setType(int $type): self
     {
         if (!in_array($type, OperationTypeEnum::getAvailableTypes())) {
-            throw new \InvalidArgumentException("Invalid operation type");
+            throw new \InvalidArgumentException('Invalid operation type.');
         }
 
         $this->type = $type;
