@@ -3,7 +3,8 @@
 {% block title %}Account list{% endblock %}
 
 {% block body %}
-    <ul>Account list:
+    <h1>Account list:</h1>
+    <ul>
     {% for account in accounts %}
         <li>{{ account.name }}</li>
     {% endfor %}
