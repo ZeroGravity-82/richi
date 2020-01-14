@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\OperationTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -37,9 +38,9 @@ class Operation
     private $date;
 
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="`type`", type="string")
+     * @ORM\Column(name="`type`", type="smallint")
      */
     private $type;
 
@@ -61,8 +62,6 @@ class Operation
      * @var integer
      *
      * @ORM\Column(type="integer")
-     *
-     * @Assert\GreaterThanOrEqual(value=0)
      */
     private $amount;
 
@@ -149,20 +148,24 @@ class Operation
     }
 
     /**
-     * @return string|null
+     * @return integer|null
      */
-    public function getType(): ?string
+    public function getType(): ?int
     {
-        return $this->date;
+        return $this->type;
     }
 
     /**
-     * @param string $type
+     * @param integer $type
      *
      * @return Operation
      */
-    public function setType(string $type): self
+    public function setType(int $type): self
     {
+        if (!in_array($type, OperationTypeEnum::getAvailableTypes())) {
+            throw new \InvalidArgumentException("Invalid operation type");
+        }
+
         $this->type = $type;
 
         return $this;
