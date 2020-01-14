@@ -47,14 +47,14 @@ class Operation
     /**
      * @var Account
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Account", inversedBy="operations")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Account")
      */
     private $source;
 
     /**
      * @var Account
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Account", inversedBy="operations")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Account")
      */
     private $target;
 

@@ -44,13 +44,6 @@ class Account
     private $icon;
 
     /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Operation", mappedBy="source")
-     */
-    private $operations;
-
-    /**
      * @var \DateTimeInterface
      *
      * @ORM\Column(type="datetime")
@@ -71,8 +64,6 @@ class Account
      */
     public function __construct()
     {
-        $this->operations = new ArrayCollection();
-
         $now              = new \DateTime();
         $this->createdAt  = $now;
         $this->updatedAt  = $now;
@@ -142,47 +133,6 @@ class Account
     public function setIcon(?string $icon): self
     {
         $this->icon = $icon;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Operation[]
-     */
-    public function getOperations(): Collection
-    {
-        return $this->operations;
-    }
-
-    /**
-     * @param Operation $operation
-     *
-     * @return Account
-     */
-    public function addOperation(Operation $operation): self
-    {
-        if (!$this->operations->contains($operation)) {
-            $this->operations[] = $operation;
-            $operation->setSource($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param Operation $operation
-     *
-     * @return Account
-     */
-    public function removeOperation(Operation $operation): self
-    {
-        if ($this->operations->contains($operation)) {
-            $this->operations->removeElement($operation);
-            // set the owning side to null (unless already changed)
-            if ($operation->getSource() === $this) {
-                $operation->setSource(null);
-            }
-        }
 
         return $this;
     }
