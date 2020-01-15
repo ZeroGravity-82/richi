@@ -3,6 +3,9 @@
 {% block title %}Operation list{% endblock %}
 
 {% block body %}
+    <a href="{{ path('operation_new', {'operationName': 'expense'}) }}">Add expense</a> |
+    <a href="{{ path('operation_new', {'operationName': 'income'}) }}">Add income</a> |
+    <a href="{{ path('operation_new', {'operationName': 'transfer'}) }}">Add transfer</a>
     <h1>Operation list:</h1>
     <table>
         <thead>
