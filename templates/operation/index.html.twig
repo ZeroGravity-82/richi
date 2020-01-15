@@ -20,7 +20,7 @@
                     <td>{{ operation.date|date('d.m.Y') }}</td>
                     <td>{% if operation.source is not null %}{{ operation.source.name }}{% endif %}</td>
                     <td>{% if operation.target is not null %}{{ operation.target.name }}{% endif %}</td>
-                    <td>{{ operation.amount }}</td>
+                    <td align="right">{{ operation.amount|currency }}</td>
                     <td>{{ operation.description }}</td>
                     <td>{{ operation.createdAt|date('d.m.Y H:i:s') }}</td>
                     <td>{{ operation.updatedAt|date('d.m.Y H:i:s') }}</td>

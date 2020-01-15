@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Account;
 use App\Entity\Operation;
+use App\Form\DataTransformer\KopecksToRublesTransformer;
 use App\Repository\AccountRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -23,19 +24,30 @@ class OperationType extends AbstractType
     /** @var EntityManagerInterface */
     private $em;
 
+    /** @var KopecksToRublesTransformer */
+    private $transformer;
+
     /**
      * OperationType constructor.
      *
-     * @param Security               $security
-     * @param EntityManagerInterface $em
+     * @param Security                   $security
+     * @param EntityManagerInterface     $em
+     * @param KopecksToRublesTransformer $transformer
      */
-    public function __construct(Security $security, EntityManagerInterface $em)
-    {
-        $this->security = $security;
-        $this->em       = $em;
+    public function __construct(
+        Security $security,
+        EntityManagerInterface $em,
+        KopecksToRublesTransformer $transformer
+    ) {
+        $this->security    = $security;
+        $this->em          = $em;
+        $this->transformer = $transformer;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         /** @var UserInterface $user */
         $user = $this->security->getUser();
@@ -59,9 +71,15 @@ class OperationType extends AbstractType
             ])
             ->add('description')
         ;
+
+        $builder->get('amount')
+            ->addModelTransformer($this->transformer);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Operation::class,
