@@ -59,7 +59,9 @@ class OperationController extends AbstractController
         }
 
         $operation = new Operation();
-        $form      = $this->createForm(OperationType::class, $operation);
+        $operation->setType($operationType);
+
+        $form = $this->createForm(OperationType::class, $operation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -68,7 +70,6 @@ class OperationController extends AbstractController
             /** @var Operation $operation */
             $operation = $form->getData();
             $operation->setUser($user);
-            $operation->setType($operationType);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($operation);

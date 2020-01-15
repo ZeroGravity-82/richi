@@ -279,17 +279,34 @@ class Operation
 
     /**
      * @Assert\Callback
+     *
+     * @param ExecutionContextInterface $context
+     *
+     * @return void
      */
-    public function validateFields(ExecutionContextInterface $context)
+    public function validateFields(ExecutionContextInterface $context): void
     {
-        if (!$this->source && !$this->target) {
+        $incomeOperation   = $this->getType() === OperationTypeEnum::TYPE_INCOME;
+        $expenseOperation  = $this->getType() === OperationTypeEnum::TYPE_EXPENSE;
+        $transferOperation = $this->getType() === OperationTypeEnum::TYPE_TRANSFER;
+        if (!$this->source && ($expenseOperation || $transferOperation)) {
             $context
-                ->buildViolation('The operation must have a source or target, or both')
+                ->buildViolation('Source account should not be blank')
                 ->atPath('source')
                 ->addViolation();
+        }
+
+        if (!$this->target && ($incomeOperation || $transferOperation)) {
             $context
-                ->buildViolation('The operation must have a source or target, or both')
+                ->buildViolation('Target account should not be blank')
                 ->atPath('target')
+                ->addViolation();
+        }
+
+        if ($this->amount <= 0) {
+            $context
+                ->buildViolation('Amount should be greater than zero')
+                ->atPath('amount')
                 ->addViolation();
         }
     }
