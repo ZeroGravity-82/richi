@@ -3,6 +3,7 @@
 {% block title %}Account list{% endblock %}
 
 {% block body %}
+    <a href="{{ path('account_new') }}">Add account</a>
     <h1>Account list:</h1>
     <ul>
     {% for account in accounts %}
