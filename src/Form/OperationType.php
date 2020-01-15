@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
@@ -53,7 +54,9 @@ class OperationType extends AbstractType
                 'choices'      => $accountRepo->findByUser($user),
                 'choice_label' => 'name',
             ])
-            ->add('amount')
+            ->add('amount', NumberType::class, [
+                'scale' => 2,
+            ])
             ->add('description')
         ;
     }
