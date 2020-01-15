@@ -10,6 +10,8 @@ use Symfony\Component\Form\DataTransformerInterface;
  */
 class KopecksToRublesTransformer implements DataTransformerInterface
 {
+    const KOPECKS_IN_RUBLE = 100;
+
     /**
      * Transforms kopecks (int) to rubles (float).
      *
@@ -19,7 +21,7 @@ class KopecksToRublesTransformer implements DataTransformerInterface
      */
     public function transform($value): float
     {
-        return (float) ($value / 100);
+        return (float) ($value / self::KOPECKS_IN_RUBLE);
     }
 
     /**
@@ -31,6 +33,6 @@ class KopecksToRublesTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value): int
     {
-        return (int) ($value * 100);
+        return (int) ($value * self::KOPECKS_IN_RUBLE);
     }
 }
