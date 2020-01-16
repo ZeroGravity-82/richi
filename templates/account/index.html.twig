@@ -21,12 +21,21 @@
                 <td>{{ account.createdAt|date('d.m.Y H:i:s') }}</td>
                 <td>{{ account.updatedAt|date('d.m.Y H:i:s') }}</td>
                 <td>
-                    <a href="#" data-url="{{ path('account_edit', {'id': account.id}) }}">Edit</a>
-                    <a href="#" data-url="{{ path('account_delete', {'id': account.id}) }}">Delete</a>
+                    <a href="{{ path('account_edit', {'id': account.id}) }}">Edit</a>
+                    <a href="#"
+                       class="js-account-delete"
+                       data-name="{{ account.name }}"
+                       data-url="{{ path('account_delete', {'id': account.id}) }}">Delete</a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ encore_entry_script_tags('account') }}
 {% endblock %}
  

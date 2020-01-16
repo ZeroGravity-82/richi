@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Form\AccountType;
 use App\Repository\AccountRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -131,6 +132,8 @@ class AccountController extends AbstractController
         $em->remove($account);
         $em->flush();
 
-        return $this->redirectToRoute('account_index');
+        return new JsonResponse([       // TODO fix it
+            'data' => 'Account deleted successfully',
+        ]);
     }
 }
