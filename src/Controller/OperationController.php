@@ -44,12 +44,12 @@ class OperationController extends AbstractController
     /**
      * @Route("/new/{operationName}", name="operation_new", methods={"GET", "POST"})
      *
-     * @param Request $request
      * @param string  $operationName
+     * @param Request $request
      *
      * @return Response
      */
-    public function new(Request $request, string $operationName): Response
+    public function new(string $operationName, Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
