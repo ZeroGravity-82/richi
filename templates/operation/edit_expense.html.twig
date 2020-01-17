@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit expense{% endblock %}
+
+{% block body %}
+    {{ form_start(operationForm) }}
+        {{ form_row(operationForm.date) }}
+        {{ form_row(operationForm.source) }}
+        {{ form_row(operationForm.amount) }}
+        {{ form_row(operationForm.description) }}
+        {{ form_row(operationForm._token) }}
+        <button type="submit">Save changes</button>
+    {{ form_end(operationForm, {'render_rest': false}) }}
+{% endblock %}

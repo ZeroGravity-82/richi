@@ -29,11 +29,19 @@
                     <td>{{ operation.createdAt|date('d.m.Y H:i:s') }}</td>
                     <td>{{ operation.updatedAt|date('d.m.Y H:i:s') }}</td>
                     <td>
-                        <a href="#" data-url="{{ path('operation_edit', {'id': account.id}) }}">Edit</a>
-                        <a href="#" data-url="{{ path('operation_delete', {'id': account.id}) }}">Delete</a>
+                        <a href="{{ path('operation_edit', {'id': operation.id}) }}">Edit</a>
+                        <a href="#"
+                           class="js-operation-delete"
+                           data-url="{{ path('operation_delete', {'id': operation.id}) }}">Delete</a>
                     </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ encore_entry_script_tags('operation') }}
 {% endblock %}

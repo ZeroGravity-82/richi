@@ -8,6 +8,7 @@ use App\Enum\OperationTypeEnum;
 use App\Form\OperationType;
 use App\Repository\OperationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -81,6 +82,56 @@ class OperationController extends AbstractController
         return $this->render('operation/new_'.$operationName.'.html.twig', [
             'operationForm' => $form->createView(),
         ]);
+    }
 
+    /**
+     * @Route("/edit/{id}", name="operation_edit", methods={"GET", "POST"})
+     *
+     * @param Operation $operation
+     * @param Request   $request
+     *
+     * @return Response
+     */
+    public function edit(Operation $operation, Request $request): Response
+    {
+        $this->denyAccessUnlessGranted('OPERATION_EDIT', $operation);
+
+        $form = $this->createForm(OperationType::class, $operation);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $operation = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($operation);
+            $em->flush();
+
+            return $this->redirectToRoute('operation_index');
+        }
+
+        $operationType = $operation->getType();
+
+        return $this->render('operation/edit_'.OperationTypeEnum::getTypeName($operationType).'.html.twig', [
+            'operationForm' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}", name="operation_delete", methods={"DELETE"})
+     *
+     * @param Operation $operation
+     *
+     * @return Response
+     */
+    public function delete(Operation $operation): Response
+    {
+        $this->denyAccessUnlessGranted('OPERATION_DELETE', $operation);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($operation);
+        $em->flush();
+
+        return new JsonResponse([       // TODO fix it
+            'data' => 'Operation deleted successfully',
+        ]);
     }
 }
