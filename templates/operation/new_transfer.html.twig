@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New income{% endblock %}
+{% block title %}New transfer{% endblock %}
 
 {% block body %}
     {{ form_start(operationForm) }}
@@ -10,6 +10,6 @@
         {{ form_row(operationForm.amount) }}
         {{ form_row(operationForm.description) }}
         {{ form_row(operationForm._token) }}
-        <button type="submit">Save</button>
+        <button type="submit">Save new transfer operation</button>
     {{ form_end(operationForm, {'render_rest': false}) }}
 {% endblock %}
