@@ -11,7 +11,7 @@ class AccountVoter extends Voter
 {
     protected function supports($attribute, $subject)
     {
-        return in_array($attribute, ['ACCOUNT_SHOW', 'ACCOUNT_EDIT', 'ACCOUNT_DELETE'])
+        return in_array($attribute, ['ACCOUNT_EDIT', 'ACCOUNT_DELETE'])
             && $subject instanceof Account;
     }
 
@@ -25,7 +25,6 @@ class AccountVoter extends Voter
 
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
-            case 'ACCOUNT_SHOW':
             case 'ACCOUNT_EDIT':
             case 'ACCOUNT_DELETE':
                 if ($subject->getUser() === $user) {
