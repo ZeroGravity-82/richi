@@ -41,6 +41,8 @@ class Operation
      * @var integer
      *
      * @ORM\Column(name="`type`", type="smallint")
+     *
+     * @see OperationTypeEnum
      */
     private $type;
 
@@ -147,6 +149,8 @@ class Operation
 
     /**
      * @return integer|null
+     *
+     * @see OperationTypeEnum
      */
     public function getType(): ?int
     {
@@ -155,6 +159,8 @@ class Operation
 
     /**
      * @param integer $type
+     *
+     * @see OperationTypeEnum
      *
      * @return Operation
      */
