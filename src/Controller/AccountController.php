@@ -73,22 +73,6 @@ class AccountController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="account_show", methods={"GET"})
-     *
-     * @param Account $account
-     *
-     * @return Response
-     */
-    public function show(Account $account): Response
-    {
-        $this->denyAccessUnlessGranted('ACCOUNT_SHOW', $account);
-
-        return $this->render('account/show.html.twig', [
-            'account' => $account,
-        ]);
-    }
-
-    /**
      * @Route("/edit/{id}", name="account_edit", methods={"GET", "POST"})
      *
      * @param Account $account
