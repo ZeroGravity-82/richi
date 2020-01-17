@@ -47,14 +47,14 @@ class Operation
     private $type;
 
     /**
-     * @var Account
+     * @var Account|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Account")
      */
     private $source;
 
     /**
-     * @var Account
+     * @var Account|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Account")
      */
@@ -68,7 +68,7 @@ class Operation
     private $amount;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -116,11 +116,11 @@ class Operation
     }
 
     /**
-     * @param UserInterface|null $user
+     * @param UserInterface $user
      *
      * @return Operation
      */
-    public function setUser(?UserInterface $user): self
+    public function setUser(UserInterface $user): self
     {
         $this->user = $user;
 
