@@ -35,7 +35,7 @@ class Account
     private $name;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -84,11 +84,11 @@ class Account
     }
 
     /**
-     * @param UserInterface|null $user
+     * @param UserInterface $user
      *
      * @return Account
      */
-    public function setUser(?UserInterface $user): self
+    public function setUser(UserInterface $user): self
     {
         $this->user = $user;
 
