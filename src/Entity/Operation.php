@@ -166,8 +166,12 @@ class Operation
      */
     public function setType(int $type): self
     {
-        if (!in_array($type, OperationTypeEnum::getAvailableTypes())) {
-            throw new \InvalidArgumentException('Invalid operation type.');
+        if (!in_array($type, [
+            OperationTypeEnum::TYPE_INCOME,
+            OperationTypeEnum::TYPE_EXPENSE,
+            OperationTypeEnum::TYPE_TRANSFER,
+        ])) {
+            throw new \InvalidArgumentException('Unsupported operation type.');
         }
 
         $this->type = $type;
