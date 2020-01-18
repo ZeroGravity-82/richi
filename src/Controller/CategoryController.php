@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Enum\OperationTypeEnum;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -39,19 +41,29 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="category_new", methods={"GET", "POST"})
+     * @Route("/new/{operationName}", name="category_new", methods={"GET", "POST"})
      *
+     * @param string  operationName
      * @param Request $request
      *
      * @return Response
      */
-    public function new(Request $request): Response
+    public function new(string $operationName, Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
+        try {
+            $operationType = OperationTypeEnum::getTypeByName($operationName);
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
+
         $category = new Category();
-        $form     = $this->createForm(CategoryType::class, $category);
+        $category->setOperationType($operationType);
+
+        $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UserInterface $user */
             $user = $this->getUser();

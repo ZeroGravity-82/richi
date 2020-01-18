@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\OperationTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -26,6 +27,15 @@ class Category
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="operation_type", type="smallint")
+     *
+     * @see OperationTypeEnum
+     */
+    private $operationType;
 
     /**
      * @var string
@@ -91,6 +101,37 @@ class Category
     public function setUser(UserInterface $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return integer|null
+     *
+     * @see OperationTypeEnum
+     */
+    public function getOperationType(): ?int
+    {
+        return $this->operationType;
+    }
+
+    /**
+     * @param integer $operationType
+     *
+     * @see OperationTypeEnum
+     *
+     * @return Category
+     */
+    public function setOperationType(int $operationType): self
+    {
+        if (!in_array($operationType, [
+            OperationTypeEnum::TYPE_INCOME,
+            OperationTypeEnum::TYPE_EXPENSE,
+        ])) {
+            throw new \InvalidArgumentException('Unsupported operation type.');
+        }
+
+        $this->operationType = $operationType;
 
         return $this;
     }
