@@ -3,7 +3,9 @@
 {% block title %}Account list{% endblock %}
 
 {% block body %}
-    <a href="{{ path('account_new') }}">Add account</a>
+    <div style="float: right">
+        <a href="{{ path('account_new') }}">Add account</a>
+    </div>
     <h1>Account list:</h1>
     <table>
         <thead>
