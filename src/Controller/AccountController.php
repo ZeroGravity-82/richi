@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Account;
-use App\Entity\User;
 use App\Form\AccountType;
 use App\Repository\AccountRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class AccountController
@@ -30,7 +30,7 @@ class AccountController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         /** @var AccountRepository $accountRepo */
-        $accountRepo = $this->getDoctrine()->getManager()->getRepository(Account::class);
+        $accountRepo = $this->getDoctrine()->getRepository(Account::class);
         $user        = $this->getUser();
         $accounts    = $accountRepo->findByUser($user);
 
@@ -54,7 +54,7 @@ class AccountController extends AbstractController
         $form    = $this->createForm(AccountType::class, $account);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) { 
-            /** @var User $user */
+            /** @var UserInterface $user */
             $user = $this->getUser();
             /** @var Account $account */
             $account = $form->getData();

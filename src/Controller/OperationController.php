@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Operation;
-use App\Entity\User;
 use App\Enum\OperationTypeEnum;
 use App\Form\OperationType;
 use App\Repository\OperationRepository;
@@ -13,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class OperationController
@@ -32,7 +32,7 @@ class OperationController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         /** @var OperationRepository $operationRepo */
-        $operationRepo = $this->getDoctrine()->getManager()->getRepository(Operation::class);
+        $operationRepo = $this->getDoctrine()->getRepository(Operation::class);
         $user          = $this->getUser();
         $operations    = $operationRepo->findByUser($user);
 
@@ -66,7 +66,7 @@ class OperationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var User $user */
+            /** @var UserInterface $user */
             $user = $this->getUser();
             /** @var Operation $operation */
             $operation = $form->getData();
