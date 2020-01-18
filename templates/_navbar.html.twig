@@ -1,8 +1,14 @@
 {% if app.user is null %}
-    <a href="{{ path('app_login') }}">Login</a>/<a href="{{ path('app_register') }}">Register</a>
+    <span style="display: block; float: right">
+        <a href="{{ path('app_login') }}">Login</a>/<a href="{{ path('app_register') }}">Register</a>
+    </span>
 {% else %}
-    {{ app.user.username }}/<a href="{{ path('app_logout') }}">Logout</a><br>
-    <a href="{{ path('operation_index') }}">Operation</a><br>
-    <a href="{{ path('account_index') }}">Account</a>
+    <a href="{{ path('operation_index') }}">Operations</a> |
+    <a href="{{ path('account_index') }}">Accounts</a> |
+    <a href="{{ path('category_index') }}">Categories</a>
+    <span style="display: block; float: right">
+        {{ app.user.username }}/<a href="{{ path('app_logout') }}">Logout</a>
+    </span>
 {% endif %}
+<div style="clear: both;"></div>
 <hr>
