@@ -7,6 +7,7 @@ use App\Enum\OperationTypeEnum;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -61,7 +62,10 @@ class CategoryController extends AbstractController
         $category = new Category();
         $category->setOperationType($operationType);
 
-        $form = $this->createForm(CategoryType::class, $category);
+        /** @var Form $form */
+        $form = $this->createForm(CategoryType::class, $category, [
+            'operation_type' => $operationType,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -79,7 +83,8 @@ class CategoryController extends AbstractController
         }
 
         return $this->render('category/new.html.twig', [
-            'categoryForm' => $form->createView(),
+            'categoryForm'  => $form->createView(),
+            'operationName' => $operationName,
         ]);
     }
 }

@@ -38,19 +38,24 @@ class CategoryRepository extends ServiceEntityRepository
     }
 
     /**
-     * Returns a category list that are able to be a parent category for other categories. Returned categories are
-     * related to a specified user.
+     * Returns a category list of the given operation type that are able to be a parent category for other categories.
+     * Categories are related to the specified user.
      *
      * @param UserInterface $user
+     * @param integer       $operationType
      *
      * @return Category[]
+     * 
+     * @see OperationTypeEnum
      */
-    public function findAbleToBeParent(UserInterface $user): array
+    public function findAbleToBeParent(UserInterface $user, int $operationType): array
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.user = :user')
             ->andWhere('c.parent IS NULL')
+            ->andWhere('c.operationType = :operationType')
             ->setParameter('user', $user)
+            ->setParameter('operationType', $operationType)
             ->orderBy('c.name', 'ASC')
             ->getQuery()
             ->getResult();

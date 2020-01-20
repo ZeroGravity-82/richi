@@ -38,7 +38,8 @@ class CategoryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         /** @var UserInterface $user */
-        $user = $this->security->getUser();
+        $user          = $this->security->getUser();
+        $operationType = $options['operation_type'];
 
         /** @var CategoryRepository $categoryRepo */
         $categoryRepo = $this->em->getRepository(Category::class);
@@ -46,7 +47,7 @@ class CategoryType extends AbstractType
         $builder
             ->add('parent', EntityType::class, [
                 'class'        => Category::class,
-                'choices'      => $categoryRepo->findAbleToBeParent($user),
+                'choices'      => $categoryRepo->findAbleToBeParent($user, $operationType),
                 'choice_label' => 'name',
                 'empty_data'   => null,
                 'placeholder'  => '---',
@@ -64,5 +65,8 @@ class CategoryType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Category::class,
         ]);
+
+        $resolver->setRequired('operation_type');
+        $resolver->setAllowedTypes('operation_type', 'int');
     }
 }
