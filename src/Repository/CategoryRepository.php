@@ -21,7 +21,7 @@ class CategoryRepository extends ServiceEntityRepository
     }
 
     /**
-     * Returns an category list for the user.
+     * Returns a category list for the user.
      *
      * @param UserInterface $user
      *
@@ -32,6 +32,26 @@ class CategoryRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('c')
             ->andWhere('c.user = :user')
             ->setParameter('user', $user)
+            ->orderBy('c.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Returns a category list that are able to be a parent category for other categories. Returned categories are
+     * related to a specified user.
+     *
+     * @param UserInterface $user
+     *
+     * @return Category[]
+     */
+    public function findAbleToBeParent(UserInterface $user): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.user = :user')
+            ->andWhere('c.parent IS NULL')
+            ->setParameter('user', $user)
+            ->orderBy('c.name', 'ASC')
             ->getQuery()
             ->getResult();
     }
