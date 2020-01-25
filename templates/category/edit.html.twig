@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit category{% endblock %}
+
+{% block body %}
+    <h1>Edit {{ operationName }} category:</h1>
+    {{ form_start(categoryForm) }}
+        {{ form_row(categoryForm.parent, {
+            'attr': {
+                'disabled': 'disabled'
+            }
+        }) }}
+        {{ form_row(categoryForm.name) }}
+        <button type="submit">Save changes</button>
+    {{ form_end(categoryForm) }}
+{% endblock %}

@@ -1,0 +1,20 @@
+<table>
+    <thead>
+    <th>Name</th>
+    <th>Actions</th>
+    </thead>
+    <tbody>
+    {% for category in categories %}
+        <tr>
+            <td>{% if category.parent is not null %} {{ category.parent.name }} / {% endif %}{{ category.name }}</td>
+            <td>
+                <a href="{{ path('category_edit', {'id': category.id}) }}">Edit</a>
+                <a href="#"
+                   class="js-category-delete"
+                   data-url="{{ path('category_delete', {'id': category.id}) }}"
+                   data-name="{{ category.name }}">Delete</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
