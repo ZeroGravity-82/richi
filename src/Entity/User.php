@@ -59,6 +59,13 @@ class User implements UserInterface
     private $accounts;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Category", mappedBy="user", orphanRemoval=true)
+     */
+    private $categories;
+
+    /**
      * @var \DateTimeInterface
      *
      * @ORM\Column(type="datetime")
@@ -79,6 +86,7 @@ class User implements UserInterface
     {
         $this->operations = new ArrayCollection();
         $this->accounts   = new ArrayCollection();
+        $this->categories = new ArrayCollection();
 
         $now              = new \DateTime();
         $this->createdAt  = $now;
@@ -270,6 +278,47 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($account->getUser() === $this) {
                 $account->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @return User
+     */
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @return User
+     */
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
+            // set the owning side to null (unless already changed)
+            if ($category->getUser() === $this) {
+                $category->setUser(null);
             }
         }
 
