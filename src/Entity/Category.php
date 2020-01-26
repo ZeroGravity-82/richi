@@ -5,9 +5,21 @@ namespace App\Entity;
 use App\Enum\OperationTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
+ * @ORM\Table(
+ *     name="category",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="category_uq", columns={"user_id", "name"})
+ *     }
+ * )
+ * @UniqueEntity(
+ *     fields={"user", "name"},
+ *     errorPath="name",
+ *     message="Category with the same name already exists."
+ * )
  */
 class Category
 {

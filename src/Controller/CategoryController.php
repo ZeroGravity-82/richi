@@ -68,8 +68,12 @@ class CategoryController extends AbstractController
             throw new BadRequestHttpException($e->getMessage());
         }
 
+        /** @var UserInterface $user */
+        $user = $this->getUser();
+
         $category = new Category();
         $category->setOperationType($operationType);
+        $category->setUser($user);
 
         /** @var Form $form */
         $form = $this->createForm(CategoryType::class, $category, [
@@ -78,11 +82,8 @@ class CategoryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UserInterface $user */
-            $user = $this->getUser();
             /** @var Category $category */
             $category = $form->getData();
-            $category->setUser($user);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($category);
