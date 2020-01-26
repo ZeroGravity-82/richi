@@ -4,9 +4,21 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AccountRepository")
+ * @ORM\Table(
+ *     name="account",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(name="account_uq", columns={"user_id", "name"})
+ *     }
+ * )
+ * @UniqueEntity(
+ *     fields={"user", "name"},
+ *     errorPath="name",
+ *     message="Account with the same name already exists."
+ * )
  */
 class Account
 {

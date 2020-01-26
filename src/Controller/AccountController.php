@@ -50,15 +50,17 @@ class AccountController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
+        /** @var UserInterface $user */
+        $user = $this->getUser();
+
         $account = new Account();
+        $account->setUser($user);
+
         $form    = $this->createForm(AccountType::class, $account);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) { 
-            /** @var UserInterface $user */
-            $user = $this->getUser();
             /** @var Account $account */
             $account = $form->getData();
-            $account->setUser($user);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($account);
