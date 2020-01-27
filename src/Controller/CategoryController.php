@@ -129,6 +129,7 @@ class CategoryController extends AbstractController
         return $this->render('category/edit.html.twig', [
             'categoryForm'  => $form->createView(),
             'operationName' => $operationName,
+            'parentName'    => $category->getParent() ? $category->getParent()->getName() : null,
         ]);
     }
 

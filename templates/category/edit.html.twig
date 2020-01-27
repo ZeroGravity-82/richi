@@ -4,10 +4,23 @@
 
 {% block body %}
     <h1>Edit {{ operationName }} category:</h1>
+    <label for="parent">Parent</label>
+    <select id="parent" disabled="disabled">
+        <option>
+            {% if parentName is not null %}
+                {{ parentName }}
+            {% else %}
+                ---
+            {% endif %}</option>
+    </select>
     {{ form_start(categoryForm) }}
-        {{ form_row(categoryForm.parent) }}
         {{ form_row(categoryForm.name) }}
         {{ form_row(categoryForm.icon) }}
+        {{ form_row(categoryForm._token) }}
         <button type="submit">Save changes</button>
+
+        <div style="display: none">
+            {{ form_row(categoryForm.parent) }}
+        </div>
     {{ form_end(categoryForm) }}
 {% endblock %}
