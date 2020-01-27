@@ -3,8 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AccountRepository")
@@ -199,5 +199,18 @@ class Account
     public function setUpdatedAtValue(): void
     {
         $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        $string = $this->name;
+        if ($this->parent) {
+            $string = $this->parent->getName() . ' / ' . $string;
+        }
+
+        return $string;
     }
 }

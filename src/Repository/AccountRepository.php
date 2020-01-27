@@ -36,6 +36,25 @@ class AccountRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * Returns a list of accounts that are able to be a parent account for other accounts. Accounts are related to
+     * the specified user.
+     *
+     * @param UserInterface $user
+     *
+     * @return Account[]
+     */
+    public function findAbleToBeParent(UserInterface $user): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.user = :user')
+            ->andWhere('a.parent IS NULL')
+            ->setParameter('user', $user)
+            ->orderBy('a.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Account[] Returns an array of Account objects
     //  */
