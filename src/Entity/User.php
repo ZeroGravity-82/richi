@@ -65,6 +65,13 @@ class User implements UserInterface
     /**
      * @var ArrayCollection
      *
+     * @ORM\OneToMany(targetEntity="App\Entity\Person", mappedBy="user", orphanRemoval=true)
+     */
+    private $persons;
+
+    /**
+     * @var ArrayCollection
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Category", mappedBy="user", orphanRemoval=true)
      */
     private $categories;
@@ -90,6 +97,7 @@ class User implements UserInterface
     {
         $this->operations = new ArrayCollection();
         $this->accounts   = new ArrayCollection();
+        $this->persons    = new ArrayCollection();
         $this->categories = new ArrayCollection();
 
         $now              = new \DateTime();
@@ -282,6 +290,47 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($account->getUser() === $this) {
                 $account->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Person[]
+     */
+    public function getPersons(): Collection
+    {
+        return $this->persons;
+    }
+
+    /**
+     * @param Person $person
+     *
+     * @return User
+     */
+    public function addPerson(Person $person): self
+    {
+        if (!$this->persons->contains($person)) {
+            $this->persons[] = $person;
+            $person->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Person $person
+     *
+     * @return User
+     */
+    public function removePerson(Person $person): self
+    {
+        if ($this->persons->contains($person)) {
+            $this->persons->removeElement($person);
+            // set the owning side to null (unless already changed)
+            if ($person->getUser() === $this) {
+                $person->setUser(null);
             }
         }
 

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit person{% endblock %}
+
+{% block body %}
+    <h1>Edit person:</h1>
+    {{ form_start(personForm) }}
+        {{ form_widget(personForm) }}
+        <button type="submit">Save changes</button>
+    {{ form_end(personForm) }}
+{% endblock %}
