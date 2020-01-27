@@ -53,6 +53,7 @@ class CategoryType extends AbstractType
                 'required'     => false,
             ])
             ->add('name')
+            ->add('icon')
         ;
     }
 

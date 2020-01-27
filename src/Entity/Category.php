@@ -58,6 +58,13 @@ class Category
     private $name;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $icon;
+
+    /**
      * @var Category|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Category")
@@ -165,6 +172,26 @@ class Category
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    /**
+     * @param string|null $icon
+     *
+     * @return Category
+     */
+    public function setIcon(?string $icon): self
+    {
+        $this->icon = $icon;
 
         return $this;
     }
