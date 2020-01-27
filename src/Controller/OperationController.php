@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class OperationController extends AbstractController
 {
     /**
-     * @Route("/", name="operation_index")
+     * @Route("/", name="operation_index", methods={"GET"})
      *
      * @return Response
      */
