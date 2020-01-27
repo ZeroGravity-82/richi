@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const categoryName = target.dataset.name;
 
             if (confirm(`Do you really want to delete category "${categoryName}"?`)) {
-                deleteOperation(deleteUrl)
+                deleteCategory(deleteUrl)
                     .then(() => location.reload())
                     .catch(error => console.error(error));
             }
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-function deleteOperation(url = '') {
+function deleteCategory(url = '') {
     return fetch(url, {
         method: 'DELETE',
     }).then(response => response.json());
