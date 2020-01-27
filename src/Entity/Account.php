@@ -55,6 +55,13 @@ class Account
     private $icon;
 
     /**
+     * @var Account|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Account")
+     */
+    private $parent;
+
+    /**
      * @var \DateTimeInterface
      *
      * @ORM\Column(type="datetime")
@@ -144,6 +151,26 @@ class Account
     public function setIcon(?string $icon): self
     {
         $this->icon = $icon;
+
+        return $this;
+    }
+
+    /**
+     * @return Account|null
+     */
+    public function getParent(): ?self
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param Account|null $parent
+     *
+     * @return Account
+     */
+    public function setParent(?Account $parent): self
+    {
+        $this->parent = $parent;
 
         return $this;
     }
