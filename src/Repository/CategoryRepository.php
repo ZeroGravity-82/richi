@@ -61,6 +61,26 @@ class CategoryRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * Returns a category list of the given operation type for specified user.
+     *
+     * @param UserInterface $user
+     * @param integer       $operationType
+     *
+     * @return Category[]
+     */
+    public function findByOperationType(UserInterface $user, int $operationType): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.user = :user')
+            ->andWhere('c.operationType = :operationType')
+            ->setParameter('user', $user)
+            ->setParameter('operationType', $operationType)
+            ->orderBy('c.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Category[] Returns an array of Category objects
     //  */

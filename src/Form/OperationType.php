@@ -3,9 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Account;
+use App\Entity\Category;
 use App\Entity\Operation;
 use App\Form\DataTransformer\KopecksToRublesTransformer;
 use App\Repository\AccountRepository;
+use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -50,9 +52,12 @@ class OperationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         /** @var UserInterface $user */
-        $user = $this->security->getUser();
+        $user          = $this->security->getUser();
+        $operationType = $options['operation_type'];
         /** @var AccountRepository $accountRepo */
-        $accountRepo = $this->em->getRepository(Account::class);
+        $accountRepo  = $this->em->getRepository(Account::class);
+        /** @var CategoryRepository $categoryRepo */
+        $categoryRepo = $this->em->getRepository(Category::class);
 
         $builder
             ->add('date', DateType::class)
@@ -69,6 +74,14 @@ class OperationType extends AbstractType
             ->add('amount', NumberType::class, [
                 'scale' => 2,
             ])
+            ->add('category', EntityType::class, [
+                'class'        => Category::class,
+                'choices'      => $categoryRepo->findByOperationType($user, $operationType),
+                'choice_label' => 'name',
+                'empty_data'   => null,
+                'placeholder'  => '---',
+                'required'     => false,
+            ])
             ->add('description')
         ;
 
@@ -84,5 +97,8 @@ class OperationType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Operation::class,
         ]);
+
+        $resolver->setRequired('operation_type');
+        $resolver->setAllowedTypes('operation_type', 'int');
     }
 }

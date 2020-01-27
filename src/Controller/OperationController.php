@@ -62,7 +62,9 @@ class OperationController extends AbstractController
         $operation = new Operation();
         $operation->setType($operationType);
 
-        $form = $this->createForm(OperationType::class, $operation);
+        $form = $this->createForm(OperationType::class, $operation, [
+            'operation_type' => $operationType,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -96,7 +98,9 @@ class OperationController extends AbstractController
     {
         $this->denyAccessUnlessGranted('OPERATION_EDIT', $operation);
 
-        $form = $this->createForm(OperationType::class, $operation);
+        $form = $this->createForm(OperationType::class, $operation, [
+            'operation_type' => $operation->getType(),
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $operation = $form->getData();

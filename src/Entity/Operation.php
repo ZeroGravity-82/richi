@@ -68,6 +68,11 @@ class Operation
     private $amount;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category")
+     */
+    private $category;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -235,6 +240,26 @@ class Operation
     public function setAmount(int $amount): self
     {
         $this->amount = $amount;
+
+        return $this;
+    }
+
+    /**
+     * @return Category|null
+     */
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param Category|null $category
+     *
+     * @return Operation
+     */
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }
