@@ -28,8 +28,8 @@ class CategoryType extends AbstractType
      */
     public function __construct(Security $security, EntityManagerInterface $em)
     {
-        $this->security    = $security;
-        $this->em          = $em;
+        $this->security = $security;
+        $this->em       = $em;
     }
 
     /**
