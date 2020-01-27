@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(
  *     name="category",
  *     uniqueConstraints={
@@ -205,15 +206,13 @@ class Category
     }
 
     /**
-     * @param \DateTimeInterface $updatedAt
+     * @ORM\PreUpdate
      *
-     * @return Category
+     * @return void
      */
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    public function setUpdatedAtValue(): void
     {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
+        $this->updatedAt = new \DateTime();
     }
 
     /**

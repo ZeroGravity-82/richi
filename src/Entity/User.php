@@ -10,7 +10,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(
+ *     fields={"email"},
+ *     message="There is already an account with this email"
+ * )
  */
 class User implements UserInterface
 {
@@ -342,14 +346,12 @@ class User implements UserInterface
     }
 
     /**
-     * @param \DateTimeInterface $updatedAt
+     * @ORM\PreUpdate
      *
-     * @return User
+     * @return void
      */
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    public function setUpdatedAtValue(): void
     {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
+        $this->updatedAt = new \DateTime();
     }
 }

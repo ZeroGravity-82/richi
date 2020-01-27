@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AccountRepository")
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(
  *     name="account",
  *     uniqueConstraints={
@@ -164,14 +165,12 @@ class Account
     }
 
     /**
-     * @param \DateTimeInterface $updatedAt
+     * @ORM\PreUpdate()
      *
-     * @return Account
+     * @return void
      */
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    public function setUpdatedAtValue(): void
     {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
+        $this->updatedAt = new \DateTime();
     }
 }

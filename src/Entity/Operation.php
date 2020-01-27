@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OperationRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Operation
 {
@@ -301,15 +302,13 @@ class Operation
     }
 
     /**
-     * @param \DateTimeInterface $updatedAt
+     * @ORM\PreUpdate()
      *
-     * @return Operation
+     * @return void
      */
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    public function setUpdatedAtValue(): void
     {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
+        $this->updatedAt = new \DateTime();
     }
 
     /**
