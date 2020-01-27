@@ -28,12 +28,7 @@
                     <td>{% if operation.source is not null %}{{ operation.source.name }}{% endif %}</td>
                     <td>{% if operation.target is not null %}{{ operation.target.name }}{% endif %}</td>
                     <td align="right">{{ operation.amount|currency }}</td>
-                    <td>{% if operation.category is not null %}
-                            {% if operation.category.parent is not null %}
-                                {{ operation.category.parent.name }} /
-                            {% endif %}
-                            {{ operation.category.name }}
-                        {% endif %}</td>
+                    <td>{% if operation.category is not null %}{{ operation.category }}{% endif %}</td>
                     <td>{{ operation.description }}</td>
                     <td>{{ operation.createdAt|date('d.m.Y H:i:s') }}</td>
                     <td>{{ operation.updatedAt|date('d.m.Y H:i:s') }}</td>

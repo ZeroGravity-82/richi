@@ -77,7 +77,6 @@ class OperationType extends AbstractType
             ->add('category', EntityType::class, [
                 'class'        => Category::class,
                 'choices'      => $categoryRepo->findByOperationType($user, $operationType),
-                'choice_label' => 'name',
                 'empty_data'   => null,
                 'placeholder'  => '---',
                 'required'     => false,

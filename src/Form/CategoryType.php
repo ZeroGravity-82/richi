@@ -48,7 +48,6 @@ class CategoryType extends AbstractType
             ->add('parent', EntityType::class, [
                 'class'        => Category::class,
                 'choices'      => $categoryRepo->findAbleToBeParent($user, $operationType),
-                'choice_label' => 'name',
                 'empty_data'   => null,
                 'placeholder'  => '---',
                 'required'     => false,

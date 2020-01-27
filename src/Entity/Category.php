@@ -215,4 +215,17 @@ class Category
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        $string = $this->name;
+        if ($this->parent) {
+            $string = $this->parent->getName() . ' / ' . $string;
+        }
+
+        return $string;
+    }
 }
