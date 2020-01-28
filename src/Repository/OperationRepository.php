@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Operation;
+use App\Enum\OperationTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -34,6 +35,48 @@ class OperationRepository extends ServiceEntityRepository
             ->setParameter('user', $user)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * Calculates the sum of all the income operations for the user.
+     *
+     * @param UserInterface $user
+     * @return integer
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getIncomeSum(UserInterface $user): int
+    {
+        return $this->createQueryBuilder('o')
+            ->select('SUM(o.amount)')
+            ->andWhere('o.type = :type')
+            ->andWhere('o.user = :user')
+            ->setParameter('type', OperationTypeEnum::TYPE_INCOME)
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * Calculates the sum of all the expense operations for the user.
+     *
+     * @param UserInterface $user
+     * @return integer
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getExpenseSum(UserInterface $user): int
+    {
+        return $this->createQueryBuilder('o')
+            ->select('SUM(o.amount)')
+            ->andWhere('o.type = :type')
+            ->andWhere('o.user = :user')
+            ->setParameter('type', OperationTypeEnum::TYPE_EXPENSE)
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     // /**
