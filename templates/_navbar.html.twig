@@ -1,15 +1,17 @@
-{% if app.user is null %}
-    <span style="display: block; float: right">
-        <a href="{{ path('app_login') }}">Login</a>/<a href="{{ path('app_register') }}">Register</a>
-    </span>
-{% else %}
-    <a href="{{ path('operation_index') }}">Operations</a> |
-    <a href="{{ path('account_index') }}">Accounts</a> |
-    <a href="{{ path('category_index') }}">Categories</a> |
-    <a href="{{ path('person_index') }}">Persons</a>
-    <span style="display: block; float: right">
-        {{ app.user.username }}/<a href="{{ path('app_logout') }}">Logout</a>
-    </span>
-{% endif %}
+<div style="padding-left: 100px; padding-right: 100px">
+    {% if app.user is null %}
+        <span style="display: block; float: right">
+            <a href="{{ path('app_login') }}">Login</a>/<a href="{{ path('app_register') }}">Register</a>
+        </span>
+    {% else %}
+        <a href="{{ path('operation_index') }}">Operations</a> |
+        <a href="{{ path('account_index') }}">Accounts</a> |
+        <a href="{{ path('category_index') }}">Categories</a> |
+        <a href="{{ path('person_index') }}">Persons</a>
+        <span style="display: block; float: right">
+            {{ app.user.username }}/<a href="{{ path('app_logout') }}">Logout</a>
+        </span>
+    {% endif %}
+</div>
 <div style="clear: both;"></div>
 <hr>

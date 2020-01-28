@@ -10,7 +10,9 @@
     <body>
         {% include '_navbar.html.twig' %}
 
-        {% block body %}{% endblock %}
+        <div style="padding-left: 100px; padding-right: 100px">
+            {% block body %}{% endblock %}
+        </div>
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
