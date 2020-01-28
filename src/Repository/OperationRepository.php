@@ -33,6 +33,8 @@ class OperationRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('o')
             ->andWhere('o.user = :user')
             ->setParameter('user', $user)
+            ->orderBy('o.date', 'ASC')
+            ->addOrderBy('o.createdAt', 'ASC')
             ->getQuery()
             ->getResult();
     }
