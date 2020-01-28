@@ -6,6 +6,7 @@ use App\Entity\Operation;
 use App\Enum\OperationTypeEnum;
 use App\Form\OperationType;
 use App\Repository\OperationRepository;
+use App\Service\OperationList;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +23,19 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class OperationController extends AbstractController
 {
+    /** @var OperationList */
+    private $operationList;
+
+    /**
+     * OperationController constructor.
+     *
+     * @param OperationList $operationList
+     */
+    public function __construct(OperationList $operationList)
+    {
+        $this->operationList = $operationList;
+    }
+
     /**
      * @Route("/", name="operation_index", methods={"GET"})
      *
@@ -31,13 +45,16 @@ class OperationController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        /** @var OperationRepository $operationRepo */
-        $operationRepo = $this->getDoctrine()->getRepository(Operation::class);
-        $user          = $this->getUser();
-        $operations    = $operationRepo->findByUser($user);
+        $user              = $this->getUser();
+        $groupedOperations = $this->operationList->getGroupedByDays($user);
+
+        /** @var OperationRepository $operationRepo */                                  // TODO delete after debugging
+        $operationRepo      = $this->getDoctrine()->getRepository(Operation::class);    // TODO delete after debugging
+        $plainOperationList = $operationRepo->findByUser($user);                        // TODO delete after debugging
 
         return $this->render('operation/index.html.twig', [
-            'operations' => $operations,
+            'plainOperationList' => $plainOperationList,                                // TODO delete after debugging
+            'groupedOperations'  => $groupedOperations,
         ]);
     }
 
