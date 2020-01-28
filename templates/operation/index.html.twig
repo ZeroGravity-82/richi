@@ -22,7 +22,7 @@
             <th>Actions</th>
         </thead>
         <tbody>
-            {% for operation in operations %}
+            {% for operation in plainOperationList %}
                 <tr>
                     <td>{{ operation.date|date('d.m.Y') }}</td>
                     <td>{% if operation.source is not null %}{{ operation.source.name }}{% endif %}</td>
@@ -42,6 +42,20 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <h1>Grouped operations:</h1>
+    {% for timestamp, operationGroup in groupedOperations %}
+        <div>{{ timestamp|date('d.m.Y') }}</div>
+        <div>
+            {% for operation in operationGroup %}
+                <div>
+                    {{ operation.amount|currency }}
+                </div>
+            {% endfor %}
+        </div>
+        <hr>
+    {% endfor %}
+
 {% endblock %}
 
 {% block javascripts %}
