@@ -25,15 +25,16 @@ class OperationRepository extends ServiceEntityRepository
      * Returns an operation list for the user.
      *
      * @param UserInterface $user
+     * @param string|null   $sortOrder
      *
      * @return Operation[]
      */
-    public function findByUser(UserInterface $user)
+    public function findByUser(UserInterface $user, string $sortOrder = 'ASC'): array
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.user = :user')
             ->setParameter('user', $user)
-            ->orderBy('o.date', 'ASC')
+            ->orderBy('o.date', $sortOrder)
             ->addOrderBy('o.createdAt', 'ASC')
             ->getQuery()
             ->getResult();
