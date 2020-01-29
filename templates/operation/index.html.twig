@@ -10,9 +10,9 @@
     </div>
     <div style="padding-left: 350px; padding-right: 200px">
         <h1>Operations:</h1>
-        {% for timestamp, operationGroup in groupedOperations %}
+        {% for operationDate, operationGroup in groupedOperations %}
             <div style="color: gray">
-                {{ timestamp|date('d.m.Y') }}
+                {{ operationDate|format_date }}
             </div>
             <div>
                 {% for operation in operationGroup %}

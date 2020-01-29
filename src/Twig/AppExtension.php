@@ -34,6 +34,7 @@ class AppExtension extends AbstractExtension
         return [
             new TwigFilter('currency', [$this, 'formatCurrency']),
             new TwigFilter('operation_name', [$this, 'getOperationName']),
+            new TwigFilter('format_date', [$this, 'formatDate']),
         ];
     }
 
@@ -59,5 +60,17 @@ class AppExtension extends AbstractExtension
     public function getOperationName(int $operationType): string
     {
         return OperationTypeEnum::getTypeName($operationType);
+    }
+
+    /**
+     * Returns a string representation of the date provided as timestamp.
+     *
+     * @param integer $timestamp
+     *
+     * @return string
+     */
+    public function formatDate(int $timestamp): string
+    {
+        return date('d.m.Y', $timestamp);
     }
 }

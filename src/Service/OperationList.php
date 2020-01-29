@@ -44,8 +44,8 @@ class OperationList
 
         $allOperations = $this->operationRepo->findByUser($user, 'DESC');
         foreach ($allOperations as $operation) {
-            $timestamp                       = $operation->getDate()->getTimestamp();
-            $groupedOperations[$timestamp][] = $operation;
+            $operationDate                       = $operation->getDate()->getTimestamp();
+            $groupedOperations[$operationDate][] = $operation;
         }
 
         return $groupedOperations;
