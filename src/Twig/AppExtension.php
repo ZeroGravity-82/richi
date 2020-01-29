@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use App\Enum\OperationTypeEnum;
 use App\Form\DataTransformer\KopecksToRublesTransformer;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -32,6 +33,7 @@ class AppExtension extends AbstractExtension
     {
         return [
             new TwigFilter('currency', [$this, 'formatCurrency']),
+            new TwigFilter('operation_name', [$this, 'getOperationName']),
         ];
     }
 
@@ -45,5 +47,17 @@ class AppExtension extends AbstractExtension
     public function formatCurrency(int $value): string
     {
         return sprintf('%.2f', $this->transformer->transform($value));
+    }
+
+    /**
+     * Return for an operation of the given type.
+     *
+     * @param integer $operationType
+     *
+     * @return string
+     */
+    public function getOperationName(int $operationType): string
+    {
+        return OperationTypeEnum::getTypeName($operationType);
     }
 }
