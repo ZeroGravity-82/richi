@@ -42,7 +42,7 @@ class OperationList
     {
         $groupedOperations = [];
 
-        $allOperations = $this->operationRepo->findByUser($user);
+        $allOperations = $this->operationRepo->findByUser($user, 'DESC');
         foreach ($allOperations as $operation) {
             $timestamp                       = $operation->getDate()->getTimestamp();
             $groupedOperations[$timestamp][] = $operation;

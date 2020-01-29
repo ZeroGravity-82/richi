@@ -35,7 +35,7 @@ class OperationRepository extends ServiceEntityRepository
             ->andWhere('o.user = :user')
             ->setParameter('user', $user)
             ->orderBy('o.date', $sortOrder)
-            ->addOrderBy('o.createdAt', 'ASC')
+            ->addOrderBy('o.createdAt', $sortOrder)
             ->getQuery()
             ->getResult();
     }

@@ -50,7 +50,7 @@ class OperationController extends AbstractController
 
         /** @var OperationRepository $operationRepo */                                  // TODO delete after debugging
         $operationRepo      = $this->getDoctrine()->getRepository(Operation::class);    // TODO delete after debugging
-        $plainOperationList = $operationRepo->findByUser($user);                        // TODO delete after debugging
+        $plainOperationList = $operationRepo->findByUser($user, 'DESC');                // TODO delete after debugging
 
         return $this->render('operation/index.html.twig', [
             'plainOperationList' => $plainOperationList,                                // TODO delete after debugging
