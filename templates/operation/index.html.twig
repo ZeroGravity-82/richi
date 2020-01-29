@@ -8,43 +8,8 @@
         <a href="{{ path('operation_new', {'operationName': 'income'}) }}">Add income</a> |
         <a href="{{ path('operation_new', {'operationName': 'transfer'}) }}">Add transfer</a>
     </div>
-    <h1>Operations:</h1>
-    <table>
-        <thead>
-            <th>Date</th>
-            <th>Source</th>
-            <th>Target</th>
-            <th>Amount</th>
-            <th>Category</th>
-            <th>Description</th>
-            <th>Created</th>
-            <th>Updated</th>
-            <th>Actions</th>
-        </thead>
-        <tbody>
-            {% for operation in plainOperationList %}
-                <tr>
-                    <td>{{ operation.date|date('d.m.Y') }}</td>
-                    <td>{% if operation.source is not null %}{{ operation.source.name }}{% endif %}</td>
-                    <td>{% if operation.target is not null %}{{ operation.target.name }}{% endif %}</td>
-                    <td align="right">{{ operation.amount|currency }}</td>
-                    <td>{% if operation.category is not null %}{{ operation.category }}{% endif %}</td>
-                    <td>{{ operation.description }}</td>
-                    <td>{{ operation.createdAt|date('d.m.Y H:i:s') }}</td>
-                    <td>{{ operation.updatedAt|date('d.m.Y H:i:s') }}</td>
-                    <td>
-                        <a href="{{ path('operation_edit', {'id': operation.id}) }}">Edit</a>
-                        <a href="#"
-                           class="js-operation-delete"
-                           data-url="{{ path('operation_delete', {'id': operation.id}) }}">Delete</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
     <div style="padding-left: 350px; padding-right: 200px">
-        <h1>Grouped operations:</h1>
+        <h1>Operations:</h1>
         {% for timestamp, operationGroup in groupedOperations %}
             <div style="color: gray">
                 {{ timestamp|date('d.m.Y') }}
@@ -90,6 +55,47 @@
         {% endfor %}
     </div>
 
+
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <table>
+        <thead>
+        <th>Date</th>
+        <th>Source</th>
+        <th>Target</th>
+        <th>Amount</th>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Created</th>
+        <th>Updated</th>
+        <th>Actions</th>
+        </thead>
+        <tbody>
+        {% for operation in plainOperationList %}
+            <tr>
+                <td>{{ operation.date|date('d.m.Y') }}</td>
+                <td>{% if operation.source is not null %}{{ operation.source.name }}{% endif %}</td>
+                <td>{% if operation.target is not null %}{{ operation.target.name }}{% endif %}</td>
+                <td align="right">{{ operation.amount|currency }}</td>
+                <td>{% if operation.category is not null %}{{ operation.category }}{% endif %}</td>
+                <td>{{ operation.description }}</td>
+                <td>{{ operation.createdAt|date('d.m.Y H:i:s') }}</td>
+                <td>{{ operation.updatedAt|date('d.m.Y H:i:s') }}</td>
+                <td>
+                    <a href="{{ path('operation_edit', {'id': operation.id}) }}">Edit</a>
+                    <a href="#"
+                       class="js-operation-delete"
+                       data-url="{{ path('operation_delete', {'id': operation.id}) }}">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
 
 {% block javascripts %}
