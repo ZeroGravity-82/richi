@@ -39,7 +39,7 @@ class AppExtension extends AbstractExtension
     }
 
     /**
-     * Format value for a currency.
+     * Formats value for a currency.
      *
      * @param integer $value
      *
@@ -51,7 +51,7 @@ class AppExtension extends AbstractExtension
     }
 
     /**
-     * Return for an operation of the given type.
+     * Returns for an operation of the given type.
      *
      * @param integer $operationType
      *
