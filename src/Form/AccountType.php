@@ -3,7 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Account;
+use App\Entity\Person;
 use App\Repository\AccountRepository;
+use App\Repository\PersonRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -38,10 +40,11 @@ class AccountType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         /** @var UserInterface $user */
-        $user = $this->security->getUser();
-
+        $user        = $this->security->getUser();
         /** @var AccountRepository $accountRepo */
         $accountRepo = $this->em->getRepository(Account::class);
+        /** @var PersonRepository $personRepo */
+        $personRepo  = $this->em->getRepository(Person::class);
 
         $builder
             ->add('parent', EntityType::class, [
@@ -53,6 +56,14 @@ class AccountType extends AbstractType
             ])
             ->add('name')
             ->add('icon')
+            ->add('person', EntityType::class, [
+                'class'        => Person::class,
+                'choices'      => $personRepo->findByUser($user),
+                'choice_label' => 'name',
+                'empty_data'   => null,
+                'placeholder'  => '---',
+                'required'     => false,
+            ])
         ;
     }
 

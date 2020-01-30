@@ -62,6 +62,13 @@ class Account
     private $parent;
 
     /**
+     * @var Person|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Person", inversedBy="accounts")
+     */
+    private $person;
+
+    /**
      * @var \DateTimeInterface
      *
      * @ORM\Column(type="datetime")
@@ -171,6 +178,26 @@ class Account
     public function setParent(?Account $parent): self
     {
         $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * @return Person|null
+     */
+    public function getPerson(): ?Person
+    {
+        return $this->person;
+    }
+
+    /**
+     * @param Person|null $person
+     *
+     * @return Account
+     */
+    public function setPerson(?Person $person): self
+    {
+        $this->person = $person;
 
         return $this;
     }

@@ -11,6 +11,7 @@
         <thead>
             <th>Icon</th>
             <th>Name</th>
+            <th>Person</th>
             <th>Created</th>
             <th>Updated</th>
             <th>Actions</th>
@@ -20,6 +21,7 @@
             <tr>
                 <td><img src="#" alt=""></td>
                 <td>{{ account }}</td>
+                <td>{{ account.person }}</td>
                 <td>{{ account.createdAt|date('d.m.Y H:i:s') }}</td>
                 <td>{{ account.updatedAt|date('d.m.Y H:i:s') }}</td>
                 <td>

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -62,6 +64,13 @@ class Person
     private $description;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Account", mappedBy="person", orphanRemoval=true)
+     */
+    private $accounts;
+
+    /**
      * @var \DateTimeInterface
      *
      * @ORM\Column(type="datetime")
@@ -80,6 +89,8 @@ class Person
      */
     public function __construct()
     {
+        $this->accounts  = new ArrayCollection();
+
         $now             = new \DateTime();
         $this->createdAt = $now;
         $this->updatedAt = $now;
@@ -174,6 +185,47 @@ class Person
     }
 
     /**
+     * @return Collection|Account[]
+     */
+    public function getAccounts(): Collection
+    {
+        return $this->accounts;
+    }
+
+    /**
+     * @param Account $account
+     *
+     * @return Person
+     */
+    public function addAccount(Account $account): self
+    {
+        if (!$this->accounts->contains($account)) {
+            $this->accounts[] = $account;
+            $account->setPerson($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Account $account
+     *
+     * @return Person
+     */
+    public function removeAccount(Account $account): self
+    {
+        if ($this->accounts->contains($account)) {
+            $this->accounts->removeElement($account);
+            // set the owning side to null (unless already changed)
+            if ($account->getPerson() === $this) {
+                $account->setPerson(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * @return \DateTimeInterface|null
      */
     public function getCreatedAt(): ?\DateTimeInterface
@@ -197,5 +249,13 @@ class Person
     public function setUpdatedAtValue(): void
     {
         $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }
