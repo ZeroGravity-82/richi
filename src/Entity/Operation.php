@@ -81,6 +81,13 @@ class Operation
     private $description;
 
     /**
+     * @var Person|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Person")
+     */
+    private $person;
+
+    /**
      * @var \DateTimeInterface
      *
      * @ORM\Column(type="datetime")
@@ -281,6 +288,26 @@ class Operation
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Person|null
+     */
+    public function getPerson(): ?Person
+    {
+        return $this->person;
+    }
+
+    /**
+     * @param Person|null $person
+     *
+     * @return Operation
+     */
+    public function setPerson(?Person $person): self
+    {
+        $this->person = $person;
 
         return $this;
     }

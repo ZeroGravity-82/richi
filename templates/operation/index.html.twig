@@ -40,6 +40,9 @@
                                 {% if operation.type == constant('App\\Enum\\OperationTypeEnum::TYPE_TRANSFER') %}
                                     {{ operation.source }} > {{ operation.target }}
                                 {% endif %}
+                                {% if operation.person %}
+                                    [{{ operation.person.name }}]
+                                {% endif %}
                             </span>
                             {% if operation.category %}
                                 <span style="float: right; font-size: small; color: gray">
@@ -71,6 +74,7 @@
         <th>Amount</th>
         <th>Category</th>
         <th>Description</th>
+        <th>Person</th>
         <th>Created</th>
         <th>Updated</th>
         <th>Actions</th>
@@ -84,6 +88,7 @@
                 <td align="right">{{ operation.amount|currency }}</td>
                 <td>{% if operation.category is not null %}{{ operation.category }}{% endif %}</td>
                 <td>{{ operation.description }}</td>
+                <td>{% if operation.person %}{{ operation.person.name }}{% endif %}</td>
                 <td>{{ operation.createdAt|date('d.m.Y H:i:s') }}</td>
                 <td>{{ operation.updatedAt|date('d.m.Y H:i:s') }}</td>
                 <td>
