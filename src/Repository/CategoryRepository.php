@@ -29,12 +29,16 @@ class CategoryRepository extends ServiceEntityRepository
      */
     public function findByUser(UserInterface $user): array
     {
-        return $this->createQueryBuilder('c')
+        $result = $this->createQueryBuilder('c')
             ->andWhere('c.user = :user')
             ->setParameter('user', $user)
             ->orderBy('c.name', 'ASC')
             ->getQuery()
             ->getResult();
+
+        $this->sortAsString($result);
+
+        return $result;
     }
 
     /**
@@ -71,7 +75,7 @@ class CategoryRepository extends ServiceEntityRepository
      */
     public function findByOperationType(UserInterface $user, int $operationType): array
     {
-        return $this->createQueryBuilder('c')
+        $result = $this->createQueryBuilder('c')
             ->andWhere('c.user = :user')
             ->andWhere('c.operationType = :operationType')
             ->setParameter('user', $user)
@@ -79,6 +83,24 @@ class CategoryRepository extends ServiceEntityRepository
             ->orderBy('c.name', 'ASC')
             ->getQuery()
             ->getResult();
+
+        $this->sortAsString($result);
+
+        return $result;
+    }
+
+    /**
+     * Sorts given array of categories as a strings. That is necessary as a category may have a parent category. To make
+     * this approach working the Category class should implement __toString() method that considers a parent category
+     * as well.
+     *
+     * @param array $result
+     *
+     * @return boolean
+     */
+    private function sortAsString(array &$result): bool
+    {
+        return sort($result, SORT_STRING);
     }
 
     // /**
