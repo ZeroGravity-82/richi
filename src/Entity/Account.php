@@ -5,6 +5,8 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AccountRepository")
@@ -69,6 +71,13 @@ class Account
     private $person;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $initialBalance;
+
+    /**
      * @var \DateTimeInterface
      *
      * @ORM\Column(type="datetime")
@@ -89,6 +98,8 @@ class Account
      */
     public function __construct()
     {
+        $initialBalance   = 0;
+
         $now              = new \DateTime();
         $this->createdAt  = $now;
         $this->updatedAt  = $now;
@@ -203,6 +214,26 @@ class Account
     }
 
     /**
+     * @return integer|null
+     */
+    public function getInitialBalance(): ?int
+    {
+        return $this->initialBalance;
+    }
+
+    /**
+     * @param integer $initialBalance
+     *
+     * @return Account
+     */
+    public function setInitialBalance(int $initialBalance): self
+    {
+        $this->initialBalance = $initialBalance;
+
+        return $this;
+    }
+
+    /**
      * @return \DateTimeInterface|null
      */
     public function getCreatedAt(): ?\DateTimeInterface
@@ -239,5 +270,22 @@ class Account
         }
 
         return $string;
+    }
+
+    /**
+     * @Assert\Callback
+     *
+     * @param ExecutionContextInterface $context
+     *
+     * @return void
+     */
+    public function validateFields(ExecutionContextInterface $context): void
+    {
+        if ($this->initialBalance < 0) {
+            $context
+                ->buildViolation('Initial balance should be equal or greater than zero')
+                ->atPath('initialBalance')
+                ->addViolation();
+        }
     }
 }

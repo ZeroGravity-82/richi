@@ -4,11 +4,13 @@ namespace App\Form;
 
 use App\Entity\Account;
 use App\Entity\Person;
+use App\Form\DataTransformer\KopecksToRublesTransformer;
 use App\Repository\AccountRepository;
 use App\Repository\PersonRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
@@ -22,16 +24,21 @@ class AccountType extends AbstractType
     /** @var EntityManagerInterface */
     private $em;
 
+    /** @var KopecksToRublesTransformer */
+    private $transformer;
+
     /**
      * CategoryType constructor.
      *
-     * @param Security               $security
-     * @param EntityManagerInterface $em
+     * @param Security                   $security
+     * @param EntityManagerInterface     $em
+     * @param KopecksToRublesTransformer $transformer
      */
-    public function __construct(Security $security, EntityManagerInterface $em)
+    public function __construct(Security $security, EntityManagerInterface $em, KopecksToRublesTransformer $transformer)
     {
-        $this->security = $security;
-        $this->em       = $em;
+        $this->security    = $security;
+        $this->em          = $em;
+        $this->transformer = $transformer;
     }
 
     /**
@@ -64,7 +71,13 @@ class AccountType extends AbstractType
                 'placeholder'  => '---',
                 'required'     => false,
             ])
+            ->add('initialBalance', NumberType::class, [
+                'scale' => 2,
+            ])
         ;
+
+        $builder->get('initialBalance')
+            ->addModelTransformer($this->transformer);
     }
 
     /**
