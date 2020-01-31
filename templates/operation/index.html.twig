@@ -84,8 +84,6 @@
         <th>Category</th>
         <th>Description</th>
         <th>Person</th>
-        <th>Created</th>
-        <th>Updated</th>
         <th>Actions</th>
         </thead>
         <tbody>
@@ -98,8 +96,6 @@
                 <td>{% if operation.category is not null %}{{ operation.category }}{% endif %}</td>
                 <td>{{ operation.description }}</td>
                 <td>{% if operation.person %}{{ operation.person.name }}{% endif %}</td>
-                <td>{{ operation.createdAt|date('d.m.Y H:i:s') }}</td>
-                <td>{{ operation.updatedAt|date('d.m.Y H:i:s') }}</td>
                 <td>
                     <a href="{{ path('operation_edit', {'id': operation.id}) }}">Edit</a>
                     <a href="#"

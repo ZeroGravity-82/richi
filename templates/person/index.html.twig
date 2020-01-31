@@ -12,8 +12,6 @@
             <th>Icon</th>
             <th>Name</th>
             <th>Description</th>
-            <th>Created</th>
-            <th>Updated</th>
             <th>Actions</th>
         </thead>
         <tbody>
@@ -22,8 +20,6 @@
                 <td><img src="#" alt=""></td>
                 <td>{{ person.name }}</td>
                 <td>{{ person.description }}</td>
-                <td>{{ person.createdAt|date('d.m.Y H:i:s') }}</td>
-                <td>{{ person.updatedAt|date('d.m.Y H:i:s') }}</td>
                 <td>
                     <a href="{{ path('person_edit', {'id': person.id}) }}">Edit</a>
                     <a href="#"

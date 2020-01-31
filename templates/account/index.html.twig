@@ -13,8 +13,6 @@
             <th>Name</th>
             <th>Person</th>
             <th>Initial balance</th>
-            <th>Created</th>
-            <th>Updated</th>
             <th>Actions</th>
         </thead>
         <tbody>
@@ -24,8 +22,6 @@
                 <td>{{ account }}</td>
                 <td>{{ account.person }}</td>
                 <td>{{ account.initialBalance|currency }}</td>
-                <td>{{ account.createdAt|date('d.m.Y H:i:s') }}</td>
-                <td>{{ account.updatedAt|date('d.m.Y H:i:s') }}</td>
                 <td>
                     <a href="{{ path('account_edit', {'id': account.id}) }}">Edit</a>
                     <a href="#"
