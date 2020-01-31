@@ -29,11 +29,15 @@ class AccountRepository extends ServiceEntityRepository
      */
     public function findByUser(UserInterface $user): array
     {
-        return $this->createQueryBuilder('a')
+        $result = $this->createQueryBuilder('a')
             ->andWhere('a.user = :user')
             ->setParameter('user', $user)
             ->getQuery()
             ->getResult();
+
+        $this->sortAsString($result);
+
+        return $result;
     }
 
     /**
@@ -53,6 +57,20 @@ class AccountRepository extends ServiceEntityRepository
             ->orderBy('a.name', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * Sorts given array of accounts as a strings. That is necessary as an account may have a parent account. To make
+     * this approach working the Account class should implement __toString() method that considers a parent account
+     * as well.
+     *
+     * @param array $result
+     *
+     * @return boolean
+     */
+    private function sortAsString(array &$result): bool
+    {
+        return sort($result, SORT_STRING);
     }
 
     // /**
