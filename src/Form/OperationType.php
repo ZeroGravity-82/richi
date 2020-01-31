@@ -68,12 +68,10 @@ class OperationType extends AbstractType
             ->add('source', EntityType::class, [
                 'class'        => Account::class,
                 'choices'      => $accountRepo->findByUser($user),
-                'choice_label' => 'name',
             ])
             ->add('target', EntityType::class, [
                 'class'        => Account::class,
                 'choices'      => $accountRepo->findByUser($user),
-                'choice_label' => 'name',
             ])
             ->add('amount', NumberType::class, [
                 'scale' => 2,
@@ -88,7 +86,6 @@ class OperationType extends AbstractType
             ->add('person', EntityType::class, [
                 'class'        => Person::class,
                 'choices'      => $personRepo->findByUser($user),
-                'choice_label' => 'name',
                 'empty_data'   => null,
                 'placeholder'  => '---',
                 'required'     => false,
