@@ -34,7 +34,7 @@ class AppExtension extends AbstractExtension
         return [
             new TwigFilter('currency', [$this, 'formatCurrency']),
             new TwigFilter('operation_name', [$this, 'getOperationName']),
-            new TwigFilter('format_date', [$this, 'formatDate']),
+            new TwigFilter('date_human', [$this, 'formatDateForHumans']),
         ];
     }
 
@@ -63,14 +63,39 @@ class AppExtension extends AbstractExtension
     }
 
     /**
-     * Returns a string representation of the date provided as timestamp.
+     * Returns a human-readable representation of the date provided as a timestamp.
      *
      * @param integer $timestamp
      *
      * @return string
      */
-    public function formatDate(int $timestamp): string
+    public function formatDateForHumans(int $timestamp): string
     {
-        return date('d.m.Y', $timestamp);
+        $userTimezone    = new \DateTimeZone('Asia/Novosibirsk');       // TODO refactor to get from user settings
+        $dateFormatFull  = 'F d, Y';                                    // TODO refactor to get from user settings
+        $dateFormatShort = 'F d';                                       // TODO refactor to get from user settings
+
+        $date            = (\DateTime::createFromFormat('U', $timestamp));
+        $today           = new \DateTime('now', $userTimezone);
+        $yesterday       = new \DateTime('yesterday', $userTimezone);
+        $dateString      = $date->format($dateFormatFull);
+        $todayString     = $today->format($dateFormatFull);
+        $yesterdayString = $yesterday->format($dateFormatFull);
+
+        switch ($dateString) {
+            case $todayString:
+                $formattedDate = 'Today';
+                break;
+            case $yesterdayString:
+                $formattedDate = 'Yesterday';
+                break;
+            default:
+                $dateYear      = $date->format('Y');
+                $todayYear     = $today->format('Y');
+                $dateFormat    = $dateYear === $todayYear ? $dateFormatShort : $dateFormatFull;
+                $formattedDate = date($dateFormat, $timestamp);
+        }
+
+        return $formattedDate;
     }
 }

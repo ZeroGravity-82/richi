@@ -12,7 +12,7 @@
         <h1>Operations:</h1>
         {% for operationDate, operationGroup in groupedOperations %}
             <div style="color: gray">
-                {{ operationDate|format_date }}
+                {{ operationDate|date_human }}
             </div>
             <div>
                 {% for operation in operationGroup %}
