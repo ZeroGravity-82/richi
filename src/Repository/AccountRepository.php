@@ -37,7 +37,7 @@ class AccountRepository extends ServiceEntityRepository
 
         $this->sortAsString($result);
 
-        return $result;
+        return $this->addIndexes($result);
     }
 
     /**
@@ -50,13 +50,15 @@ class AccountRepository extends ServiceEntityRepository
      */
     public function findAbleToBeParent(UserInterface $user): array
     {
-        return $this->createQueryBuilder('a')
+        $result = $this->createQueryBuilder('a')
             ->andWhere('a.user = :user')
             ->andWhere('a.parent IS NULL')
             ->setParameter('user', $user)
             ->orderBy('a.name', 'ASC')
             ->getQuery()
             ->getResult();
+
+        return $this->addIndexes($result);
     }
 
     /**
@@ -64,12 +66,30 @@ class AccountRepository extends ServiceEntityRepository
      * this approach working the Account class should implement __toString() method that considers a parent account
      * as well.
      *
-     * @param array $result
+     * @param Account[] $result
      *
      * @return boolean
      */
     private function sortAsString(array &$result): bool
     {
         return sort($result, SORT_STRING);
+    }
+
+    /**
+     * Returns an array of accounts with account ID as an index.
+     *
+     * @param Account[] $accounts
+     *
+     * @return Account[]
+     */
+    private function addIndexes(array $accounts): array
+    {
+        $indexedAccounts = [];
+
+        foreach ($accounts as $account) {
+            $indexedAccounts[$account->getId()] = $account;
+        }
+
+        return $indexedAccounts;
     }
 }

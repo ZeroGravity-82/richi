@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Service\BalanceMonitor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,11 +38,15 @@ class BalanceController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $user           = $this->getUser();
-        $currentBalance = $this->balanceMonitor->getCurrentStatus($user);
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $accountBalances = $this->balanceMonitor->getAccountBalances($user);
+        $totalBalance    = $this->balanceMonitor->calculateTotalBalance($accountBalances);
 
         return $this->render('balance/index.html.twig', [
-            'currentBalance' => $currentBalance,
+            'accountBalances' => $accountBalances,
+            'totalBalance'    => $totalBalance,
         ]);
     }
 }

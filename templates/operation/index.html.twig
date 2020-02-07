@@ -34,9 +34,9 @@
                                 {% if operation.description is not empty %}
                                     {{ operation.description }}
                                 {% elseif operation.category is not empty %}
-                                    {{ operation.category.name }}
+                                    {{ operation.category.name|lower }}
                                 {% else %}
-                                    {{ operation.type|operation_name }}
+                                    {{ operation.type|operation_name|lower }}
                                 {% endif %}
                             </span>
                             <span style="float: right; color: {{ fontColor }};">

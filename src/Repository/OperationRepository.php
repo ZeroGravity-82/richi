@@ -2,10 +2,12 @@
 
 namespace App\Repository;
 
+use App\Entity\Account;
 use App\Entity\Operation;
-use App\Enum\OperationTypeEnum;
+use App\ValueObject\CashFlowSum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -41,44 +43,90 @@ class OperationRepository extends ServiceEntityRepository
     }
 
     /**
-     * Calculates the sum of all the income operations for the user.
+     * Calculates the sum of all the inflows for the accounts provided.
      *
-     * @param UserInterface $user
-     * @return integer
+     * @param Account[]
+     *
+     * @return CashFlowSum[]
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getIncomeSum(UserInterface $user): int
+    public function getInflowSums(array $accounts): array
     {
-        return $this->createQueryBuilder('o')
-            ->select('SUM(o.amount)')
-            ->andWhere('o.type = :type')
-            ->andWhere('o.user = :user')
-            ->setParameter('type', OperationTypeEnum::TYPE_INCOME)
-            ->setParameter('user', $user)
-            ->getQuery()
-            ->getSingleScalarResult();
+        $groupedInflows = [];
+
+        $connection = $this->getEntityManager()->getConnection();
+        $sql = <<< 'SQL'
+SELECT target_id as account_id,
+       SUM(amount) as sum
+FROM operation
+WHERE target_id IN (?)
+GROUP BY target_id
+SQL;
+
+        $accountIds = $this->getAccountIds($accounts);
+        $stmt       = $connection->executeQuery($sql, [$accountIds], [Connection::PARAM_INT_ARRAY]);
+        foreach ($stmt->fetchAll() as $accountInflow) {
+            $accountId        = $accountInflow['account_id'];
+            $sum              = $accountInflow['sum'];
+            $account          = $accounts[$accountId];
+            $groupedInflows[] = new CashFlowSum($account, $sum);
+        }
+
+        return $groupedInflows;
     }
 
     /**
-     * Calculates the sum of all the expense operations for the user.
+     * Calculates the sum of all the outflows for the accounts provided.
      *
-     * @param UserInterface $user
-     * @return integer
+     * @param Account[] $accounts
+     *
+     * @return CashFlowSum[]
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getExpenseSum(UserInterface $user): int
+    public function getOutflowSumsForUser(array $accounts): array
     {
-        return $this->createQueryBuilder('o')
-            ->select('SUM(o.amount)')
-            ->andWhere('o.type = :type')
-            ->andWhere('o.user = :user')
-            ->setParameter('type', OperationTypeEnum::TYPE_EXPENSE)
-            ->setParameter('user', $user)
-            ->getQuery()
-            ->getSingleScalarResult();
+        $groupedOutflows = [];
+
+        $connection = $this->getEntityManager()->getConnection();
+        $sql = <<< 'SQL'
+SELECT source_id as account_id,
+       SUM(amount) as sum
+FROM operation
+WHERE source_id IN (?)
+GROUP BY source_id
+SQL;
+
+        $accountIds = $this->getAccountIds($accounts);
+        $stmt       = $connection->executeQuery($sql, [$accountIds], [Connection::PARAM_INT_ARRAY]);
+        foreach ($stmt->fetchAll() as $accountOutflow) {
+            $accountId         = $accountOutflow['account_id'];
+            $sum               = $accountOutflow['sum'];
+            $account           = $accounts[$accountId];
+            $groupedOutflows[] = new CashFlowSum($account, $sum);
+        }
+
+        return $groupedOutflows;
+    }
+
+    /**
+     * Returns an ID array for provided accounts.
+     *
+     * @param Account[] $accounts
+     *
+     * @return integer[]
+     */
+    private function getAccountIds(array $accounts): array
+    {
+        $accountIds = [];
+
+        foreach ($accounts as $account) {
+            $accountIds[] = $account->getId();
+        }
+
+        return $accountIds;
     }
 }

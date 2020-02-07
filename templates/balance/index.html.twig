@@ -3,5 +3,9 @@
 {% block title %}Balance details{% endblock %}
 
 {% block body %}
-    <p>Current balance: {{ currentBalance|currency }}</p>
+    {% for accountBalance in accountBalances %}
+        <p>{{ accountBalance.account }}: {{ accountBalance.value|currency }}</p>
+    {% endfor %}
+
+    <p><strong>Total: {{ totalBalance|currency }}</strong></p>
 {% endblock %}
