@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -55,6 +57,11 @@ class Tag
     private $description;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Operation", mappedBy="tag")
+     */
+    private $operations;
+
+    /**
      * @var \DateTimeInterface
      *
      * @ORM\Column(type="datetime")
@@ -73,6 +80,8 @@ class Tag
      */
     public function __construct()
     {
+        $this->operations = new ArrayCollection();
+
         $now             = new \DateTime();
         $this->createdAt = $now;
         $this->updatedAt = $now;
@@ -142,6 +151,47 @@ class Tag
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Operation[]
+     */
+    public function getOperations(): Collection
+    {
+        return $this->operations;
+    }
+
+    /**
+     * @param Operation $operation
+     *
+     * @return Tag
+     */
+    public function addOperation(Operation $operation): self
+    {
+        if (!$this->operations->contains($operation)) {
+            $this->operations[] = $operation;
+            $operation->setTag($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Operation $operation
+     *
+     * @return Tag
+     */
+    public function removeOperation(Operation $operation): self
+    {
+        if ($this->operations->contains($operation)) {
+            $this->operations->removeElement($operation);
+            // set the owning side to null (unless already changed)
+            if ($operation->getTag() === $this) {
+                $operation->setTag(null);
+            }
+        }
 
         return $this;
     }

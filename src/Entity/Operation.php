@@ -88,6 +88,11 @@ class Operation
     private $person;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Tag", inversedBy="operations")
+     */
+    private $tag;
+
+    /**
      * @var \DateTimeInterface
      *
      * @ORM\Column(type="datetime")
@@ -304,6 +309,26 @@ class Operation
     public function setPerson(?Person $person): self
     {
         $this->person = $person;
+
+        return $this;
+    }
+
+    /**
+     * @return Tag|null
+     */
+    public function getTag(): ?Tag
+    {
+        return $this->tag;
+    }
+
+    /**
+     * @param Tag|null $tag
+     *
+     * @return Operation
+     */
+    public function setTag(?Tag $tag): self
+    {
+        $this->tag = $tag;
 
         return $this;
     }

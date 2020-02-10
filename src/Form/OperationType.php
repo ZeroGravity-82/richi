@@ -6,10 +6,12 @@ use App\Entity\Account;
 use App\Entity\Category;
 use App\Entity\Operation;
 use App\Entity\Person;
+use App\Entity\Tag;
 use App\Form\DataTransformer\KopecksToRublesTransformer;
 use App\Repository\AccountRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\PersonRepository;
+use App\Repository\TagRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -62,6 +64,8 @@ class OperationType extends AbstractType
         $categoryRepo = $this->em->getRepository(Category::class);
         /** @var PersonRepository $personRepo */
         $personRepo   = $this->em->getRepository(Person::class);
+        /** @var TagRepository $tagRepo */
+        $tagRepo      = $this->em->getRepository(Tag::class);
 
         $builder
             ->add('date', DateType::class)
@@ -86,6 +90,13 @@ class OperationType extends AbstractType
             ->add('person', EntityType::class, [
                 'class'        => Person::class,
                 'choices'      => $personRepo->findByUser($user),
+                'empty_data'   => null,
+                'placeholder'  => '---',
+                'required'     => false,
+            ])
+            ->add('tag', EntityType::class, [
+                'class'        => Tag::class,
+                'choices'      => $tagRepo->findByUser($user),
                 'empty_data'   => null,
                 'placeholder'  => '---',
                 'required'     => false,
