@@ -11,16 +11,16 @@ final class OperationTypeEnum
     const TYPE_INCOME   = 1;
     const TYPE_EXPENSE  = 2;
     const TYPE_TRANSFER = 3;
-    const TYPE_BORROW   = 4;
-    const TYPE_LEND     = 5;
+    const TYPE_DEPT     = 4;
+    const TYPE_LOAN     = 5;
 
     /** @var array User friendly named type */
     private static $typeNames = [
         self::TYPE_INCOME   => 'income',
         self::TYPE_EXPENSE  => 'expense',
         self::TYPE_TRANSFER => 'transfer',
-        self::TYPE_BORROW   => 'borrow',
-        self::TYPE_LEND     => 'lend',
+        self::TYPE_DEPT     => 'dept',
+        self::TYPE_LOAN     => 'loan',
     ];
 
     /**
