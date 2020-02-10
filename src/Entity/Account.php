@@ -212,9 +212,9 @@ class Account
     }
 
     /**
-     * @return integer|null
+     * @return integer
      */
-    public function getInitialBalance(): ?int
+    public function getInitialBalance(): int
     {
         return $this->initialBalance;
     }
