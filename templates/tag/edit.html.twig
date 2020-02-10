@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit tag{% endblock %}
+
+{% block body %}
+    <h1>Edit tag:</h1>
+    {{ form_start(tagForm) }}
+        {{ form_widget(tagForm) }}
+        <button type="submit">Save changes</button>
+    {{ form_end(tagForm) }}
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tag list{% endblock %}
+
+{% block body %}
+    <div style="float: right">
+        <a href="{{ path('tag_new') }}">Add tag</a>
+    </div>
+    <h1>Tags:</h1>
+    <table>
+        <thead>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+        {% for tag in tags %}
+            <tr>
+                <td><img src="#" alt=""></td>
+                <td>{{ tag.name }}</td>
+                <td>{{ tag.description }}</td>
+                <td>
+                    <a href="{{ path('tag_edit', {'id': tag.id}) }}">Edit</a>
+                    <a href="#"
+                       class="js-tag-delete"
+                       data-name="{{ tag.name }}"
+                       data-url="{{ path('tag_delete', {'id': tag.id}) }}">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ encore_entry_script_tags('tag') }}
+{% endblock %}
