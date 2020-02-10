@@ -87,7 +87,7 @@ SQL;
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getOutflowSumsForUser(array $accounts): array
+    public function getOutflowSums(array $accounts): array
     {
         $groupedOutflows = [];
 
