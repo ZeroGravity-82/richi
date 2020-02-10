@@ -75,7 +75,7 @@ class Account
      *
      * @ORM\Column(type="integer")
      */
-    private $initialBalance;
+    private $initialBalance = 0;
 
     /**
      * @var \DateTimeInterface
@@ -98,8 +98,6 @@ class Account
      */
     public function __construct()
     {
-        $initialBalance   = 0;
-
         $now              = new \DateTime();
         $this->createdAt  = $now;
         $this->updatedAt  = $now;
