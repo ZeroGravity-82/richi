@@ -89,6 +89,11 @@ class User implements UserInterface
     private $updatedAt;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Tag", mappedBy="user", orphanRemoval=true)
+     */
+    private $tags;
+
+    /**
      * User constructor.
      *
      * @throws \Exception
@@ -103,6 +108,7 @@ class User implements UserInterface
         $now              = new \DateTime();
         $this->createdAt  = $now;
         $this->updatedAt  = $now;
+        $this->tags = new ArrayCollection();
     }
 
     /**
@@ -372,6 +378,47 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($category->getUser() === $this) {
                 $category->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Tag[]
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param Tag $tag
+     *
+     * @return User
+     */
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+            $tag->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Tag $tag
+     *
+     * @return User
+     */
+    public function removeTag(Tag $tag): self
+    {
+        if ($this->tags->contains($tag)) {
+            $this->tags->removeElement($tag);
+            // set the owning side to null (unless already changed)
+            if ($tag->getUser() === $this) {
+                $tag->setUser(null);
             }
         }
 
