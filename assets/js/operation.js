@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const deleteUrl   = target.dataset.url;
             // const operationName = target.dataset.name;
 
-            if (confirm(`Do you really want to delete operation?`)) {
+            if (confirm(`Do you really want to delete the operation?`)) {
                 deleteOperation(deleteUrl)
                     .then(() => location.reload())
                     .catch(error => console.error(error));
