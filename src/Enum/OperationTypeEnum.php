@@ -24,7 +24,7 @@ final class OperationTypeEnum
         self::TYPE_DEPT            => 'dept',
         self::TYPE_REPAYMENT       => 'repayment',
         self::TYPE_LOAN            => 'loan',
-        self::TYPE_DEPT_COLLECTION => 'dept collection',
+        self::TYPE_DEPT_COLLECTION => 'dept-collection',
     ];
 
     /**
