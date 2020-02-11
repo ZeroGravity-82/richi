@@ -385,9 +385,9 @@ class Operation
                 ->addViolation();
         }
 
-        if ($this->amount < 0) {
+        if ($this->amount <= 0) {
             $context
-                ->buildViolation('Amount should be equal or greater than zero')
+                ->buildViolation('Amount should be greater than zero')
                 ->atPath('amount')
                 ->addViolation();
         }
