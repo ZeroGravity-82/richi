@@ -14,11 +14,11 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @ORM\Table(
  *     name="account",
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="account_uq", columns={"user_id", "name"})
+ *         @ORM\UniqueConstraint(name="account_uq", columns={"user_id", "parent_id", "name"})
  *     }
  * )
  * @UniqueEntity(
- *     fields={"user", "name"},
+ *     fields={"user", "parent", "name"},
  *     errorPath="name",
  *     message="Account with the same name already exists."
  * )
