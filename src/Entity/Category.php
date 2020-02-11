@@ -114,11 +114,11 @@ class Category
     }
 
     /**
-     * @param UserInterface $user
+     * @param UserInterface|null $user
      *
      * @return Category
      */
-    public function setUser(UserInterface $user): self
+    public function setUser(?UserInterface $user): self
     {
         $this->user = $user;
 

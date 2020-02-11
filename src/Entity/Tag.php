@@ -104,11 +104,11 @@ class Tag
     }
 
     /**
-     * @param UserInterface $user
+     * @param UserInterface|null $user
      *
      * @return Tag
      */
-    public function setUser(UserInterface $user): self
+    public function setUser(?UserInterface $user): self
     {
         $this->user = $user;
 

@@ -134,11 +134,11 @@ class Operation
     }
 
     /**
-     * @param UserInterface $user
+     * @param UserInterface|null $user
      *
      * @return Operation
      */
-    public function setUser(UserInterface $user): self
+    public function setUser(?UserInterface $user): self
     {
         $this->user = $user;
 

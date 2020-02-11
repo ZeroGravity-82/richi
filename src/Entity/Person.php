@@ -113,11 +113,11 @@ class Person
     }
 
     /**
-     * @param UserInterface $user
+     * @param UserInterface|null $user
      *
      * @return Person
      */
-    public function setUser(UserInterface $user): self
+    public function setUser(?UserInterface $user): self
     {
         $this->user = $user;
 

@@ -120,11 +120,11 @@ class Account
     }
 
     /**
-     * @param UserInterface $user
+     * @param UserInterface|null $user
      *
      * @return Account
      */
-    public function setUser(UserInterface $user): self
+    public function setUser(?UserInterface $user): self
     {
         $this->user = $user;
 
