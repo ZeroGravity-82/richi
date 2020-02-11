@@ -1,7 +1,8 @@
-{% set typeIncome   = constant('App\\Enum\\OperationTypeEnum::TYPE_INCOME') %}
-{% set typeExpense  = constant('App\\Enum\\OperationTypeEnum::TYPE_EXPENSE') %}
-{% set typeTransfer = constant('App\\Enum\\OperationTypeEnum::TYPE_TRANSFER') %}
-{% set typeDept     = constant('App\\Enum\\OperationTypeEnum::TYPE_DEPT') %}
+{% set typeIncome    = constant('App\\Enum\\OperationTypeEnum::TYPE_INCOME') %}
+{% set typeExpense   = constant('App\\Enum\\OperationTypeEnum::TYPE_EXPENSE') %}
+{% set typeTransfer  = constant('App\\Enum\\OperationTypeEnum::TYPE_TRANSFER') %}
+{% set typeDept      = constant('App\\Enum\\OperationTypeEnum::TYPE_DEPT') %}
+{% set typeRepayment = constant('App\\Enum\\OperationTypeEnum::TYPE_REPAYMENT') %}
 
 {% extends 'base.html.twig' %}
 
@@ -14,9 +15,14 @@
         <a href="{{ path('operation_new', {'operationName': 'transfer'}) }}">Add transfer</a>
     </div>
     <div style="clear: both"></div>
+    <br>
     <div style="float: right">
         <a href="{{ path('operation_new', {'operationName': 'dept'}) }}">Add dept</a> |
-        <a href="{{ path('operation_new', {'operationName': 'load'}) }}">Add loan</a>
+        <a href="{{ path('operation_new', {'operationName': 'repayment'}) }}">Add repayment</a>
+    </div>
+    <div style="clear: both"></div>
+    <div style="float: right">
+        <a href="{{ path('operation_new', {'operationName': 'loan'}) }}">Add loan</a>
     </div>
     <div style="padding-left: 350px; padding-right: 200px">
         <h1>Operations:</h1>
@@ -48,19 +54,21 @@
                                 {% endif %}
                             </span>
                             <span style="float: right; color: {{ fontColor }};">
-                                {% if operation.type == typeIncome %}   &plus; {% endif %}
-                                {% if operation.type == typeExpense %}  &ndash; {% endif %}
-                                {% if operation.type == typeTransfer %} &harr; {% endif %}
-                                {% if operation.type == typeDept %}     &plus; {% endif %}
+                                {% if operation.type == typeIncome %}    &plus; {% endif %}
+                                {% if operation.type == typeExpense %}   &ndash; {% endif %}
+                                {% if operation.type == typeTransfer %}  &harr; {% endif %}
+                                {% if operation.type == typeDept %}      &plus; {% endif %}
+                                {% if operation.type == typeRepayment %} &ndash; {% endif %}
                                 {{ operation.amount|currency }}
                             </span>
                         </p>
                         <p style="margin: 0;">
                             <span style="float: left; font-size: small; color: gray">
-                                {% if operation.type == typeIncome %}   {{ operation.target }}                               {% endif %}
-                                {% if operation.type == typeExpense %}  {{ operation.source }}                               {% endif %}
-                                {% if operation.type == typeTransfer %} {{ operation.source }} > {{ operation.target }}      {% endif %}
-                                {% if operation.type == typeDept %}     {{ operation.target }} (from {{ operation.person }}) {% endif %}
+                                {% if operation.type == typeIncome %}    {{ operation.target }}                                       {% endif %}
+                                {% if operation.type == typeExpense %}   {{ operation.source }}                                       {% endif %}
+                                {% if operation.type == typeTransfer %}  {{ operation.source }} > {{ operation.target }}              {% endif %}
+                                {% if operation.type == typeDept %}      {{ operation.target }} (dept from {{ operation.person }})    {% endif %}
+                                {% if operation.type == typeRepayment %} {{ operation.source }} (dept paid to {{ operation.person }}) {% endif %}
                             </span>
                             {% if operation.category %}
                                 <span style="float: right; font-size: small; color: gray">
