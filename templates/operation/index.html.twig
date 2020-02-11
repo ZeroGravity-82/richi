@@ -37,6 +37,8 @@
                 {% for operation in operationGroup %}
                     {% if operation.type == typeIncome %}
                         {% set fontColor = 'green' %}
+                    {% elseif operation.type == typeExpense %}
+                        {% set fontColor = 'blue' %}
                     {% elseif operation.type == typeTransfer %}
                         {% set fontColor = 'gray' %}
                     {% elseif operation.type == typeDept %}
@@ -71,19 +73,23 @@
                         </p>
                         <p style="margin: 0;">
                             <span style="float: left; font-size: small; color: gray">
-                                {% if operation.type == typeIncome %}         {{ operation.target }}                                         {% endif %}
-                                {% if operation.type == typeExpense %}        {{ operation.source }}                                         {% endif %}
-                                {% if operation.type == typeTransfer %}       {{ operation.source }} > {{ operation.target }}                {% endif %}
-                                {% if operation.type == typeDept %}           {{ operation.target }} (dept from {{ operation.person }})      {% endif %}
-                                {% if operation.type == typeRepayment %}      {{ operation.source }} (dept paid to {{ operation.person }})   {% endif %}
-                                {% if operation.type == typeLoan %}           {{ operation.source }} (loan to {{ operation.person }})        {% endif %}
-                                {% if operation.type == typeDeptCollection %} {{ operation.target }} (loan paid from {{ operation.person }}) {% endif %}
-                            </span>
-                            {% if operation.category %}
-                                <span style="float: right; font-size: small; color: gray">
+                                {% if operation.category %}
                                     {{ operation.category.name }}
-                                </span>
-                            {% endif %}
+                                {% endif %}
+                                {% if operation.type == typeDept %}           dept from {{ operation.person }}      {% endif %}
+                                {% if operation.type == typeRepayment %}      dept paid to {{ operation.person }}   {% endif %}
+                                {% if operation.type == typeLoan %}           loan to {{ operation.person }}        {% endif %}
+                                {% if operation.type == typeDeptCollection %} loan paid from {{ operation.person }} {% endif %}
+                            </span>
+                            <span style="float: right; font-size: small; color: gray">
+                                {% if operation.type == typeIncome %}         {{ operation.target }}                          {% endif %}
+                                {% if operation.type == typeExpense %}        {{ operation.source }}                          {% endif %}
+                                {% if operation.type == typeTransfer %}       {{ operation.source }} > {{ operation.target }} {% endif %}
+                                {% if operation.type == typeDept %}           {{ operation.target }}                          {% endif %}
+                                {% if operation.type == typeRepayment %}      {{ operation.source }}                          {% endif %}
+                                {% if operation.type == typeLoan %}           {{ operation.source }}                          {% endif %}
+                                {% if operation.type == typeDeptCollection %} {{ operation.target }}                          {% endif %}
+                            </span>
                             <span style="display: block; clear: both"></span>
                         </p>
                     </div>
