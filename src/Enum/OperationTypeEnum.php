@@ -8,19 +8,23 @@ namespace App\Enum;
  */
 final class OperationTypeEnum
 {
-    const TYPE_INCOME   = 1;
-    const TYPE_EXPENSE  = 2;
-    const TYPE_TRANSFER = 3;
-    const TYPE_DEPT     = 4;
-    const TYPE_LOAN     = 5;
+    const TYPE_INCOME          = 1;
+    const TYPE_EXPENSE         = 2;
+    const TYPE_TRANSFER        = 3;
+    const TYPE_DEPT            = 4;
+    const TYPE_REPAYMENT       = 5;
+    const TYPE_LOAN            = 6;
+    const TYPE_DEPT_COLLECTION = 7;
 
     /** @var array User friendly named type */
     private static $typeNames = [
-        self::TYPE_INCOME   => 'income',
-        self::TYPE_EXPENSE  => 'expense',
-        self::TYPE_TRANSFER => 'transfer',
-        self::TYPE_DEPT     => 'dept',
-        self::TYPE_LOAN     => 'loan',
+        self::TYPE_INCOME          => 'income',
+        self::TYPE_EXPENSE         => 'expense',
+        self::TYPE_TRANSFER        => 'transfer',
+        self::TYPE_DEPT            => 'dept',
+        self::TYPE_REPAYMENT       => 'repayment',
+        self::TYPE_LOAN            => 'loan',
+        self::TYPE_DEPT_COLLECTION => 'dept collection',
     ];
 
     /**
