@@ -11,13 +11,11 @@
 {% block title %}Operation list{% endblock %}
 
 {% block body %}
-    <div style="float: right">
+    <div style="float: left">
         <a href="{{ path('operation_new', {'operationName': 'expense'}) }}">Add expense</a> |
         <a href="{{ path('operation_new', {'operationName': 'income'}) }}">Add income</a> |
         <a href="{{ path('operation_new', {'operationName': 'transfer'}) }}">Add transfer</a>
     </div>
-    <div style="clear: both"></div>
-    <br>
     <div style="float: right">
         <a href="{{ path('operation_new', {'operationName': 'dept'}) }}">Add dept</a> |
         <a href="{{ path('operation_new', {'operationName': 'repayment'}) }}">Add repayment</a>
