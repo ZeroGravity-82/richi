@@ -92,7 +92,7 @@ class OperationType extends AbstractType
                 'choices'      => $personRepo->findByUser($user),
                 'empty_data'   => null,
                 'placeholder'  => '---',
-                'required'     => false,
+                'required'     => true,
             ])
             ->add('tag', EntityType::class, [
                 'class'        => Tag::class,
