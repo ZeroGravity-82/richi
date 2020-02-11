@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New loan{% endblock %}
+
+{% block body %}
+    <h1>Create new loan:</h1>
+    {{ form_start(operationForm) }}
+        {{ form_row(operationForm.date) }}
+        {{ form_row(operationForm.source) }}
+        {{ form_row(operationForm.amount) }}
+        {{ form_row(operationForm.description) }}
+        {{ form_row(operationForm.person) }}
+        {{ form_row(operationForm.tag) }}
+        {{ form_row(operationForm._token) }}
+        <button type="submit">Save new loan operation</button>
+    {{ form_end(operationForm, {'render_rest': false}) }}
+{% endblock %}
