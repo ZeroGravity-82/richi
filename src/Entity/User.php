@@ -77,6 +77,20 @@ class User implements UserInterface
     private $categories;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Tag", mappedBy="user", orphanRemoval=true)
+     */
+    private $tags;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Fund", mappedBy="user", orphanRemoval=true)
+     */
+    private $funds;
+
+    /**
      * @var \DateTimeInterface
      *
      * @ORM\Column(type="datetime")
@@ -89,11 +103,6 @@ class User implements UserInterface
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Tag", mappedBy="user", orphanRemoval=true)
-     */
-    private $tags;
-
-    /**
      * User constructor.
      *
      * @throws \Exception
@@ -104,11 +113,12 @@ class User implements UserInterface
         $this->accounts   = new ArrayCollection();
         $this->persons    = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->tags       = new ArrayCollection();
+        $this->funds      = new ArrayCollection();
 
         $now              = new \DateTime();
         $this->createdAt  = $now;
         $this->updatedAt  = $now;
-        $this->tags = new ArrayCollection();
     }
 
     /**
@@ -419,6 +429,47 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($tag->getUser() === $this) {
                 $tag->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Fund[]
+     */
+    public function getFunds(): Collection
+    {
+        return $this->funds;
+    }
+
+    /**
+     * @param Fund $fund
+     *
+     * @return User
+     */
+    public function addFund(Fund $fund): self
+    {
+        if (!$this->funds->contains($fund)) {
+            $this->funds[] = $fund;
+            $fund->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Fund $fund
+     *
+     * @return User
+     */
+    public function removeFund(Fund $fund): self
+    {
+        if ($this->funds->contains($fund)) {
+            $this->funds->removeElement($fund);
+            // set the owning side to null (unless already changed)
+            if ($fund->getUser() === $this) {
+                $fund->setUser(null);
             }
         }
 

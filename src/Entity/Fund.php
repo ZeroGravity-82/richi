@@ -2,28 +2,26 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\PersonRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\FundRepository")
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(
- *     name="person",
+ *     name="fund",
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="person_uq", columns={"user_id", "name"})
+ *         @ORM\UniqueConstraint(name="fund_uq", columns={"user_id", "name"})
  *     }
  * )
  * @UniqueEntity(
  *     fields={"user", "name"},
  *     errorPath="name",
- *     message="Person with the same name already exists."
+ *     message="Fund with the same name already exists."
  * )
  */
-class Person
+class Fund
 {
     /**
      * @var integer
@@ -37,7 +35,7 @@ class Person
     /**
      * @var UserInterface
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="persons")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="funds")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
@@ -64,18 +62,11 @@ class Person
     private $description;
 
     /**
-     * @var ArrayCollection
+     * @var Person|null
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Account", mappedBy="person", orphanRemoval=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Person", inversedBy="funds")
      */
-    private $accounts;
-
-    /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Fund", mappedBy="person")
-     */
-    private $funds;
+    private $person;
 
     /**
      * @var \DateTimeInterface
@@ -92,16 +83,15 @@ class Person
     private $updatedAt;
 
     /**
-     * Person constructor.
+     * Fund constructor.
+     *
+     * @throws \Exception
      */
     public function __construct()
     {
-        $this->accounts  = new ArrayCollection();
-        $this->funds     = new ArrayCollection();
-
-        $now             = new \DateTime();
-        $this->createdAt = $now;
-        $this->updatedAt = $now;
+        $now              = new \DateTime();
+        $this->createdAt  = $now;
+        $this->updatedAt  = $now;
     }
 
     /**
@@ -123,7 +113,7 @@ class Person
     /**
      * @param UserInterface|null $user
      *
-     * @return Person
+     * @return Fund
      */
     public function setUser(?UserInterface $user): self
     {
@@ -143,7 +133,7 @@ class Person
     /**
      * @param string $name
      *
-     * @return Person
+     * @return Fund
      */
     public function setName(string $name): self
     {
@@ -163,7 +153,7 @@ class Person
     /**
      * @param string|null $icon
      *
-     * @return Person
+     * @return Fund
      */
     public function setIcon(?string $icon): self
     {
@@ -183,7 +173,7 @@ class Person
     /**
      * @param string|null $description
      *
-     * @return Person
+     * @return Fund
      */
     public function setDescription(?string $description): self
     {
@@ -193,83 +183,21 @@ class Person
     }
 
     /**
-     * @return Collection|Account[]
+     * @return Person|null
      */
-    public function getAccounts(): Collection
+    public function getPerson(): ?Person
     {
-        return $this->accounts;
+        return $this->person;
     }
 
     /**
-     * @param Account $account
+     * @param Person|null $person
      *
-     * @return Person
+     * @return Fund
      */
-    public function addAccount(Account $account): self
+    public function setPerson(?Person $person): self
     {
-        if (!$this->accounts->contains($account)) {
-            $this->accounts[] = $account;
-            $account->setPerson($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param Account $account
-     *
-     * @return Person
-     */
-    public function removeAccount(Account $account): self
-    {
-        if ($this->accounts->contains($account)) {
-            $this->accounts->removeElement($account);
-            // set the owning side to null (unless already changed)
-            if ($account->getPerson() === $this) {
-                $account->setPerson(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Fund[]
-     */
-    public function getFunds(): Collection
-    {
-        return $this->funds;
-    }
-
-    /**
-     * @param Fund $fund
-     *
-     * @return Person
-     */
-    public function addFund(Fund $fund): self
-    {
-        if (!$this->funds->contains($fund)) {
-            $this->funds[] = $fund;
-            $fund->setPerson($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param Fund $fund
-     *
-     * @return Person
-     */
-    public function removeFund(Fund $fund): self
-    {
-        if ($this->funds->contains($fund)) {
-            $this->funds->removeElement($fund);
-            // set the owning side to null (unless already changed)
-            if ($fund->getPerson() === $this) {
-                $fund->setPerson(null);
-            }
-        }
+        $this->person = $person;
 
         return $this;
     }
