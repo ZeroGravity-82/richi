@@ -72,6 +72,8 @@ class CategoryRepository extends ServiceEntityRepository
      * @param integer       $operationType
      *
      * @return Category[]
+     *
+     * @see OperationTypeEnum
      */
     public function findByOperationType(UserInterface $user, int $operationType): array
     {
