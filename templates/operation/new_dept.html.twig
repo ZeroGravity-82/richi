@@ -6,10 +6,10 @@
     <h1>Create new dept:</h1>
     {{ form_start(operationForm) }}
         {{ form_row(operationForm.date) }}
+        {{ form_row(operationForm.person) }}
         {{ form_row(operationForm.target) }}
         {{ form_row(operationForm.amount) }}
         {{ form_row(operationForm.description) }}
-        {{ form_row(operationForm.person) }}
         {{ form_row(operationForm.tag) }}
         {{ form_row(operationForm._token) }}
         <button type="submit">Save new dept operation</button>
