@@ -65,6 +65,7 @@ class Fund
      * @var Person|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Person", inversedBy="funds")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $person;
 
