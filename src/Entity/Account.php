@@ -14,11 +14,11 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @ORM\Table(
  *     name="account",
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="account_uq", columns={"user_id", "parent_id", "name"})
+ *         @ORM\UniqueConstraint(name="account_uq", columns={"user_id", "name"})
  *     }
  * )
  * @UniqueEntity(
- *     fields={"user", "parent", "name"},
+ *     fields={"user", "name"},
  *     errorPath="name",
  *     message="Account with the same name already exists."
  * )
@@ -55,20 +55,6 @@ class Account
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $icon;
-
-    /**
-     * @var Account|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Account")
-     */
-    private $parent;
-
-    /**
-     * @var Person|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Person", inversedBy="accounts")
-     */
-    private $person;
 
     /**
      * @var integer
@@ -172,46 +158,6 @@ class Account
     }
 
     /**
-     * @return Account|null
-     */
-    public function getParent(): ?self
-    {
-        return $this->parent;
-    }
-
-    /**
-     * @param Account|null $parent
-     *
-     * @return Account
-     */
-    public function setParent(?Account $parent): self
-    {
-        $this->parent = $parent;
-
-        return $this;
-    }
-
-    /**
-     * @return Person|null
-     */
-    public function getPerson(): ?Person
-    {
-        return $this->person;
-    }
-
-    /**
-     * @param Person|null $person
-     *
-     * @return Account
-     */
-    public function setPerson(?Person $person): self
-    {
-        $this->person = $person;
-
-        return $this;
-    }
-
-    /**
      * @return integer
      */
     public function getInitialBalance(): int
@@ -262,12 +208,7 @@ class Account
      */
     public function __toString(): string
     {
-        $string = $this->name;
-        if ($this->parent) {
-            $string = $this->parent->getName() . ' / ' . $string;
-        }
-
-        return $string;
+        return $this->name;
     }
 
     /**

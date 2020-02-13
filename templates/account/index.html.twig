@@ -11,7 +11,6 @@
         <thead>
             <th>Icon</th>
             <th>Name</th>
-            <th>Person</th>
             <th>Initial balance</th>
             <th>Actions</th>
         </thead>
@@ -20,7 +19,6 @@
             <tr>
                 <td><img src="#" alt=""></td>
                 <td>{{ account }}</td>
-                <td>{{ account.person }}</td>
                 <td>{{ account.initialBalance|currency }}</td>
                 <td>
                     <a href="{{ path('account_edit', {'id': account.id}) }}">Edit</a>

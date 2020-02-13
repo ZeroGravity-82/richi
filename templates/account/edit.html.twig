@@ -4,25 +4,11 @@
 
 {% block body %}
     <h1>Edit account:</h1>
-    <label for="parent">Parent</label>
-    <select id="parent" disabled="disabled">
-        <option>
-            {% if parentName is not null %}
-                {{ parentName }}
-            {% else %}
-                ---
-            {% endif %}</option>
-    </select>
     {{ form_start(accountForm) }}
         {{ form_row(accountForm.name) }}
         {{ form_row(accountForm.icon) }}
-        {{ form_row(accountForm.person) }}
         {{ form_row(accountForm.initialBalance) }}
         {{ form_row(accountForm._token) }}
         <button type="submit">Save changes</button>
-
-        <div style="display: none">
-            {{ form_row(accountForm.parent) }}
-        </div>
     {{ form_end(accountForm) }}
 {% endblock %}

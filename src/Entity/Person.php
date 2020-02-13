@@ -66,13 +66,6 @@ class Person
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Account", mappedBy="person", orphanRemoval=true)
-     */
-    private $accounts;
-
-    /**
-     * @var ArrayCollection
-     *
      * @ORM\OneToMany(targetEntity="App\Entity\Fund", mappedBy="person")
      */
     private $funds;
@@ -96,7 +89,6 @@ class Person
      */
     public function __construct()
     {
-        $this->accounts  = new ArrayCollection();
         $this->funds     = new ArrayCollection();
 
         $now             = new \DateTime();
@@ -188,47 +180,6 @@ class Person
     public function setDescription(?string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Account[]
-     */
-    public function getAccounts(): Collection
-    {
-        return $this->accounts;
-    }
-
-    /**
-     * @param Account $account
-     *
-     * @return Person
-     */
-    public function addAccount(Account $account): self
-    {
-        if (!$this->accounts->contains($account)) {
-            $this->accounts[] = $account;
-            $account->setPerson($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param Account $account
-     *
-     * @return Person
-     */
-    public function removeAccount(Account $account): self
-    {
-        if ($this->accounts->contains($account)) {
-            $this->accounts->removeElement($account);
-            // set the owning side to null (unless already changed)
-            if ($account->getPerson() === $this) {
-                $account->setPerson(null);
-            }
-        }
 
         return $this;
     }

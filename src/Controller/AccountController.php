@@ -100,7 +100,6 @@ class AccountController extends AbstractController
 
         return $this->render('account/edit.html.twig', [
             'accountForm' => $form->createView(),
-            'parentName'  => $account->getParent() ? $account->getParent()->getName() : null,
         ]);
     }
 

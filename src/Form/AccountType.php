@@ -18,26 +18,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class AccountType extends AbstractType
 {
-    /** @var Security */
-    private $security;
-
-    /** @var EntityManagerInterface */
-    private $em;
-
     /** @var KopecksToRublesTransformer */
     private $transformer;
 
     /**
      * CategoryType constructor.
      *
-     * @param Security                   $security
-     * @param EntityManagerInterface     $em
      * @param KopecksToRublesTransformer $transformer
      */
-    public function __construct(Security $security, EntityManagerInterface $em, KopecksToRublesTransformer $transformer)
+    public function __construct(KopecksToRublesTransformer $transformer)
     {
-        $this->security    = $security;
-        $this->em          = $em;
         $this->transformer = $transformer;
     }
 
@@ -46,31 +36,9 @@ class AccountType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        /** @var UserInterface $user */
-        $user        = $this->security->getUser();
-        /** @var AccountRepository $accountRepo */
-        $accountRepo = $this->em->getRepository(Account::class);
-        /** @var PersonRepository $personRepo */
-        $personRepo  = $this->em->getRepository(Person::class);
-
         $builder
-            ->add('parent', EntityType::class, [
-                'class'        => Account::class,
-                'choices'      => $accountRepo->findAbleToBeParent($user),
-                'empty_data'   => null,
-                'placeholder'  => '---',
-                'required'     => false,
-            ])
             ->add('name')
             ->add('icon')
-            ->add('person', EntityType::class, [
-                'class'        => Person::class,
-                'choices'      => $personRepo->findByUser($user),
-                'choice_label' => 'name',
-                'empty_data'   => null,
-                'placeholder'  => '---',
-                'required'     => false,
-            ])
             ->add('initialBalance', NumberType::class, [
                 'scale' => 2,
             ])
