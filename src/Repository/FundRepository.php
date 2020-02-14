@@ -29,11 +29,32 @@ class FundRepository extends ServiceEntityRepository
      */
     public function findByUser(UserInterface $user): array
     {
-        return $this->createQueryBuilder('f')
+        $result = $this->createQueryBuilder('f')
             ->andWhere('f.user = :user')
             ->setParameter('user', $user)
             ->addOrderBy('f.name', 'ASC')
             ->getQuery()
             ->getResult();
+
+        return $this->addIndexes($result);
+    }
+
+
+    /**
+     * Returns an array of funds with fund ID as an index.
+     *
+     * @param Fund[] $funds
+     *
+     * @return Fund[]
+     */
+    private function addIndexes(array $funds): array
+    {
+        $indexedFunds = [];
+
+        foreach ($funds as $fund) {
+            $indexedFunds[$fund->getId()] = $fund;
+        }
+
+        return $indexedFunds;
     }
 }

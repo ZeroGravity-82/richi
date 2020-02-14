@@ -4,8 +4,11 @@
 namespace App\Service;
 
 use App\Entity\Account;
+use App\Entity\Fund;
 use App\Entity\Operation;
+use App\Enum\OperationTypeEnum;
 use App\Repository\AccountRepository;
+use App\Repository\FundRepository;
 use App\Repository\OperationRepository;
 use App\ValueObject\AccountBalance;
 use App\ValueObject\FundBalance;
@@ -27,6 +30,9 @@ class BalanceMonitor
     /** @var AccountRepository */
     private $accountRepo;
 
+    /** @var FundRepository */
+    private $fundRepo;
+
     /**
      * BalanceMonitor constructor.
      *
@@ -37,6 +43,7 @@ class BalanceMonitor
         $this->em            = $em;
         $this->operationRepo = $em->getRepository(Operation::class);
         $this->accountRepo   = $em->getRepository(Account::class);
+        $this->fundRepo      = $em->getRepository(Fund::class);
     }
 
     /**
@@ -51,8 +58,8 @@ class BalanceMonitor
         $accountBalances = [];
 
         $accounts    = $this->accountRepo->findByUser($user);
-        $inflowSums  = $this->operationRepo->getInflowSums($accounts);
-        $outflowSums = $this->operationRepo->getOutflowSums($accounts);
+        $inflowSums  = $this->operationRepo->getAccountInflowSums($accounts);
+        $outflowSums = $this->operationRepo->getAccountOutflowSums($accounts);
 
         foreach ($accounts as $account) {
             // Consider initial balance
@@ -63,8 +70,8 @@ class BalanceMonitor
                 if ($inflowSum->getAccount() !== $account) {
                     continue;
                 }
-                $inflowSum      = $inflowSum->getValue();
-                $accountBalance = new AccountBalance($account, $accountBalance->getValue() + $inflowSum);
+                $inflowSumValue = $inflowSum->getValue();
+                $accountBalance = new AccountBalance($account, $accountBalance->getValue() + $inflowSumValue);
             }
 
             // Consider outflows
@@ -72,8 +79,8 @@ class BalanceMonitor
                 if ($outflowSum->getAccount() !== $account) {
                     continue;
                 }
-                $outflowSum     = $outflowSum->getValue();
-                $accountBalance = new AccountBalance($account, $accountBalance->getValue() - $outflowSum);
+                $outflowSumValue = $outflowSum->getValue();
+                $accountBalance  = new AccountBalance($account, $accountBalance->getValue() - $outflowSumValue);
             }
 
             $accountBalances[] = $accountBalance;
@@ -87,7 +94,7 @@ class BalanceMonitor
      *
      * @return integer
      */
-    public function calculateTotalBalance(array $accountBalances): int
+    public function calculateTotal(array $accountBalances): int
     {
         $total = 0;
 
@@ -109,7 +116,50 @@ class BalanceMonitor
     {
         $fundBalances = [];
 
+        $funds       = $this->fundRepo->findByUser($user);
+        $incomeSums  = $this->operationRepo->getFundCashFlowSums($funds, OperationTypeEnum::TYPE_INCOME);
+        $expenseSums = $this->operationRepo->getFundCashFlowSums($funds, OperationTypeEnum::TYPE_EXPENSE);
+
+        foreach ($funds as $fund) {
+            $fundBalance = new FundBalance($fund, 0);
+
+            // Consider incomes
+            foreach ($incomeSums as $incomeSum) {
+                if ($incomeSum->getFund() !== $fund) {
+                    continue;
+                }
+                $incomeSumValue = $incomeSum->getValue();
+                $fundBalance    = new FundBalance($fund, $fundBalance->getValue() + $incomeSumValue);
+            }
+
+            // Consider expenses
+            foreach ($expenseSums as $expenseSum) {
+                if ($expenseSum->getFund() !== $fund) {
+                    continue;
+                }
+                $expenseSumValue = $expenseSum->getValue();
+                $fundBalance     = new FundBalance($fund, $fundBalance->getValue() - $expenseSumValue);
+            }
+
+            $fundBalances[] = $fundBalance;
+        }
 
         return $fundBalances;
+    }
+
+    /**
+     * @param FundBalance[] $fundBalances
+     *
+     * @return integer
+     */
+    public function calculateFundBalance(array $fundBalances): int
+    {
+        $total = 0;
+
+        foreach ($fundBalances as $fundBalance) {
+            $total += $fundBalance->getValue();
+        }
+
+        return $total;
     }
 }

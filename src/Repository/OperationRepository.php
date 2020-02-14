@@ -3,8 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Account;
+use App\Entity\Fund;
 use App\Entity\Operation;
-use App\ValueObject\CashFlowSum;
+use App\Enum\OperationTypeEnum;
+use App\ValueObject\AccountCashFlowSum;
+use App\ValueObject\FundCashFlowSum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Connection;
@@ -45,14 +48,14 @@ class OperationRepository extends ServiceEntityRepository
     /**
      * Calculates the sum of all the inflows for the accounts provided.
      *
-     * @param Account[]
+     * @param Account[] $accounts
      *
-     * @return CashFlowSum[]
+     * @return AccountCashFlowSum[]
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getInflowSums(array $accounts): array
+    public function getAccountInflowSums(array $accounts): array
     {
         $groupedInflows = [];
 
@@ -71,7 +74,7 @@ SQL;
             $accountId        = $accountInflow['account_id'];
             $sum              = $accountInflow['sum'];
             $account          = $accounts[$accountId];
-            $groupedInflows[] = new CashFlowSum($account, $sum);
+            $groupedInflows[] = new AccountCashFlowSum($account, $sum);
         }
 
         return $groupedInflows;
@@ -82,12 +85,12 @@ SQL;
      *
      * @param Account[] $accounts
      *
-     * @return CashFlowSum[]
+     * @return AccountCashFlowSum[]
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getOutflowSums(array $accounts): array
+    public function getAccountOutflowSums(array $accounts): array
     {
         $groupedOutflows = [];
 
@@ -106,10 +109,49 @@ SQL;
             $accountId         = $accountOutflow['account_id'];
             $sum               = $accountOutflow['sum'];
             $account           = $accounts[$accountId];
-            $groupedOutflows[] = new CashFlowSum($account, $sum);
+            $groupedOutflows[] = new AccountCashFlowSum($account, $sum);
         }
 
         return $groupedOutflows;
+    }
+
+    /**
+     * Calculates the sum of all the cash flows of the provided funds for the given operation type.
+     *
+     * @param Fund[]  $funds
+     * @param integer $type
+     *
+     * @return FundCashFlowSum[]
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     *
+     * @see OperationTypeEnum
+     */
+    public function getFundCashFlowSums(array $funds, int $type): array
+    {
+        $groupedInflows = [];
+
+        $connection = $this->getEntityManager()->getConnection();
+        $sql = <<<   'SQL'
+SELECT fund_id,
+       SUM(amount) as sum
+FROM operation
+WHERE fund_id IN (?)
+      AND type = (?)
+GROUP BY fund_id
+SQL;
+
+        $fundIds = $this->getFundIds($funds);
+        $stmt    = $connection->executeQuery($sql, [$fundIds, $type], [Connection::PARAM_INT_ARRAY]);
+        foreach ($stmt->fetchAll() as $fundInflow) {
+            $fundId           = $fundInflow['fund_id'];
+            $sum              = $fundInflow['sum'];
+            $fund             = $funds[$fundId];
+            $groupedInflows[] = new FundCashFlowSum($fund, $sum);
+        }
+
+        return $groupedInflows;
     }
 
     /**
@@ -128,5 +170,23 @@ SQL;
         }
 
         return $accountIds;
+    }
+
+    /**
+     * Returns an ID array for provided funds.
+     *
+     * @param Fund[] $funds
+     *
+     * @return integer[]
+     */
+    private function getFundIds(array $funds): array
+    {
+        $fundIds = [];
+
+        foreach ($funds as $fund) {
+            $fundIds[] = $fund->getId();
+        }
+
+        return $fundIds;
     }
 }

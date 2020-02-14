@@ -7,5 +7,11 @@
         <p>{{ accountBalance.account }}: {{ accountBalance.value|currency }}</p>
     {% endfor %}
 
-    <p><strong>Total: {{ totalBalance|currency }}</strong></p>
+    <p>
+        <strong>Total: {{ total|currency }}
+            {% if fundBalance != 0 %}
+                <span>(own funds: {{ (total-fundBalance)|currency }})</span>
+            {% endif %}
+        </strong>
+    </p>
 {% endblock %}
