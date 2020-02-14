@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -70,6 +72,13 @@ class Fund
     private $person;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Operation", mappedBy="fund")
+     */
+    private $operations;
+
+    /**
      * @var \DateTimeInterface
      *
      * @ORM\Column(type="datetime")
@@ -90,6 +99,8 @@ class Fund
      */
     public function __construct()
     {
+        $this->operations = new ArrayCollection();
+
         $now              = new \DateTime();
         $this->createdAt  = $now;
         $this->updatedAt  = $now;
@@ -199,6 +210,47 @@ class Fund
     public function setPerson(?Person $person): self
     {
         $this->person = $person;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Operation[]
+     */
+    public function getOperations(): Collection
+    {
+        return $this->operations;
+    }
+
+    /**
+     * @param Operation $operation
+     *
+     * @return Fund
+     */
+    public function addOperation(Operation $operation): self
+    {
+        if (!$this->operations->contains($operation)) {
+            $this->operations[] = $operation;
+            $operation->setFund($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Operation $operation
+     *
+     * @return Fund
+     */
+    public function removeOperation(Operation $operation): self
+    {
+        if ($this->operations->contains($operation)) {
+            $this->operations->removeElement($operation);
+            // set the owning side to null (unless already changed)
+            if ($operation->getFund() === $this) {
+                $operation->setFund(null);
+            }
+        }
 
         return $this;
     }

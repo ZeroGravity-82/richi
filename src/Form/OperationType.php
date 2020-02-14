@@ -4,12 +4,14 @@ namespace App\Form;
 
 use App\Entity\Account;
 use App\Entity\Category;
+use App\Entity\Fund;
 use App\Entity\Operation;
 use App\Entity\Person;
 use App\Entity\Tag;
 use App\Form\DataTransformer\KopecksToRublesTransformer;
 use App\Repository\AccountRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\FundRepository;
 use App\Repository\PersonRepository;
 use App\Repository\TagRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -66,6 +68,8 @@ class OperationType extends AbstractType
         $personRepo   = $this->em->getRepository(Person::class);
         /** @var TagRepository $tagRepo */
         $tagRepo      = $this->em->getRepository(Tag::class);
+        /** @var FundRepository $fundRepo */
+        $fundRepo     = $this->em->getRepository(Fund::class);
 
         $builder
             ->add('date', DateType::class)
@@ -97,6 +101,13 @@ class OperationType extends AbstractType
             ->add('tag', EntityType::class, [
                 'class'        => Tag::class,
                 'choices'      => $tagRepo->findByUser($user),
+                'empty_data'   => null,
+                'placeholder'  => '---',
+                'required'     => false,
+            ])
+            ->add('fund', EntityType::class, [
+                'class'        => Fund::class,
+                'choices'      => $fundRepo->findByUser($user),
                 'empty_data'   => null,
                 'placeholder'  => '---',
                 'required'     => false,

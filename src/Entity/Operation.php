@@ -93,6 +93,13 @@ class Operation
     private $tag;
 
     /**
+     * @var Fund
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Fund", inversedBy="operations")
+     */
+    private $fund;
+
+    /**
      * @var \DateTimeInterface
      *
      * @ORM\Column(type="datetime")
@@ -329,6 +336,26 @@ class Operation
     public function setTag(?Tag $tag): self
     {
         $this->tag = $tag;
+
+        return $this;
+    }
+
+    /**
+     * @return Fund|null
+     */
+    public function getFund(): ?Fund
+    {
+        return $this->fund;
+    }
+
+    /**
+     * @param Fund|null $fund
+     *
+     * @return Operation
+     */
+    public function setFund(?Fund $fund): self
+    {
+        $this->fund = $fund;
 
         return $this;
     }
