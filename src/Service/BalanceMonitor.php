@@ -8,6 +8,7 @@ use App\Entity\Operation;
 use App\Repository\AccountRepository;
 use App\Repository\OperationRepository;
 use App\ValueObject\AccountBalance;
+use App\ValueObject\FundBalance;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -53,7 +54,6 @@ class BalanceMonitor
         $inflowSums  = $this->operationRepo->getInflowSums($accounts);
         $outflowSums = $this->operationRepo->getOutflowSums($accounts);
 
-        // Consider account initial balance
         foreach ($accounts as $account) {
             // Consider initial balance
             $accountBalance = new AccountBalance($account, $account->getInitialBalance());
@@ -96,5 +96,20 @@ class BalanceMonitor
         }
 
         return $total;
+    }
+
+    /**
+     * Returns array of fund balances.
+     *
+     * @param UserInterface $user
+     *
+     * @return FundBalance[]
+     */
+    public function getFundBalances(UserInterface $user): array
+    {
+        $fundBalances = [];
+
+
+        return $fundBalances;
     }
 }
