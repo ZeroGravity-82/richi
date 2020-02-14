@@ -5,11 +5,11 @@ namespace App\Service;
 
 use App\Entity\Account;
 use App\Entity\Operation;
-use App\Entity\User;
 use App\Repository\AccountRepository;
 use App\Repository\OperationRepository;
 use App\ValueObject\AccountBalance;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class BalanceMonitor
@@ -41,11 +41,11 @@ class BalanceMonitor
     /**
      * Returns array of account balances.
      *
-     * @param User $user
+     * @param UserInterface $user
      *
      * @return AccountBalance[]
      */
-    public function getAccountBalances(User $user): array
+    public function getAccountBalances(UserInterface $user): array
     {
         $accountBalances = [];
 
