@@ -18,7 +18,7 @@
         {% for account in accounts %}
             <tr>
                 <td><img src="#" alt=""></td>
-                <td>{{ account }}</td>
+                <td>{{ account.name }}</td>
                 <td>{{ account.initialBalance|currency }}</td>
                 <td>
                     <a href="{{ path('account_edit', {'id': account.id}) }}">Edit</a>
