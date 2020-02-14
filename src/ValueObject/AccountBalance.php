@@ -13,7 +13,7 @@ class AccountBalance
     /** @var Account */
     private $account;
 
-    /** @var int */
+    /** @var integer */
     private $value;
 
     /**
