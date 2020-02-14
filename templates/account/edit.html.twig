@@ -5,9 +5,7 @@
 {% block body %}
     <h1>Edit account:</h1>
     {{ form_start(accountForm) }}
-        {{ form_row(accountForm.name) }}
-        {{ form_row(accountForm.icon) }}
-        {{ form_row(accountForm.initialBalance) }}
+        {{ form_widget(accountForm) }}
         <button type="submit">Save changes</button>
     {{ form_end(accountForm) }}
 {% endblock %}
