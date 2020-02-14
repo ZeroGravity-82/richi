@@ -41,7 +41,7 @@ class FundType extends AbstractType
         /** @var UserInterface $user */
         $user = $this->security->getUser();
 
-        /** @var PersonRepository $fundRepo */
+        /** @var PersonRepository $personRepo */
         $personRepo = $this->em->getRepository(Person::class);
 
         $builder
