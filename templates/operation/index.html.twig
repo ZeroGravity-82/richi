@@ -80,6 +80,7 @@
                                 {% if operation.type == typeDeptCollection %} loan paid from {{ operation.person }} {% endif %}
                             </span>
                             <span style="float: right; font-size: small; color: gray">
+                                {% if operation.fund is not null %} [{{ operation.fund.name }}] {% endif %}
                                 {% if operation.type == typeIncome %}         {{ operation.target }}                          {% endif %}
                                 {% if operation.type == typeExpense %}        {{ operation.source }}                          {% endif %}
                                 {% if operation.type == typeTransfer %}       {{ operation.source }} > {{ operation.target }} {% endif %}
