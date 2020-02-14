@@ -33,18 +33,18 @@
             </div>
             <div>
                 {% for operation in operationGroup %}
-                    {% if operation.type == typeIncome %}
-                        {% set fontColor = 'green' %}
-                    {% elseif operation.type == typeExpense %}
-                        {% set fontColor = 'darkblue' %}
-                    {% elseif operation.type == typeTransfer %}
-                        {% set fontColor = 'gray' %}
+                    {% if operation.type == typeIncome and operation.fund is null %}
+                        {% set amountFontColor = 'green' %}
+                    {% elseif operation.type == typeExpense and operation.fund is null  %}
+                        {% set amountFontColor = 'darkblue' %}
+                    {% elseif operation.type == typeTransfer or operation.fund is not null  %}
+                        {% set amountFontColor = 'gray' %}
                     {% elseif operation.type == typeDept %}
-                        {% set fontColor = 'red' %}
+                        {% set amountFontColor = 'red' %}
                     {% elseif operation.type == typeLoan %}
-                        {% set fontColor = '#FF6103' %}
+                        {% set amountFontColor = '#FF6103' %}
                     {% else %}
-                        {% set fontColor = 'inherit' %}
+                        {% set amountFontColor = 'inherit' %}
                     {% endif %}
 
                     <div>
@@ -58,12 +58,12 @@
                                     {{ operation.type|operation_name|lower }}
                                 {% endif %}
                             </span>
-                            <span style="float: right; color: {{ fontColor }};">
-                                {% if operation.type == typeIncome %}          &plus; {% endif %}
-                                {% if operation.type == typeExpense %}         &ndash; {% endif %}
-                                {% if operation.type == typeTransfer %}        &harr; {% endif %}
-                                {% if operation.type == typeDept %}            &plus; {% endif %}
-                                {% if operation.type == typeRepayment %}       &ndash; {% endif %}
+                            <span style="float: right; color: {{ amountFontColor }};">
+                                {% if operation.type == typeIncome %}         &plus; {% endif %}
+                                {% if operation.type == typeExpense %}        &ndash; {% endif %}
+                                {% if operation.type == typeTransfer %}       &harr; {% endif %}
+                                {% if operation.type == typeDept %}           &plus; {% endif %}
+                                {% if operation.type == typeRepayment %}      &ndash; {% endif %}
                                 {% if operation.type == typeLoan %}           &ndash; {% endif %}
                                 {% if operation.type == typeDeptCollection %} &plus; {% endif %}
                                 {{ operation.amount|currency }}
