@@ -11,6 +11,7 @@
         <thead>
         <th>Icon</th>
         <th>Name</th>
+        <th>Description</th>
         <th>Person</th>
         <th>Actions</th>
         </thead>
@@ -19,6 +20,7 @@
             <tr>
                 <td><img src="#" alt=""></td>
                 <td>{{ fund.name }}</td>
+                <td>{{ fund.description }}</td>
                 <td>{{ fund.person }}</td>
                 <td>
                     <a href="{{ path('fund_edit', {'id': fund.id}) }}">Edit</a>
