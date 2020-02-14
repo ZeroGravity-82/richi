@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Fund;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method Fund|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,32 +20,20 @@ class FundRepository extends ServiceEntityRepository
         parent::__construct($registry, Fund::class);
     }
 
-    // /**
-    //  * @return Fund[] Returns an array of Fund objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * Returns a fund list for the user.
+     *
+     * @param UserInterface $user
+     *
+     * @return Fund[]
+     */
+    public function findByUser(UserInterface $user): array
     {
         return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('f.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('f.user = :user')
+            ->setParameter('user', $user)
+            ->addOrderBy('f.name', 'ASC')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Fund
-    {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fund list{% endblock %}
+
+{% block body %}
+    <div style="float: right">
+        <a href="{{ path('fund_new') }}">Add fund</a>
+    </div>
+    <h1>Funds:</h1>
+    <table>
+        <thead>
+        <th>Icon</th>
+        <th>Name</th>
+        <th>Person</th>
+        <th>Actions</th>
+        </thead>
+        <tbody>
+        {% for fund in funds %}
+            <tr>
+                <td><img src="#" alt=""></td>
+                <td>{{ fund.name }}</td>
+                <td>{{ fund.person }}</td>
+                <td>
+                    <a href="{{ path('fund_edit', {'id': fund.id}) }}">Edit</a>
+                    <a href="#"
+                       class="js-fund-delete"
+                       data-name="{{ fund.name }}"
+                       data-url="{{ path('fund_delete', {'id': fund.id}) }}">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ encore_entry_script_tags('fund') }}
+{% endblock %}

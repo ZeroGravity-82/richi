@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New fund{% endblock %}
+
+{% block body %}
+    <h1>Create new fund:</h1>
+    {{ form_start(fundForm) }}
+        {{ form_widget(fundForm) }}
+        <button type="submit">Save new fund</button>
+    {{ form_end(fundForm) }}
+{% endblock %}
