@@ -11,20 +11,7 @@
 {% block title %}Operation list{% endblock %}
 
 {% block body %}
-    <div style="float: left">
-        <a href="{{ path('operation_new', {'operationName': 'expense'}) }}">Add expense</a> |
-        <a href="{{ path('operation_new', {'operationName': 'income'}) }}">Add income</a> |
-        <a href="{{ path('operation_new', {'operationName': 'transfer'}) }}">Add transfer</a>
-    </div>
-    <div style="float: right">
-        <a href="{{ path('operation_new', {'operationName': 'dept'}) }}">Add dept</a> |
-        <a href="{{ path('operation_new', {'operationName': 'repayment'}) }}">Add repayment</a>
-    </div>
-    <div style="clear: both"></div>
-    <div style="float: right">
-        <a href="{{ path('operation_new', {'operationName': 'loan'}) }}">Add loan</a> |
-        <a href="{{ path('operation_new', {'operationName': 'dept-collection'}) }}">Add dept collection</a>
-    </div>
+    {{ include('operation/_index_navbar.html.twig') }}
     <div style="padding-left: 350px; padding-right: 200px">
         <h1>Operations:</h1>
         {% for operationDate, operationGroup in groupedOperations %}
@@ -98,45 +85,7 @@
         {% endfor %}
     </div>
 
-
-
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-
-    <table>
-        <thead>
-        <th>Date</th>
-        <th>Source</th>
-        <th>Target</th>
-        <th>Amount</th>
-        <th>Category</th>
-        <th>Description</th>
-        <th>Person</th>
-        <th>Actions</th>
-        </thead>
-        <tbody>
-        {% for operation in plainOperationList %}
-            <tr>
-                <td>{{ operation.date|date('d.m.Y') }}</td>
-                <td>{% if operation.source is not null %}{{ operation.source.name }}{% endif %}</td>
-                <td>{% if operation.target is not null %}{{ operation.target.name }}{% endif %}</td>
-                <td align="right">{{ operation.amount|currency }}</td>
-                <td>{% if operation.category is not null %}{{ operation.category }}{% endif %}</td>
-                <td>{{ operation.description }}</td>
-                <td>{% if operation.person %}{{ operation.person.name }}{% endif %}</td>
-                <td>
-                    <a href="{{ path('operation_edit', {'id': operation.id}) }}">Edit</a>
-                    <a href="#"
-                       class="js-operation-delete"
-                       data-url="{{ path('operation_delete', {'id': operation.id}) }}">Delete</a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {{ include('operation/_index_old_table.html.twig') }}
 {% endblock %}
 
 {% block javascripts %}
