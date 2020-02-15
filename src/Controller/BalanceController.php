@@ -20,7 +20,7 @@ class BalanceController extends AbstractController
     private $balanceMonitor;
 
     /**
-     * DefaultController constructor.
+     * BalanceController constructor.
      *
      * @param BalanceMonitor $balanceMonitor
      */
