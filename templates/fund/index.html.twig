@@ -13,21 +13,23 @@
         <th>Name</th>
         <th>Description</th>
         <th>Person</th>
+        <th>Current balance</th>
         <th>Actions</th>
         </thead>
         <tbody>
-        {% for fund in funds %}
+        {% for fundBalance in fundBalances %}
             <tr>
                 <td><img src="#" alt=""></td>
-                <td>{{ fund.name }}</td>
-                <td>{{ fund.description }}</td>
-                <td>{{ fund.person }}</td>
+                <td>{{ fundBalance.fund.name }}</td>
+                <td>{{ fundBalance.fund.description }}</td>
+                <td>{{ fundBalance.fund.person }}</td>
+                <td style="text-align: right">{{ fundBalance.value|currency }}</td>
                 <td>
-                    <a href="{{ path('fund_edit', {'id': fund.id}) }}">Edit</a>
+                    <a href="{{ path('fund_edit', {'id': fundBalance.fund.id}) }}">Edit</a>
                     <a href="#"
                        class="js-fund-delete"
-                       data-name="{{ fund.name }}"
-                       data-url="{{ path('fund_delete', {'id': fund.id}) }}">Delete</a>
+                       data-name="{{ fundBalance.fund.name }}"
+                       data-url="{{ path('fund_delete', {'id': fundBalance.fund.id}) }}">Delete</a>
                 </td>
             </tr>
         {% endfor %}
