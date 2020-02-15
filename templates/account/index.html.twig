@@ -12,20 +12,22 @@
             <th>Icon</th>
             <th>Name</th>
             <th>Initial balance</th>
+            <th>Current balance</th>
             <th>Actions</th>
         </thead>
         <tbody>
-        {% for account in accounts %}
+        {% for accountBalance in accountBalances %}
             <tr>
                 <td><img src="#" alt=""></td>
-                <td>{{ account.name }}</td>
-                <td style="text-align: right">{{ account.initialBalance|currency }}</td>
+                <td>{{ accountBalance.account.name }}</td>
+                <td style="text-align: right">{{ accountBalance.account.initialBalance|currency }}</td>
+                <td style="text-align: right">{{ accountBalance.value|currency }}</td>
                 <td>
-                    <a href="{{ path('account_edit', {'id': account.id}) }}">Edit</a>
+                    <a href="{{ path('account_edit', {'id': accountBalance.account.id}) }}">Edit</a>
                     <a href="#"
                        class="js-account-delete"
-                       data-name="{{ account.name }}"
-                       data-url="{{ path('account_delete', {'id': account.id}) }}">Delete</a>
+                       data-name="{{ accountBalance.account.name }}"
+                       data-url="{{ path('account_delete', {'id': accountBalance.account.id}) }}">Delete</a>
                 </td>
             </tr>
         {% endfor %}
