@@ -133,7 +133,7 @@ SQL;
         $groupedInflows = [];
 
         $connection = $this->getEntityManager()->getConnection();
-        $sql = <<<   'SQL'
+        $sql = <<< 'SQL'
 SELECT fund_id,
        SUM(amount) as sum
 FROM operation
