@@ -45,10 +45,14 @@ class AccountController extends AbstractController
         $user            = $this->getUser();
         $accountBalances = $this->balanceMonitor->getAccountBalances($user);
         $total           = $this->balanceMonitor->calculateTotal($accountBalances);
+        $fundBalances    = $this->balanceMonitor->getFundBalances($user);
+        $fundBalance     = $this->balanceMonitor->calculateFundBalance($fundBalances);
 
         return $this->render('account/index.html.twig', [
             'accountBalances' => $accountBalances,
             'total'           => $total,
+            'fundBalances'    => $fundBalances,
+            'fundBalance'     => $fundBalance,
         ]);
     }
 

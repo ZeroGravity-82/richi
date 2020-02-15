@@ -31,6 +31,29 @@
                 </td>
             </tr>
         {% endfor %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td style="text-align: right">
+                    <strong>Total:</strong>
+                </td>
+                <td style="text-align: right">
+                    <strong> {{ (total-fundBalance)|currency }} </strong>
+                </td>
+                <td></td>
+            </tr>
+            {% if fundBalances is not empty %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td style="text-align: right">
+                        {% if fundBalance >= 0 %}<span>+</span>{% endif %}
+                        {{- fundBalance|currency -}}
+                    </td>
+                    <td> in funds</td>
+                </tr>
+            {% endif %}
         </tbody>
     </table>
 {% endblock %}
