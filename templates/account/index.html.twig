@@ -19,7 +19,7 @@
             <tr>
                 <td><img src="#" alt=""></td>
                 <td>{{ account.name }}</td>
-                <td>{{ account.initialBalance|currency }}</td>
+                <td style="text-align: right">{{ account.initialBalance|currency }}</td>
                 <td>
                     <a href="{{ path('account_edit', {'id': account.id}) }}">Edit</a>
                     <a href="#"
