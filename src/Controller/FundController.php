@@ -42,9 +42,11 @@ class FundController extends AbstractController
 
         $user         = $this->getUser();
         $fundBalances = $this->balanceMonitor->getFundBalances($user);
+        $fundBalance  = $this->balanceMonitor->calculateFundBalance($fundBalances);
 
         return $this->render('fund/index.html.twig', [
             'fundBalances' => $fundBalances,
+            'fundBalance'  => $fundBalance,
         ]);
     }
 
