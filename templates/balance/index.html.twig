@@ -8,9 +8,9 @@
     {% endfor %}
 
     <p>
-        <strong>Total: {{ total|currency }}
+        <strong>Total: {{ (total-fundBalance)|currency }}
             {% if fundBalance != 0 %}
-                <span>(own funds: {{ (total-fundBalance)|currency }})</span>
+                <span> (+{{ fundBalance|currency }} OPM)</span>
             {% endif %}
         </strong>
     </p>
