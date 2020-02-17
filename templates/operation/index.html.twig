@@ -20,65 +20,7 @@
             </div>
             <div>
                 {% for operation in operationGroup %}
-                    {% if operation.type == typeIncome and operation.fund is null %}
-                        {% set amountFontColor = 'green' %}
-                    {% elseif operation.type == typeExpense and operation.fund is null  %}
-                        {% set amountFontColor = 'darkblue' %}
-                    {% elseif operation.type == typeTransfer or operation.fund is not null  %}
-                        {% set amountFontColor = 'gray' %}
-                    {% elseif operation.type == typeDept %}
-                        {% set amountFontColor = 'red' %}
-                    {% elseif operation.type == typeLoan %}
-                        {% set amountFontColor = '#FF6103' %}
-                    {% else %}
-                        {% set amountFontColor = 'inherit' %}
-                    {% endif %}
-
-                    <div>
-                        <p style="margin-top: 8px; margin-bottom: 0">
-                            <span style="display: inline-block">
-                                {% if operation.description is not empty %}
-                                    {{ operation.description }}
-                                {% elseif operation.category is not empty %}
-                                    {{ operation.category.name|lower }}
-                                {% else %}
-                                    {{ operation.type|operation_name|lower }}
-                                {% endif %}
-                            </span>
-                            <span style="float: right; color: {{ amountFontColor }};">
-                                {% if operation.type == typeIncome %}         &plus; {% endif %}
-                                {% if operation.type == typeExpense %}        &ndash; {% endif %}
-                                {% if operation.type == typeTransfer %}       &harr; {% endif %}
-                                {% if operation.type == typeDept %}           &plus; {% endif %}
-                                {% if operation.type == typeRepayment %}      &ndash; {% endif %}
-                                {% if operation.type == typeLoan %}           &ndash; {% endif %}
-                                {% if operation.type == typeDeptCollection %} &plus; {% endif %}
-                                {{ operation.amount|currency }}
-                            </span>
-                        </p>
-                        <p style="margin: 0;">
-                            <span style="float: left; font-size: small; color: gray">
-                                {% if operation.category %}
-                                    {{ operation.category.name }}
-                                {% endif %}
-                                {% if operation.type == typeDept %}           dept from {{ operation.person }}      {% endif %}
-                                {% if operation.type == typeRepayment %}      dept paid to {{ operation.person }}   {% endif %}
-                                {% if operation.type == typeLoan %}           loan to {{ operation.person }}        {% endif %}
-                                {% if operation.type == typeDeptCollection %} loan paid from {{ operation.person }} {% endif %}
-                            </span>
-                            <span style="float: right; font-size: small; color: gray">
-                                {% if operation.fund is not null %} [{{ operation.fund.name }}] {% endif %}
-                                {% if operation.type == typeIncome %}         {{ operation.target }}                          {% endif %}
-                                {% if operation.type == typeExpense %}        {{ operation.source }}                          {% endif %}
-                                {% if operation.type == typeTransfer %}       {{ operation.source }} > {{ operation.target }} {% endif %}
-                                {% if operation.type == typeDept %}           {{ operation.target }}                          {% endif %}
-                                {% if operation.type == typeRepayment %}      {{ operation.source }}                          {% endif %}
-                                {% if operation.type == typeLoan %}           {{ operation.source }}                          {% endif %}
-                                {% if operation.type == typeDeptCollection %} {{ operation.target }}                          {% endif %}
-                            </span>
-                            <span style="display: block; clear: both"></span>
-                        </p>
-                    </div>
+                    {% include('operation/_index_item.html.twig') %}
                 {% endfor %}
             </div>
             <hr>
