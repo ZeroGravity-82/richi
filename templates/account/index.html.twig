@@ -51,7 +51,7 @@
                         {% if fundBalance >= 0 %}<span>+</span>{% endif %}
                         {{- fundBalance|currency -}}
                     </td>
-                    <td> in funds</td>
+                    <td> in <a href="{{ path('fund_index') }}">funds</a></td>
                 </tr>
             {% endif %}
         </tbody>
