@@ -12,9 +12,8 @@
     {% set amountFontColor = 'inherit' %}
 {% endif %}
 
-<div>
-    {# main line #}
-    <p style="margin-top: 8px; margin-bottom: 0">
+<div class="operation-item">
+    <p class="operation-main-line">
         <span style="display: inline-block">
             {% if operation.description is not empty %}
                 {{ operation.description }}
@@ -35,9 +34,7 @@
             {{ operation.amount|currency }}
         </span>
     </p>
-
-    {# sub-line #}
-    <p style="margin: 0;">
+    <p class="operation-sub-line">
         <span style="float: left; font-size: small; color: gray">
             {% if operation.category %}
                 {{ operation.category.name }}
@@ -58,5 +55,12 @@
             {% if operation.type == typeDeptCollection %} {{ operation.target }}                          {% endif %}
         </span>
         <span style="display: block; clear: both"></span>
+    </p>
+    <p class="operation-toolbar">
+        <a href="{{ path('operation_edit', {'id': operation.id}) }}">Edit</a> |
+        <a href="#">Copy</a> |
+        <a href="#"
+           class="js-operation-delete"
+           data-url="{{ path('operation_delete', {'id': operation.id}) }}">Delete</a>
     </p>
 </div>

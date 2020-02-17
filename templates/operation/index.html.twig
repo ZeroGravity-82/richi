@@ -30,6 +30,12 @@
     {{ include('operation/_index_old_table.html.twig') }}
 {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+
+    {{ encore_entry_link_tags('operation') }}
+{% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
 

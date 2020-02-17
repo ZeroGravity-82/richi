@@ -1,0 +1,21 @@
+.operation-item {
+    position: relative;
+}
+.operation-main-line {
+    margin-top: 8px;
+    margin-bottom: 0;
+}
+.operation-sub-line {
+    margin: 0;
+}
+.operation-toolbar {
+    display: none;
+    position: absolute;
+    top: -13px;
+    right: -115px;
+    padding-left: 20px;
+    font-size: small;
+}
+.operation-item:hover .operation-toolbar {
+    display: inherit;
+}
