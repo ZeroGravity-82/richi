@@ -33,6 +33,6 @@ class KopecksToRublesTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value): int
     {
-        return (int) ($value * self::KOPECKS_IN_RUBLE);
+        return (int) (string) ($value * self::KOPECKS_IN_RUBLE);
     }
 }
