@@ -13,11 +13,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(
  *     name="category",
  *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="category_uq", columns={"user_id", "name"})
+ *         @ORM\UniqueConstraint(name="category_uq", columns={"user_id", "parent_id", "name"})
  *     }
  * )
  * @UniqueEntity(
- *     fields={"user", "name"},
+ *     fields={"user", "parent", "name"},
  *     errorPath="name",
  *     message="Category with the same name already exists."
  * )
