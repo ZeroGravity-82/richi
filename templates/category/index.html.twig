@@ -7,10 +7,14 @@
         <a href="{{ path('category_new', {'operationName': 'expense'}) }}">Add expense category</a> |
         <a href="{{ path('category_new', {'operationName': 'income'}) }}">Add income category</a>
     </div>
-    <h1>Expense categories:</h1>
-    {% include 'category/_category_list.html.twig' with {'categories': expenseCategories} %}
-    <h1>Income categories:</h1>
-    {% include 'category/_category_list.html.twig' with {'categories': incomeCategories} %}
+    <div style="float: left; padding-right: 100px">
+        <h1>Expense categories:</h1>
+        {% include 'category/_category_list.html.twig' with {'categories': expenseCategories} %}
+    </div>
+    <div style="float: left">
+        <h1>Income categories:</h1>
+        {% include 'category/_category_list.html.twig' with {'categories': incomeCategories} %}
+    </div>
 {% endblock %}
 
 {% block javascripts %}
