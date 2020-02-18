@@ -1,5 +1,12 @@
+.date-header {
+    margin-left: 350px;
+    margin-right: 350px;
+    color: gray;
+}
 .operation-item {
     position: relative;
+    padding-left: 350px;
+    padding-right: 350px;
 }
 .operation-main-line {
     margin-top: 8px;
@@ -12,10 +19,14 @@
     display: none;
     position: absolute;
     top: -13px;
-    right: -115px;
+    right: 225px;
     padding-left: 20px;
     font-size: small;
 }
 .operation-item:hover .operation-toolbar {
     display: inherit;
+}
+hr {
+    margin-left: 350px;
+    margin-right: 350px;
 }
