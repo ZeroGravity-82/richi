@@ -13,7 +13,6 @@
 {% block body %}
     {{ include('operation/_index_navbar.html.twig') }}
     <div>
-        <h1>Operations:</h1>
         {% for operationDate, operationGroup in groupedOperations %}
             <div class="date-header">
                 {{ operationDate|date_human }}
