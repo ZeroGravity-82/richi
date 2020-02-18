@@ -107,6 +107,14 @@ class Fund
     }
 
     /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
+    /**
      * @return integer|null
      */
     public function getId(): ?int
@@ -279,13 +287,5 @@ class Fund
     public function setUpdatedAtValue(): void
     {
         $this->updatedAt = new \DateTime();
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->name;
     }
 }

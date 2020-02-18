@@ -4,8 +4,8 @@ namespace App\Entity;
 
 use App\Enum\OperationTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
@@ -95,6 +95,19 @@ class Category
         $now              = new \DateTime();
         $this->createdAt  = $now;
         $this->updatedAt  = $now;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        $string = $this->name;
+        if ($this->parent) {
+            $string = $this->parent->getName() . ' / ' . $string;
+        }
+
+        return $string;
     }
 
     /**
@@ -240,18 +253,5 @@ class Category
     public function setUpdatedAtValue(): void
     {
         $this->updatedAt = new \DateTime();
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        $string = $this->name;
-        if ($this->parent) {
-            $string = $this->parent->getName() . ' / ' . $string;
-        }
-
-        return $string;
     }
 }
