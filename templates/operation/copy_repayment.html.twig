@@ -4,8 +4,5 @@
 
 {% block body %}
     <h1>Copy repayment:</h1>
-    {{ form_start(operationForm) }}
-        {% include('operation/_form_repayment.html.twig') %}
-        <button type="submit">Save copy for repayment operation</button>
-    {{ form_end(operationForm, {'render_rest': false}) }}
+    {% include('operation/_form_repayment.html.twig') %}
 {% endblock %}

@@ -1,8 +1,11 @@
-{{ form_row(operationForm.date) }}
-{{ form_row(operationForm.target) }}
-{{ form_row(operationForm.category) }}
-{{ form_row(operationForm.amount) }}
-{{ form_row(operationForm.description) }}
-{{ form_row(operationForm.fund) }}
-{{ form_row(operationForm.tag) }}
-{{ form_row(operationForm._token) }}
+{{ form_start(operationForm) }}
+    {{ form_row(operationForm.date) }}
+    {{ form_row(operationForm.target) }}
+    {{ form_row(operationForm.category) }}
+    {{ form_row(operationForm.amount) }}
+    {{ form_row(operationForm.description) }}
+    {{ form_row(operationForm.fund) }}
+    {{ form_row(operationForm.tag) }}
+    {{ form_row(operationForm._token) }}
+    <button type="submit">Save</button>
+{{ form_end(operationForm, {'render_rest': false}) }}
