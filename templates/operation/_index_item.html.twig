@@ -61,6 +61,8 @@
         <a href="#">Copy</a> |
         <a href="#"
            class="js-operation-delete"
-           data-url="{{ path('operation_delete', {'id': operation.id}) }}">Delete</a>
+           data-url="{{ path('operation_delete', {'id': operation.id}) }}"
+           data-description="{{ operation.description }}"
+           data-amount="{{ operation.amount|currency }}">Delete</a>
     </p>
 </div>
