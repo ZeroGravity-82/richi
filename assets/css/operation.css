@@ -3,6 +3,10 @@
     margin-right: 350px;
     color: gray;
 }
+.date-separator {
+    margin-left: 350px;
+    margin-right: 350px;
+}
 .operation-item {
     position: relative;
     padding-left: 350px;
@@ -25,8 +29,4 @@
 }
 .operation-item:hover .operation-toolbar {
     display: inherit;
-}
-hr {
-    margin-left: 350px;
-    margin-right: 350px;
 }
