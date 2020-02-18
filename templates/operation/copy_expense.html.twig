@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit expense{% endblock %}
+{% block title %}Copy expense{% endblock %}
 
 {% block body %}
-    <h1>Edit expense:</h1>
+    <h1>Copy expense:</h1>
     {{ form_start(operationForm) }}
         {% include('operation/_form_expense.html.twig') %}
-        <button type="submit">Save changes</button>
+        <button type="submit">Save copy for expense operation</button>
     {{ form_end(operationForm, {'render_rest': false}) }}
 {% endblock %}

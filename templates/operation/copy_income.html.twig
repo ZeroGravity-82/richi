@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New income{% endblock %}
+{% block title %}Copy income{% endblock %}
 
 {% block body %}
-    <h1>Create new income:</h1>
+    <h1>Copy income:</h1>
     {{ form_start(operationForm) }}
         {% include('operation/_form_income.html.twig') %}
-        <button type="submit">Save new income operation</button>
+        <button type="submit">Save copy for income operation</button>
     {{ form_end(operationForm, {'render_rest': false}) }}
 {% endblock %}

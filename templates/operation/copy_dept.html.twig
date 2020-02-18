@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New dept{% endblock %}
+{% block title %}Copy dept{% endblock %}
 
 {% block body %}
-    <h1>Create new dept:</h1>
+    <h1>Copy dept:</h1>
     {{ form_start(operationForm) }}
         {% include('operation/_form_dept.html.twig') %}
-        <button type="submit">Save new dept operation</button>
+        <button type="submit">Save copy for dept operation</button>
     {{ form_end(operationForm, {'render_rest': false}) }}
 {% endblock %}

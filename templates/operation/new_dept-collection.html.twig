@@ -5,13 +5,7 @@
 {% block body %}
     <h1>Create new dept collection:</h1>
     {{ form_start(operationForm) }}
-        {{ form_row(operationForm.date) }}
-        {{ form_row(operationForm.person) }}
-        {{ form_row(operationForm.target) }}
-        {{ form_row(operationForm.amount) }}
-        {{ form_row(operationForm.description) }}
-        {{ form_row(operationForm.tag) }}
-        {{ form_row(operationForm._token) }}
+        {% include('operation/_form_dept-collection.html.twig') %}
         <button type="submit">Save new dept collection operation</button>
     {{ form_end(operationForm, {'render_rest': false}) }}
 {% endblock %}

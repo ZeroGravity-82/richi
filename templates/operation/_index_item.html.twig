@@ -58,7 +58,7 @@
     </p>
     <p class="operation-toolbar">
         <a href="{{ path('operation_edit', {'id': operation.id}) }}">Edit</a> |
-        <a href="#">Copy</a> |
+        <a href="{{ path('operation_copy', {'id': operation.id}) }}">Copy</a> |
         <a href="#"
            class="js-operation-delete"
            data-url="{{ path('operation_delete', {'id': operation.id}) }}"

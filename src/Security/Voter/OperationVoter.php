@@ -11,7 +11,7 @@ class OperationVoter extends Voter
 {
     protected function supports($attribute, $subject)
     {
-        return in_array($attribute, ['OPERATION_EDIT', 'OPERATION_DELETE'])
+        return in_array($attribute, ['OPERATION_EDIT', 'OPERATION_COPY', 'OPERATION_DELETE'])
             && $subject instanceof Operation;
     }
 
@@ -26,6 +26,7 @@ class OperationVoter extends Voter
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case 'OPERATION_EDIT':
+            case 'OPERATION_COPY':
             case 'OPERATION_DELETE':
                 if ($subject->getUser() === $user) {
                     return true;

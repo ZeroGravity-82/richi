@@ -98,6 +98,40 @@ class OperationController extends AbstractController
     }
 
     /**
+     * @Route("/copy/{id}", name="operation_copy", methods={"GET", "POST"})
+     *
+     * @param Operation $operation
+     * @param Request   $request
+     *
+     * @return Response
+     */
+    public function copy(Operation $operation, Request $request): Response
+    {
+        $this->denyAccessUnlessGranted('OPERATION_COPY', $operation);
+
+        $form = $this->createForm(OperationType::class, $operation, [
+            'operation_type' => $operation->getType(),
+        ]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Operation $operation */
+            $operation = clone $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($operation);
+            $em->flush();
+
+            return $this->redirectToRoute('operation_index');
+        }
+
+        $operationType = $operation->getType();
+
+        return $this->render('operation/copy_'.OperationTypeEnum::getTypeName($operationType).'.html.twig', [
+            'operationForm' => $form->createView(),
+        ]);
+    }
+
+    /**
      * @Route("/edit/{id}", name="operation_edit", methods={"GET", "POST"})
      *
      * @param Operation $operation

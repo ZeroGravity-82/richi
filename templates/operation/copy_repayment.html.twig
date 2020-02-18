@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit repayment{% endblock %}
+{% block title %}Copy repayment{% endblock %}
 
 {% block body %}
-    <h1>Edit repayment:</h1>
+    <h1>Copy repayment:</h1>
     {{ form_start(operationForm) }}
         {% include('operation/_form_repayment.html.twig') %}
-        <button type="submit">Save changes</button>
+        <button type="submit">Save copy for repayment operation</button>
     {{ form_end(operationForm, {'render_rest': false}) }}
 {% endblock %}
