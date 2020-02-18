@@ -125,6 +125,16 @@ class Operation
     }
 
     /**
+     * @return void
+     */
+    public function __clone()
+    {
+        $now             = new \DateTime();
+        $this->createdAt = $now;
+        $this->updatedAt = $now;
+    }
+
+    /**
      * @return integer|null
      */
     public function getId(): ?int
