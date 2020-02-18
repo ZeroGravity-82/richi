@@ -114,6 +114,7 @@ class OperationController extends AbstractController
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Operation $operation */
             $operation = $form->getData();
 
             $em = $this->getDoctrine()->getManager();
