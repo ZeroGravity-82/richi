@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Operation;
 use App\Enum\OperationTypeEnum;
 use App\Form\OperationType;
-use App\Repository\OperationRepository;
 use App\Service\OperationList;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -48,12 +47,7 @@ class OperationController extends AbstractController
         $user              = $this->getUser();
         $groupedOperations = $this->operationList->getGroupedByDays($user);
 
-        /** @var OperationRepository $operationRepo */                                  // TODO delete after debugging
-        $operationRepo      = $this->getDoctrine()->getRepository(Operation::class);    // TODO delete after debugging
-        $plainOperationList = $operationRepo->findByUser($user, 'DESC');                // TODO delete after debugging
-
         return $this->render('operation/index.html.twig', [
-            'plainOperationList' => $plainOperationList,                                // TODO delete after debugging
             'groupedOperations'  => $groupedOperations,
         ]);
     }
