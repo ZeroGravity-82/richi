@@ -129,9 +129,11 @@ class Operation
      */
     public function __clone()
     {
-        $now             = new \DateTime();
-        $this->createdAt = $now;
-        $this->updatedAt = $now;
+        if ($this->id) {
+            $now             = new \DateTime();
+            $this->createdAt = $now;
+            $this->updatedAt = $now;
+        }
     }
 
     /**

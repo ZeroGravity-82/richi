@@ -109,22 +109,23 @@ class OperationController extends AbstractController
     {
         $this->denyAccessUnlessGranted('OPERATION_COPY', $operation);
 
-        $form = $this->createForm(OperationType::class, $operation, [
-            'operation_type' => $operation->getType(),
+        $clonedOperation = clone $operation;
+        $form            = $this->createForm(OperationType::class, $clonedOperation, [
+            'operation_type' => $clonedOperation->getType(),
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var Operation $operation */
-            $operation = clone $form->getData();
+            /** @var Operation $clonedOperation */
+            $clonedOperation = $form->getData();
 
             $em = $this->getDoctrine()->getManager();
-            $em->persist($operation);
+            $em->persist($clonedOperation);
             $em->flush();
 
             return $this->redirectToRoute('operation_index');
         }
 
-        $operationType = $operation->getType();
+        $operationType = $clonedOperation->getType();
 
         return $this->render('operation/copy_'.OperationTypeEnum::getTypeName($operationType).'.html.twig', [
             'operationForm' => $form->createView(),
