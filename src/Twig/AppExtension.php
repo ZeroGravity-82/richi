@@ -78,22 +78,21 @@ class AppExtension extends AbstractExtension
         $date            = (\DateTime::createFromFormat('U', $timestamp));
         $today           = new \DateTime('now', $userTimezone);
         $yesterday       = new \DateTime('yesterday', $userTimezone);
+        $dateYear        = $date->format('Y');
+        $todayYear       = $today->format('Y');
+        $dateFormat      = $dateYear === $todayYear ? $dateFormatShort : $dateFormatFull;
+        $formattedDate   = date($dateFormat, $timestamp);
+
         $dateString      = $date->format($dateFormatFull);
         $todayString     = $today->format($dateFormatFull);
         $yesterdayString = $yesterday->format($dateFormatFull);
-
         switch ($dateString) {
             case $todayString:
-                $formattedDate = 'Today';
+                $formattedDate .= ' (today)';
                 break;
             case $yesterdayString:
-                $formattedDate = 'Yesterday';
+                $formattedDate .= ' (yesterday)';
                 break;
-            default:
-                $dateYear      = $date->format('Y');
-                $todayYear     = $today->format('Y');
-                $dateFormat    = $dateYear === $todayYear ? $dateFormatShort : $dateFormatFull;
-                $formattedDate = date($dateFormat, $timestamp);
         }
 
         return $formattedDate;
