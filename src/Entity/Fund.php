@@ -79,6 +79,13 @@ class Fund
     private $operations;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $initialBalance = 0;
+
+    /**
      * @var \DateTimeInterface
      *
      * @ORM\Column(type="datetime")
@@ -259,6 +266,26 @@ class Fund
                 $operation->setFund(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getInitialBalance(): int
+    {
+        return $this->initialBalance;
+    }
+
+    /**
+     * @param integer $initialBalance
+     *
+     * @return Fund
+     */
+    public function setInitialBalance(int $initialBalance): self
+    {
+        $this->initialBalance = $initialBalance;
 
         return $this;
     }

@@ -121,7 +121,8 @@ class BalanceMonitor
         $expenseSums = $this->operationRepo->getFundCashFlowSums($funds, OperationTypeEnum::TYPE_EXPENSE);
 
         foreach ($funds as $fund) {
-            $fundBalance = new FundBalance($fund, 0);
+            // Consider initial balance
+            $fundBalance = new FundBalance($fund, $fund->getInitialBalance());
 
             // Consider incomes
             foreach ($incomeSums as $incomeSum) {
