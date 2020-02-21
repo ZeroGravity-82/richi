@@ -12,6 +12,10 @@
 
 {% block body %}
     {{ include('operation/_index_navbar.html.twig') }}
+    <p style="float: left">
+        Expenses: {{ expenseSum|currency }}<br>
+        Incomes: {{ incomeSum|currency }}
+    </p>
     <div>
         {% for operationDate, operationGroup in groupedOperations %}
             <div class="date-header">

@@ -155,6 +155,46 @@ SQL;
     }
 
     /**
+     * Return sum for all the expenses of the user.
+     *
+     * @param UserInterface $user
+     *
+     * @return integer
+     */
+    public function getUserExpenseSum(UserInterface $user): int
+    {
+        return $this->createQueryBuilder('o')
+            ->select('SUM(o.amount)')
+            ->andWhere('o.user = :user')
+            ->andWhere('o.type = :type')
+            ->andWhere('o.fund IS NULL')
+            ->setParameter('user', $user)
+            ->setParameter('type', OperationTypeEnum::TYPE_EXPENSE)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * Return sum for all the incomes of the user.
+     *
+     * @param UserInterface $user
+     *
+     * @return integer
+     */
+    public function getUserIncomeSum(UserInterface $user): int
+    {
+        return $this->createQueryBuilder('o')
+            ->select('SUM(o.amount)')
+            ->andWhere('o.user = :user')
+            ->andWhere('o.type = :type')
+            ->andWhere('o.fund IS NULL')
+            ->setParameter('user', $user)
+            ->setParameter('type', OperationTypeEnum::TYPE_INCOME)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
      * Returns an ID array for provided accounts.
      *
      * @param Account[] $accounts

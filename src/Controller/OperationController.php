@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Operation;
 use App\Enum\OperationTypeEnum;
 use App\Form\OperationType;
+use App\Repository\OperationRepository;
 use App\Service\OperationList;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -47,8 +48,15 @@ class OperationController extends AbstractController
         $user              = $this->getUser();
         $groupedOperations = $this->operationList->getGroupedByDays($user);
 
+        /** @var OperationRepository $operationRepo */
+        $operationRepo = $this->getDoctrine()->getRepository(Operation::class);
+        $expenseSum    = $operationRepo->getUserExpenseSum($user);
+        $incomeSum     = $operationRepo->getUserIncomeSum($user);
+
         return $this->render('operation/index.html.twig', [
-            'groupedOperations'  => $groupedOperations,
+            'groupedOperations' => $groupedOperations,
+            'expenseSum'        => $expenseSum,
+            'incomeSum'         => $incomeSum,
         ]);
     }
 
