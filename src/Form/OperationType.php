@@ -75,11 +75,11 @@ class OperationType extends AbstractType
             ->add('date', DateType::class)
             ->add('source', EntityType::class, [
                 'class'        => Account::class,
-                'choices'      => $accountRepo->findByUser($user),
+                'choices'      => $accountRepo->findNotArchived($user),
             ])
             ->add('target', EntityType::class, [
                 'class'        => Account::class,
-                'choices'      => $accountRepo->findByUser($user),
+                'choices'      => $accountRepo->findNotArchived($user),
             ])
             ->add('amount', NumberType::class, [
                 'scale' => 2,

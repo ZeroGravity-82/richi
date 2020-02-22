@@ -17,12 +17,19 @@
         </thead>
         <tbody>
         {% for accountBalance in accountBalances %}
-            <tr>
+            {% set archived = accountBalance.account.archived %}
+            <tr {% if archived %} style="color: gray" {% endif %}>
                 <td><img src="#" alt=""></td>
-                <td>{{ accountBalance.account.name }}</td>
-                <td style="text-align: right">{{ accountBalance.account.initialBalance|currency }}</td>
-                <td style="text-align: right">{{ accountBalance.value|currency }}</td>
-                <td>
+                <td {% if archived %} style="text-decoration-line: line-through" {% endif %}>
+                    {{ accountBalance.account.name }}
+                </td>
+                <td style="text-align: right; {% if archived %} text-decoration-line: line-through {% endif %}">
+                    {{ accountBalance.account.initialBalance|currency }}
+                </td>
+                <td style="text-align: right; {% if archived %} text-decoration-line: line-through {% endif %}">
+                    {{ accountBalance.value|currency }}
+                </td>
+                <td style="text-decoration-line: none;">
                     <a href="{{ path('account_edit', {'id': accountBalance.account.id}) }}">Edit</a>
                     <a href="#"
                        class="js-account-delete"

@@ -40,6 +40,26 @@ class AccountRepository extends ServiceEntityRepository
     }
 
     /**
+     * Returns a list of not archived accounts for the user.
+     *
+     * @param UserInterface $user
+     *
+     * @return Account[]
+     */
+    public function findNotArchived(UserInterface $user): array
+    {
+        $result = $this->createQueryBuilder('a')
+            ->andWhere('a.user = :user')
+            ->andWhere('a.archived = false')
+            ->setParameter('user', $user)
+            ->addOrderBy('a.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $this->addIndexes($result);
+    }
+
+    /**
      * Returns an array of accounts with account ID as an index.
      *
      * @param Account[] $accounts

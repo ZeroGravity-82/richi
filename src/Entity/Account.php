@@ -64,6 +64,13 @@ class Account
     private $initialBalance = 0;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $archived = false;
+
+    /**
      * @var \DateTimeInterface
      *
      * @ORM\Column(type="datetime")
@@ -181,6 +188,26 @@ class Account
     public function setInitialBalance(int $initialBalance): self
     {
         $this->initialBalance = $initialBalance;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getArchived(): bool
+    {
+        return $this->archived;
+    }
+
+    /**
+     * @param boolean $archived
+     *
+     * @return Account
+     */
+    public function setArchived(bool $archived): self
+    {
+        $this->archived = $archived;
 
         return $this;
     }
