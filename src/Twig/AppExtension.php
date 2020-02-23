@@ -76,6 +76,8 @@ class AppExtension extends AbstractExtension
         $dateFormatShort = 'F d';                                       // TODO refactor to get from user settings
 
         $date            = (\DateTime::createFromFormat('U', $timestamp));
+        $date->setTimezone($userTimezone);
+
         $today           = new \DateTime('now', $userTimezone);
         $yesterday       = new \DateTime('yesterday', $userTimezone);
         $dateYear        = $date->format('Y');
