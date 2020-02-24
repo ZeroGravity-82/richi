@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class FundController extends AbstractController
 {
-    /** @var BalanceMonitor $balanceMonitor */
+    /** @var BalanceMonitor */
     private $balanceMonitor;
 
     /**
