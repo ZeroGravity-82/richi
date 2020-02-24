@@ -198,21 +198,37 @@ SQL;
     }
 
     /**
-     * Returns an ID array for provided accounts.
+     * Calculates the sum of all the person obligations for the provided persons and the given operation type.
      *
-     * @param Account[] $accounts
+     * @param Person[] $persons
+     * @param integer  $type
      *
-     * @return integer[]
+     * @return PersonObligationSum[]
      */
-    private function getAccountIds(array $accounts): array
+    public function getPersonObligationSums(array $persons, int $type): array
     {
-        $accountIds = [];
+        $groupedDebts = [];
 
-        foreach ($accounts as $account) {
-            $accountIds[] = $account->getId();
+        $connection = $this->getEntityManager()->getConnection();
+        $sql = <<< 'SQL'
+SELECT person_id,
+       SUM(amount) as sum
+FROM operation
+WHERE person_id IN (?)
+      AND type = (?)
+GROUP BY person_id
+SQL;
+
+        $personIds = $this->getIds($persons);
+        $stmt      = $connection->executeQuery($sql, [$personIds, $type], [Connection::PARAM_INT_ARRAY]);
+        foreach ($stmt->fetchAll() as $personObligation) {
+            $personId       = $personObligation['person_id'];
+            $sum            = $personObligation['sum'];
+            $person         = $persons[$personId];
+            $groupedDebts[] = new PersonObligationSum($person, $sum);
         }
 
-        return $accountIds;
+        return $groupedDebts;
     }
 
     /**
