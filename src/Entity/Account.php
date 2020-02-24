@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  *     message="Account with the same name already exists."
  * )
  */
-class Account
+class Account implements Identifiable
 {
     /**
      * @var integer

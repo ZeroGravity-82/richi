@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Account;
 use App\Entity\Fund;
+use App\Entity\Identifiable;
 use App\Entity\Operation;
 use App\Enum\OperationTypeEnum;
 use App\ValueObject\AccountCashFlowSum;
@@ -68,7 +69,7 @@ WHERE target_id IN (?)
 GROUP BY target_id
 SQL;
 
-        $accountIds = $this->getAccountIds($accounts);
+        $accountIds = $this->getIds($accounts);
         $stmt       = $connection->executeQuery($sql, [$accountIds], [Connection::PARAM_INT_ARRAY]);
         foreach ($stmt->fetchAll() as $accountInflow) {
             $accountId        = $accountInflow['account_id'];
@@ -103,7 +104,7 @@ WHERE source_id IN (?)
 GROUP BY source_id
 SQL;
 
-        $accountIds = $this->getAccountIds($accounts);
+        $accountIds = $this->getIds($accounts);
         $stmt       = $connection->executeQuery($sql, [$accountIds], [Connection::PARAM_INT_ARRAY]);
         foreach ($stmt->fetchAll() as $accountOutflow) {
             $accountId         = $accountOutflow['account_id'];
@@ -142,7 +143,7 @@ WHERE fund_id IN (?)
 GROUP BY fund_id
 SQL;
 
-        $fundIds = $this->getFundIds($funds);
+        $fundIds = $this->getIds($funds);
         $stmt    = $connection->executeQuery($sql, [$fundIds, $type], [Connection::PARAM_INT_ARRAY]);
         foreach ($stmt->fetchAll() as $fundInflow) {
             $fundId           = $fundInflow['fund_id'];
@@ -213,20 +214,23 @@ SQL;
     }
 
     /**
-     * Returns an ID array for provided funds.
+     * Returns an ID array for provided identifiable entities.
      *
-     * @param Fund[] $funds
+     * @param Identifiable[] $entities
      *
      * @return integer[]
      */
-    private function getFundIds(array $funds): array
+    private function getIds(array $entities): array
     {
-        $fundIds = [];
+        $ids = [];
 
-        foreach ($funds as $fund) {
-            $fundIds[] = $fund->getId();
+        foreach ($entities as $entity) {
+            if (!$entity instanceof Identifiable) {
+                continue;
+            }
+            $ids[] = $entity->getId();
         }
 
-        return $fundIds;
+        return $ids;
     }
 }

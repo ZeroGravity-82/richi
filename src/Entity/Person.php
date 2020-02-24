@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *     message="Person with the same name already exists."
  * )
  */
-class Person
+class Person implements Identifiable
 {
     /**
      * @var integer

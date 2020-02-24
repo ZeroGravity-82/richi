@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *     message="Fund with the same name already exists."
  * )
  */
-class Fund
+class Fund implements Identifiable
 {
     /**
      * @var integer
