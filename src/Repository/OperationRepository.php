@@ -6,9 +6,11 @@ use App\Entity\Account;
 use App\Entity\Fund;
 use App\Entity\Identifiable;
 use App\Entity\Operation;
+use App\Entity\Person;
 use App\Enum\OperationTypeEnum;
 use App\ValueObject\AccountCashFlowSum;
 use App\ValueObject\FundCashFlowSum;
+use App\ValueObject\PersonObligationSum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Connection;
@@ -145,9 +147,9 @@ SQL;
 
         $fundIds = $this->getIds($funds);
         $stmt    = $connection->executeQuery($sql, [$fundIds, $type], [Connection::PARAM_INT_ARRAY]);
-        foreach ($stmt->fetchAll() as $fundInflow) {
-            $fundId           = $fundInflow['fund_id'];
-            $sum              = $fundInflow['sum'];
+        foreach ($stmt->fetchAll() as $fundCashFlow) {
+            $fundId           = $fundCashFlow['fund_id'];
+            $sum              = $fundCashFlow['sum'];
             $fund             = $funds[$fundId];
             $groupedInflows[] = new FundCashFlowSum($fund, $sum);
         }
