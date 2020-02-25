@@ -1,0 +1,23 @@
+{% extends('base.html.twig') %}
+
+{% block title %}Debts & loans{% endblock %}
+
+{% block body %}
+    {% if debtList is not empty %}
+        <h1>Debts:</h1>
+        {% for debt in debtList %}
+            {% if debt.value != 0 %}
+                <p>{{ debt.person.name }}: {{ debt.value|currency }}</p>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {% if loanList is not empty %}
+        <h1>Loans:</h1>
+        {% for loan in loanList %}
+            {% if loan.value != 0 %}
+                <p>{{ loan.person.name }}: {{ loan.value|currency }}</p>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}

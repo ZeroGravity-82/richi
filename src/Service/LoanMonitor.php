@@ -12,10 +12,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Class DebtMonitor
+ * Class LoanMonitor
  * @package App\Service
  */
-class DebtMonitor
+class LoanMonitor
 {
     /** @var EntityManagerInterface */
     private $em;
@@ -27,7 +27,7 @@ class DebtMonitor
     private $personRepo;
 
     /**
-     * DebtMonitor constructor.
+     * LoanMonitor constructor.
      *
      * @param EntityManagerInterface $em
      */
@@ -43,38 +43,38 @@ class DebtMonitor
      *
      * @return PersonObligation[]
      */
-    public function getDebtList(UserInterface $user): array
+    public function getLoanList(UserInterface $user): array
     {
-        $debtList = [];
+        $loanList = [];
 
-        $persons    = $this->personRepo->findByUser($user);
-        $debts      = $this->operationRepo->getPersonObligations($persons, OperationTypeEnum::TYPE_DEBT);
-        $repayments = $this->operationRepo->getPersonObligations($persons, OperationTypeEnum::TYPE_REPAYMENT);
+        $persons         = $this->personRepo->findByUser($user);
+        $loans           = $this->operationRepo->getPersonObligations($persons, OperationTypeEnum::TYPE_LOAN);
+        $debtCollections = $this->operationRepo->getPersonObligations($persons, OperationTypeEnum::TYPE_DEBT_COLLECTION);
 
         foreach ($persons as $person) {
-            $personDebt = new PersonObligation($person, 0);
+            $personLoan = new PersonObligation($person, 0);
 
-            // Consider debts
-            foreach ($debts as $debt) {
-                if ($debt->getPerson() !== $person) {
+            // Consider loans
+            foreach ($loans as $loan) {
+                if ($loan->getPerson() !== $person) {
                     continue;
                 }
-                $personDebt = new PersonObligation($person, $personDebt->getValue() + $debt->getValue());
+                $personLoan = new PersonObligation($person, $personLoan->getValue() + $loan->getValue());
             }
 
-            // Consider repayments
-            foreach ($repayments as $repayment) {
-                if ($repayment->getPerson() !== $person) {
+            // Consider debt collections
+            foreach ($debtCollections as $debtCollection) {
+                if ($debtCollection->getPerson() !== $person) {
                     continue;
                 }
-                $personDebt = new PersonObligation($person, $personDebt->getValue() - $repayment->getValue());
+                $personLoan =  new PersonObligation($person, $personLoan->getValue() - $debtCollection->getValue());
             }
 
-            if ($personDebt->getValue()) {
-                $debtList[] = $personDebt;
+            if ($personLoan->getValue()) {
+                $loanList[] = $personLoan;
             }
         }
 
-        return $debtList;
+        return $loanList;
     }
 }

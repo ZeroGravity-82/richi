@@ -10,7 +10,7 @@ use App\Entity\Person;
 use App\Enum\OperationTypeEnum;
 use App\ValueObject\AccountCashFlowSum;
 use App\ValueObject\FundCashFlowSum;
-use App\ValueObject\PersonObligationSum;
+use App\ValueObject\PersonObligation;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -195,14 +195,15 @@ SQL;
     }
 
     /**
-     * Calculates the sum of all the person obligations for the provided persons and the given operation type.
+     * Calculates the sum of all the person obligations for the provided persons and the given operation type (debt or
+     * loan).
      *
      * @param Person[] $persons
      * @param integer  $type
      *
-     * @return PersonObligationSum[]
+     * @return PersonObligation[]
      */
-    public function getPersonObligationSums(array $persons, int $type): array
+    public function getPersonObligations(array $persons, int $type): array
     {
         $groupedDebts = [];
 
@@ -222,7 +223,7 @@ SQL;
             $personId       = $personObligation['person_id'];
             $sum            = $personObligation['sum'];
             $person         = $persons[$personId];
-            $groupedDebts[] = new PersonObligationSum($person, $sum);
+            $groupedDebts[] = new PersonObligation($person, $sum);
         }
 
         return $groupedDebts;

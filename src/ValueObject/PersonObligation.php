@@ -5,10 +5,10 @@ namespace App\ValueObject;
 use App\Entity\Person;
 
 /**
- * Class PersonObligationSum
+ * Class PersonObligation
  * @package App\ValueObject
  */
-class PersonObligationSum
+class PersonObligation
 {
     /** @var Person */
     private $person;
@@ -17,7 +17,7 @@ class PersonObligationSum
     private $value;
 
     /**
-     * PersonObligationSum constructor.
+     * PersonObligation constructor.
      *
      * @param Person  $person
      * @param integer $value
