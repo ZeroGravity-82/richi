@@ -7,10 +7,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @method Fund|null find($id, $lockMode = null, $lockVersion = null)
- * @method Fund|null findOneBy(array $criteria, array $orderBy = null)
- * @method Fund[]    findAll()
- * @method Fund[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * Class FundRepository
+ * @package App\Repository
  */
 class FundRepository extends BaseRepository
 {
