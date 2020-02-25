@@ -11,7 +11,6 @@ use App\Enum\OperationTypeEnum;
 use App\ValueObject\AccountCashFlowSum;
 use App\ValueObject\FundCashFlowSum;
 use App\ValueObject\PersonObligationSum;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -22,7 +21,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @method Operation[]    findAll()
  * @method Operation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class OperationRepository extends ServiceEntityRepository
+class OperationRepository extends BaseRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

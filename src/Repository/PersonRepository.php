@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Person;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -13,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @method Person[]    findAll()
  * @method Person[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PersonRepository extends ServiceEntityRepository
+class PersonRepository extends BaseRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

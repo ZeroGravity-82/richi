@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Account;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -13,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @method Account[]    findAll()
  * @method Account[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class AccountRepository extends ServiceEntityRepository
+class AccountRepository extends BaseRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -57,23 +56,5 @@ class AccountRepository extends ServiceEntityRepository
             ->getResult();
 
         return $this->addIndexes($result);
-    }
-
-    /**
-     * Returns an array of accounts with account ID as an index.
-     *
-     * @param Account[] $accounts
-     *
-     * @return Account[]
-     */
-    private function addIndexes(array $accounts): array
-    {
-        $indexedAccounts = [];
-
-        foreach ($accounts as $account) {
-            $indexedAccounts[$account->getId()] = $account;
-        }
-
-        return $indexedAccounts;
     }
 }

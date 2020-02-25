@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Fund;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -13,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @method Fund[]    findAll()
  * @method Fund[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class FundRepository extends ServiceEntityRepository
+class FundRepository extends BaseRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -37,24 +36,5 @@ class FundRepository extends ServiceEntityRepository
             ->getResult();
 
         return $this->addIndexes($result);
-    }
-
-
-    /**
-     * Returns an array of funds with fund ID as an index.
-     *
-     * @param Fund[] $funds
-     *
-     * @return Fund[]
-     */
-    private function addIndexes(array $funds): array
-    {
-        $indexedFunds = [];
-
-        foreach ($funds as $fund) {
-            $indexedFunds[$fund->getId()] = $fund;
-        }
-
-        return $indexedFunds;
     }
 }
