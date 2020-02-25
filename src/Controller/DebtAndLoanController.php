@@ -8,18 +8,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class DeptAndLoanController
+ * Class DebtAndLoanController
  * @package App\Controller
  *
  * @Route('/debt-and-loan')
  */
-class DeptAndLoanController extends AbstractController
+class DebtAndLoanController extends AbstractController
 {
     /** @var DebtMonitor */
     private $debtMonitor;
 
     /**
-     * DeptAndLoanController constructor.
+     * DebtAndLoanController constructor.
      *
      * @param DebtMonitor $debtMonitor
      */
