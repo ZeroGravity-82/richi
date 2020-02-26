@@ -10,8 +10,8 @@ use App\Enum\OperationTypeEnum;
 use App\Repository\AccountRepository;
 use App\Repository\FundRepository;
 use App\Repository\OperationRepository;
-use App\ValueObject\AccountBalance;
-use App\ValueObject\FundBalance;
+use App\ValueObject\AccountCash;
+use App\ValueObject\FundCash;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -51,7 +51,7 @@ class BalanceMonitor
      *
      * @param UserInterface $user
      *
-     * @return AccountBalance[]
+     * @return AccountCash[]
      */
     public function getAccountBalances(UserInterface $user): array
     {
@@ -63,7 +63,7 @@ class BalanceMonitor
 
         foreach ($accounts as $account) {
             // Consider initial balance
-            $accountBalance = new AccountBalance($account, $account->getInitialBalance());
+            $accountBalance = new AccountCash($account, $account->getInitialBalance());
 
             // Consider inflows
             foreach ($inflowSums as $inflowSum) {
@@ -71,7 +71,7 @@ class BalanceMonitor
                     continue;
                 }
                 $inflowSumValue = $inflowSum->getValue();
-                $accountBalance = new AccountBalance($account, $accountBalance->getValue() + $inflowSumValue);
+                $accountBalance = new AccountCash($account, $accountBalance->getValue() + $inflowSumValue);
             }
 
             // Consider outflows
@@ -80,7 +80,7 @@ class BalanceMonitor
                     continue;
                 }
                 $outflowSumValue = $outflowSum->getValue();
-                $accountBalance  = new AccountBalance($account, $accountBalance->getValue() - $outflowSumValue);
+                $accountBalance  = new AccountCash($account, $accountBalance->getValue() - $outflowSumValue);
             }
 
             $accountBalances[] = $accountBalance;
@@ -90,7 +90,7 @@ class BalanceMonitor
     }
 
     /**
-     * @param AccountBalance[] $accountBalances
+     * @param AccountCash[] $accountBalances
      *
      * @return integer
      */
@@ -110,7 +110,7 @@ class BalanceMonitor
      *
      * @param UserInterface $user
      *
-     * @return FundBalance[]
+     * @return FundCash[]
      */
     public function getFundBalances(UserInterface $user): array
     {
@@ -122,7 +122,7 @@ class BalanceMonitor
 
         foreach ($funds as $fund) {
             // Consider initial balance
-            $fundBalance = new FundBalance($fund, $fund->getInitialBalance());
+            $fundBalance = new FundCash($fund, $fund->getInitialBalance());
 
             // Consider incomes
             foreach ($incomeSums as $incomeSum) {
@@ -130,7 +130,7 @@ class BalanceMonitor
                     continue;
                 }
                 $incomeSumValue = $incomeSum->getValue();
-                $fundBalance    = new FundBalance($fund, $fundBalance->getValue() + $incomeSumValue);
+                $fundBalance    = new FundCash($fund, $fundBalance->getValue() + $incomeSumValue);
             }
 
             // Consider expenses
@@ -139,7 +139,7 @@ class BalanceMonitor
                     continue;
                 }
                 $expenseSumValue = $expenseSum->getValue();
-                $fundBalance     = new FundBalance($fund, $fundBalance->getValue() - $expenseSumValue);
+                $fundBalance     = new FundCash($fund, $fundBalance->getValue() - $expenseSumValue);
             }
 
             $fundBalances[] = $fundBalance;
@@ -149,7 +149,7 @@ class BalanceMonitor
     }
 
     /**
-     * @param FundBalance[] $fundBalances
+     * @param FundCash[] $fundBalances
      *
      * @return integer
      */

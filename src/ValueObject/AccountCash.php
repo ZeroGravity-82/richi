@@ -5,10 +5,10 @@ namespace App\ValueObject;
 use App\Entity\Account;
 
 /**
- * Class AccountCashFlowSum
+ * Class AccountCash
  * @package App\ValueObject
  */
-class AccountCashFlowSum
+class AccountCash
 {
     /** @var Account */
     private $account;
@@ -17,7 +17,7 @@ class AccountCashFlowSum
     private $value;
 
     /**
-     * AccountCashFlowSum constructor.
+     * AccountCash constructor.
      *
      * @param Account $account
      * @param integer $value

@@ -8,8 +8,8 @@ use App\Entity\Identifiable;
 use App\Entity\Operation;
 use App\Entity\Person;
 use App\Enum\OperationTypeEnum;
-use App\ValueObject\AccountCashFlowSum;
-use App\ValueObject\FundCashFlowSum;
+use App\ValueObject\AccountCash;
+use App\ValueObject\FundCash;
 use App\ValueObject\PersonObligation;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Connection;
@@ -50,7 +50,7 @@ class OperationRepository extends BaseRepository
      *
      * @param Account[] $accounts
      *
-     * @return AccountCashFlowSum[]
+     * @return AccountCash[]
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -74,7 +74,7 @@ SQL;
             $accountId        = $accountInflow['account_id'];
             $sum              = $accountInflow['sum'];
             $account          = $accounts[$accountId];
-            $groupedInflows[] = new AccountCashFlowSum($account, $sum);
+            $groupedInflows[] = new AccountCash($account, $sum);
         }
 
         return $groupedInflows;
@@ -85,7 +85,7 @@ SQL;
      *
      * @param Account[] $accounts
      *
-     * @return AccountCashFlowSum[]
+     * @return AccountCash[]
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -109,7 +109,7 @@ SQL;
             $accountId         = $accountOutflow['account_id'];
             $sum               = $accountOutflow['sum'];
             $account           = $accounts[$accountId];
-            $groupedOutflows[] = new AccountCashFlowSum($account, $sum);
+            $groupedOutflows[] = new AccountCash($account, $sum);
         }
 
         return $groupedOutflows;
@@ -121,7 +121,7 @@ SQL;
      * @param Fund[]  $funds
      * @param integer $type
      *
-     * @return FundCashFlowSum[]
+     * @return FundCash[]
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -148,7 +148,7 @@ SQL;
             $fundId           = $fundCashFlow['fund_id'];
             $sum              = $fundCashFlow['sum'];
             $fund             = $funds[$fundId];
-            $groupedInflows[] = new FundCashFlowSum($fund, $sum);
+            $groupedInflows[] = new FundCash($fund, $sum);
         }
 
         return $groupedInflows;
