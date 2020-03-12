@@ -163,7 +163,7 @@ SQL;
      */
     public function getUserExpenseSum(UserInterface $user): int
     {
-        return $this->createQueryBuilder('o')
+        $result = $this->createQueryBuilder('o')
             ->select('SUM(o.amount)')
             ->andWhere('o.user = :user')
             ->andWhere('o.type = :type')
@@ -172,6 +172,8 @@ SQL;
             ->setParameter('type', OperationTypeEnum::TYPE_EXPENSE)
             ->getQuery()
             ->getSingleScalarResult();
+
+        return $result ?? 0;
     }
 
     /**
@@ -183,7 +185,7 @@ SQL;
      */
     public function getUserIncomeSum(UserInterface $user): int
     {
-        return $this->createQueryBuilder('o')
+        $result = $this->createQueryBuilder('o')
             ->select('SUM(o.amount)')
             ->andWhere('o.user = :user')
             ->andWhere('o.type = :type')
@@ -192,6 +194,8 @@ SQL;
             ->setParameter('type', OperationTypeEnum::TYPE_INCOME)
             ->getQuery()
             ->getSingleScalarResult();
+
+        return $result ?? 0;
     }
 
     /**
