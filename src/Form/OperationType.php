@@ -72,7 +72,9 @@ class OperationType extends AbstractType
         $fundRepo     = $this->em->getRepository(Fund::class);
 
         $builder
-            ->add('date', DateType::class)
+            ->add('date', DateType::class, [
+                'widget'       => 'single_text',
+            ])
             ->add('source', EntityType::class, [
                 'class'        => Account::class,
                 'choices'      => $accountRepo->findNotArchived($user),
