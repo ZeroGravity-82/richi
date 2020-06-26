@@ -168,8 +168,10 @@ SQL;
             ->andWhere('o.user = :user')
             ->andWhere('o.type = :type')
             ->andWhere('o.fund IS NULL')
+            ->andWhere('o.date >= :startDate')
             ->setParameter('user', $user)
             ->setParameter('type', OperationTypeEnum::TYPE_EXPENSE)
+            ->setParameter('startDate', new \DateTime('-30 days'))
             ->getQuery()
             ->getSingleScalarResult();
 
@@ -190,8 +192,10 @@ SQL;
             ->andWhere('o.user = :user')
             ->andWhere('o.type = :type')
             ->andWhere('o.fund IS NULL')
+            ->andWhere('o.date >= :startDate')
             ->setParameter('user', $user)
             ->setParameter('type', OperationTypeEnum::TYPE_INCOME)
+            ->setParameter('startDate', new \DateTime('-30 days'))
             ->getQuery()
             ->getSingleScalarResult();
 

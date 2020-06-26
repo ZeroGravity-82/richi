@@ -13,6 +13,7 @@
 {% block body %}
     {{ include('operation/_index_navbar.html.twig') }}
     <p style="float: left">
+        <strong>Last 30 days statistic</strong><br>
         Expenses: {{ expenseSum|currency }}<br>
         Incomes: {{ incomeSum|currency }}
     </p>
