@@ -12,11 +12,52 @@
 
 {% block body %}
     {{ include('operation/_index_navbar.html.twig') }}
-    <p style="float: left">
-        <strong>Last 30 days statistic</strong><br>
-        Expenses: {{ expenseSum|currency }}<br>
-        Incomes: {{ incomeSum|currency }}
-    </p>
+    <div style="position: absolute; top: 35px; left: 100px">
+        <div>
+            <strong>Accounts:</strong>
+            <table>
+                <tbody>
+                {% for accountBalance in accountBalances %}
+                    {% if not accountBalance.account.archived %}
+                        <tr>
+                            <td>
+                                {{ accountBalance.account.name }}
+                            </td>
+                            <td style="text-align: right; {% if archived %} text-decoration-line: line-through {% endif %}">
+                                {{ accountBalance.value|currency }}
+                            </td>
+                            <td></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                <tr>
+                    <td style="text-align: right">
+                        <strong>Total:</strong>
+                    </td>
+                    <td style="text-align: right">
+                        <strong> {{ (total-fundBalance)|currency }} </strong>
+                    </td>
+                    <td></td>
+                </tr>
+                {% if fundBalances is not empty %}
+                    <tr>
+                        <td></td>
+                        <td style="text-align: right">
+                            {% if fundBalance >= 0 %}<span>+</span>{% endif %}
+                            {{- fundBalance|currency -}}
+                        </td>
+                        <td> in funds</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+        <div style="padding-top: 20px">
+            <strong>Last 30 days statistic</strong><br>
+            Expenses: {{ expenseSum|currency }}<br>
+            Incomes: {{ incomeSum|currency }}
+        </div>
+    </div>
     <div>
         {% for operationDate, operationGroup in groupedOperations %}
             <div class="date-header">

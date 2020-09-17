@@ -6,6 +6,7 @@ use App\Entity\Operation;
 use App\Enum\OperationTypeEnum;
 use App\Form\OperationType;
 use App\Repository\OperationRepository;
+use App\Service\BalanceMonitor;
 use App\Service\OperationList;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,17 +24,22 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class OperationController extends AbstractController
 {
+    /** @var BalanceMonitor */
+    private $balanceMonitor;
+
     /** @var OperationList */
     private $operationList;
 
     /**
      * OperationController constructor.
      *
-     * @param OperationList $operationList
+     * @param BalanceMonitor $balanceMonitor
+     * @param OperationList  $operationList
      */
-    public function __construct(OperationList $operationList)
+    public function __construct(BalanceMonitor $balanceMonitor, OperationList $operationList)
     {
-        $this->operationList = $operationList;
+        $this->balanceMonitor = $balanceMonitor;
+        $this->operationList  = $operationList;
     }
 
     /**
@@ -45,15 +51,24 @@ class OperationController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
+        $user            = $this->getUser();
+        $accountBalances = $this->balanceMonitor->getAccountBalances($user);
+        $total           = $this->balanceMonitor->calculateTotal($accountBalances);
+        $fundBalances    = $this->balanceMonitor->getFundBalances($user);
+        $fundBalance     = $this->balanceMonitor->calculateFundBalance($fundBalances);
+
         $user              = $this->getUser();
         $groupedOperations = $this->operationList->getGroupedByDays($user);
-
         /** @var OperationRepository $operationRepo */
         $operationRepo = $this->getDoctrine()->getRepository(Operation::class);
         $expenseSum    = $operationRepo->getUserExpenseSum($user);
         $incomeSum     = $operationRepo->getUserIncomeSum($user);
 
         return $this->render('operation/index.html.twig', [
+            'accountBalances'   => $accountBalances,
+            'total'             => $total,
+            'fundBalances'      => $fundBalances,
+            'fundBalance'       => $fundBalance,
             'groupedOperations' => $groupedOperations,
             'expenseSum'        => $expenseSum,
             'incomeSum'         => $incomeSum,
