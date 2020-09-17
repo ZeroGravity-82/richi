@@ -23,7 +23,7 @@
                 <td {% if archived %} style="text-decoration-line: line-through" {% endif %}>
                     {{ accountBalance.account.name }}
                 </td>
-                <td style="text-align: right; {% if archived %} text-decoration-line: line-through {% endif %}">
+                <td style="text-align: right; color: gray; {% if archived %} text-decoration-line: line-through {% endif %}">
                     {{ accountBalance.account.initialBalance|currency }}
                 </td>
                 <td style="text-align: right; {% if archived %} text-decoration-line: line-through {% endif %}">

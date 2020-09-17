@@ -24,7 +24,7 @@
                 <td>{{ fundBalance.fund.name }}</td>
                 <td>{{ fundBalance.fund.description }}</td>
                 <td>{{ fundBalance.fund.person }}</td>
-                <td style="text-align: right">{{ fundBalance.fund.initialBalance|currency }}</td>
+                <td style="color: gray; text-align: right">{{ fundBalance.fund.initialBalance|currency }}</td>
                 <td style="text-align: right">{{ fundBalance.value|currency }}</td>
                 <td>
                     <a href="{{ path('fund_edit', {'id': fundBalance.fund.id}) }}">Edit</a>
