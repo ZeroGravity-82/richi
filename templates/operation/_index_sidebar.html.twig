@@ -1,0 +1,56 @@
+<div style="position: absolute; top: 30px; left: 100px">
+    <div>
+        <p style="padding: 0; margin: 0"><strong>Accounts:</strong></p>
+        <table>
+            <tbody>
+            {% for accountBalance in accountBalances %}
+                {% if not accountBalance.account.archived %}
+                    <tr>
+                        <td style="width: 100px">
+                            {{ accountBalance.account.name }}
+                        </td>
+                        <td style="width: 70px; text-align: right">
+                            {{ accountBalance.value|currency }}
+                        </td>
+                        <td></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            <tr>
+                <td style="text-align: right">
+                    <strong>Total:</strong>
+                </td>
+                <td style="text-align: right">
+                    <strong> {{ (total-fundBalance)|currency }} </strong>
+                </td>
+                <td></td>
+            </tr>
+            {% if fundBalances is not empty %}
+                <tr>
+                    <td></td>
+                    <td style="text-align: right">
+                        {% if fundBalance >= 0 %}<span>+</span>{% endif %}
+                        {{- fundBalance|currency -}}
+                    </td>
+                    <td> in funds</td>
+                </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <p style="padding: 0; margin: 10px 0 0 0"><strong>Statistic (last 30 days)</strong></p>
+        <table>
+            <tbody>
+            <tr>
+                <td style="width: 100px">Expenses</td>
+                <td style="width: 70px; text-align: right">{{ expenseSum|currency }}</td>
+            </tr>
+            <tr>
+                <td>Incomes</td>
+                <td style="text-align: right">{{ incomeSum|currency }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
