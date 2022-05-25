@@ -1,11 +1,12 @@
 DOCKER_COMPOSE = docker-compose
-CLI            = $(DOCKER_COMPOSE) run --rm richi-php-cli
-SYMFONY        = $(CLI) symfony
+PHP_CLI        = $(DOCKER_COMPOSE) run --rm richi-php-cli
+SYMFONY        = $(PHP_CLI) symfony
+NODE_CLI       = $(DOCKER_COMPOSE) run --rm richi-node
 
 getargs    = $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
 escapeagrs = $(subst :,\:,$(1))
 
-.PHONY: dummy migrations tests phpunit cli symfony
+.PHONY: dummy migrations tests
 
 ##
 ## Project maintenance ("make init", "make composer-install", "make db-init" or "make docker-up")
@@ -25,9 +26,9 @@ docker-pull:
 docker-build:
 	$(DOCKER_COMPOSE) build
 composer-install:
-	$(CLI) composer install
+	$(PHP_CLI) composer install
 composer-update:
-	$(CLI) composer update
+	$(PHP_CLI) composer update
 migrations:
 	$(SYMFONY) console doctrine:migrations:migrate --no-interaction
 fixtures:
@@ -47,18 +48,18 @@ ifeq (phpunit,$(firstword $(MAKECMDGOALS)))
     $(eval $(PHPUNIT_ARGS_ESCAPED):dummy;@:)
 endif
 phpunit:
-	$(CLI) ./bin/phpunit $(PHPUNIT_ARGS) $(-*-command-variables-*-)
+	$(PHP_CLI) ./bin/phpunit $(PHPUNIT_ARGS) $(-*-command-variables-*-)
 
 ##
-## Run CLI command ("make -- cli ls -la /app")
+## Run PHP CLI command ("make -- php-cli ls -la /app")
 ## -----------------------------------------------
-ifeq (cli,$(firstword $(MAKECMDGOALS)))
-    CLI_ARGS         := $(call getargs)
-    CLI_ARGS_ESCAPED := $(call escapeagrs, $(CLI_ARGS))
-    $(eval $(CLI_ARGS_ESCAPED):dummy;@:)
+ifeq (php-cli,$(firstword $(MAKECMDGOALS)))
+    PHP_CLI_ARGS         := $(call getargs)
+    PHP_CLI_ARGS_ESCAPED := $(call escapeagrs, $(PHP_CLI_ARGS))
+    $(eval $(PHP_CLI_ARGS_ESCAPED):dummy;@:)
 endif
-cli:
-	$(CLI) $(CLI_ARGS) $(-*-command-variables-*-)
+php-cli:
+	$(PHP_CLI) $(PHP_CLI_ARGS) $(-*-command-variables-*-)
 
 ##
 ## Run Symfony CLI ("make sf security:check" or "make -- sf console doctrine:migrations:migrate --em=mysql_main2")
@@ -70,3 +71,14 @@ ifeq (sf,$(firstword $(MAKECMDGOALS)))
 endif
 sf:
 	$(SYMFONY) $(SYMFONY_ARGS) $(-*-command-variables-*-)
+
+##
+## Run Node CLI command ("make -- node-cli yarn install")
+## -----------------------------------------------
+ifeq (node-cli,$(firstword $(MAKECMDGOALS)))
+    NODE_CLI_ARGS         := $(call getargs)
+    NODE_CLI_ARGS_ESCAPED := $(call escapeagrs, $(NODE_CLI_ARGS))
+    $(eval $(NODE_CLI_ARGS_ESCAPED):dummy;@:)
+endif
+node-cli:
+	$(NODE_CLI) $(NODE_CLI_ARGS) $(-*-command-variables-*-)
