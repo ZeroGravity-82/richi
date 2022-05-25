@@ -32,6 +32,12 @@ services:
       PHP_IDE_CONFIG: 'serverName=Docker'
     extra_hosts:
       - 'host.docker.internal:host-gateway'
+  richi-node:
+    build:
+      context: ./docker
+      dockerfile: node.docker
+    volumes:
+      - .:/app
   richi-mysql:
     image: mysql:5.7
     volumes:

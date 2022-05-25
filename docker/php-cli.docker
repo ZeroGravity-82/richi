@@ -9,9 +9,6 @@ RUN apt-get update && apt-get install -y unzip \
 RUN echo 'deb [trusted=yes] https://repo.symfony.com/apt/ /' | tee /etc/apt/sources.list.d/symfony-cli.list \
     && apt-get update && apt-get install -y symfony-cli
 
-# Install NPM and Yarn
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-
 # Clean the APT cache
 RUN apt-get clean
 
