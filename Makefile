@@ -73,7 +73,7 @@ sf:
 	$(SYMFONY) $(SYMFONY_ARGS) $(-*-command-variables-*-)
 
 ##
-## Run Node CLI command ("make -- node-cli yarn install")
+## Run Node CLI command ("make -- node-cli yarn build --production")
 ## -----------------------------------------------
 ifeq (node-cli,$(firstword $(MAKECMDGOALS)))
     NODE_CLI_ARGS         := $(call getargs)
