@@ -10,6 +10,7 @@ services:
       - '8080:80'
     depends_on:
       - richi-php-fpm
+    restart: always
   richi-php-fpm:
     build:
       context: ./docker
@@ -18,6 +19,7 @@ services:
       - .:/app
     environment:
       APP_DEBUG: 1
+    restart: always
   richi-php-cli:
     build:
       context: ./docker
