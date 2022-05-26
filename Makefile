@@ -1,4 +1,4 @@
-DOCKER_COMPOSE = docker-compose
+DOCKER_COMPOSE = docker compose
 PHP_CLI        = $(DOCKER_COMPOSE) run --rm richi-php-cli
 SYMFONY        = $(PHP_CLI) symfony
 NODE_CLI       = $(DOCKER_COMPOSE) run --rm richi-node
