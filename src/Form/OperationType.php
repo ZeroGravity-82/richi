@@ -121,7 +121,8 @@ class OperationType extends AbstractType
                 'required'     => false,
             ])
             ->add('description', TextareaType::class, [
-                'attr' => [
+                'required' => false,
+                'attr'     => [
                     'rows' => 2,
                     'cols' => 50,
                 ],
