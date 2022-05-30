@@ -64,6 +64,11 @@ class FundType extends AbstractType
             ->add('icon')
             ->add('initialBalance', NumberType::class, [
                 'scale' => 2,
+                'html5' => true,
+                'attr' => [
+                    'min'  => 0.01,
+                    'step' => 0.01,
+                ],
             ])
         ;
 
