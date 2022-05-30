@@ -19,6 +19,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
@@ -119,7 +120,12 @@ class OperationType extends AbstractType
                 'placeholder'  => '---',
                 'required'     => false,
             ])
-            ->add('description')
+            ->add('description', TextareaType::class, [
+                'attr' => [
+                    'rows' => 2,
+                    'cols' => 50,
+                ],
+            ])
         ;
 
         $builder->get('amount')
