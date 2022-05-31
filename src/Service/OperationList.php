@@ -44,8 +44,14 @@ class OperationList
 
         $allOperations = $this->operationRepo->findByUser($user, 'DESC');
         foreach ($allOperations as $operation) {
-            $operationDate                       = $operation->getDate()->getTimestamp();
-            $groupedOperations[$operationDate][] = $operation;
+            $operationDate                                = $operation->getDate();
+
+            // TODO replace with pagination
+            if ($operationDate < (new \DateTime('now'))->modify('-3 months')) {
+                break;
+            }
+            $operationDateTimestamp                       = $operationDate->getTimestamp();
+            $groupedOperations[$operationDateTimestamp][] = $operation;
         }
 
         return $groupedOperations;
