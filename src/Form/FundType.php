@@ -66,7 +66,7 @@ class FundType extends AbstractType
                 'scale' => 2,
                 'html5' => true,
                 'attr' => [
-                    'min'  => 0.01,
+                    'min'  => 0,
                     'step' => 0.01,
                 ],
             ])
