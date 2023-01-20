@@ -19,6 +19,8 @@ services:
       - .:/app
     environment:
       APP_DEBUG: 1
+    depends_on:
+      - richi-mysql
     restart: always
   richi-php-cli:
     build:
