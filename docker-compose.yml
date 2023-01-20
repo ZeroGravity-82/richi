@@ -7,7 +7,7 @@ services:
     volumes:
       - .:/app
     ports:
-      - '${PHP_FPM_HTTP_HOST_PORT}:80'
+      - '${NGINX_HOST_PORT}:80'
     depends_on:
       - richi-php-fpm
     restart: always
