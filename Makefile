@@ -41,7 +41,7 @@ tests: phpunit
 
 ##
 ## Run unit tests ("make -- phpunit --filter testOne UnitTest.php" or "make -- phpunit --exclude-group database")
-## ----------------------------------------------------------------
+## --------------------------------------------------------------------------------------------------------------
 ifeq (phpunit,$(firstword $(MAKECMDGOALS)))
     PHPUNIT_ARGS         := $(call getargs)
     PHPUNIT_ARGS_ESCAPED := $(call escapeagrs, $(PHPUNIT_ARGS))
@@ -52,7 +52,7 @@ phpunit:
 
 ##
 ## Run PHP CLI command ("make -- php-cli ls -la /app")
-## -----------------------------------------------
+## ---------------------------------------------------
 ifeq (php-cli,$(firstword $(MAKECMDGOALS)))
     PHP_CLI_ARGS         := $(call getargs)
     PHP_CLI_ARGS_ESCAPED := $(call escapeagrs, $(PHP_CLI_ARGS))
@@ -62,8 +62,8 @@ php-cli:
 	$(PHP_CLI) $(PHP_CLI_ARGS) $(-*-command-variables-*-)
 
 ##
-## Run Symfony CLI ("make sf security:check" or "make -- sf console doctrine:migrations:migrate --em=mysql_main2")
-## -----------------------------------------------
+## Run Symfony CLI ("make sf security:check" or "make -- sf console cache:clear --env=dev")
+## ----------------------------------------------------------------------------------------
 ifeq (sf,$(firstword $(MAKECMDGOALS)))
     SYMFONY_ARGS         := $(call getargs)
     SYMFONY_ARGS_ESCAPED := $(call escapeagrs, $(SYMFONY_ARGS))
@@ -73,12 +73,12 @@ sf:
 	$(SYMFONY) $(SYMFONY_ARGS) $(-*-command-variables-*-)
 
 ##
-## Run Node CLI command ("make -- node-cli yarn build --production")
-## -----------------------------------------------
-ifeq (node-cli,$(firstword $(MAKECMDGOALS)))
-    NODE_CLI_ARGS         := $(call getargs)
-    NODE_CLI_ARGS_ESCAPED := $(call escapeagrs, $(NODE_CLI_ARGS))
-    $(eval $(NODE_CLI_ARGS_ESCAPED):dummy;@:)
+## Run Node CLI command ("make nodejs-cli npm install" or "make -- nodejs-cli yarn build --production")
+## ----------------------------------------------------------------------------------------------------
+ifeq (nodejs-cli,$(firstword $(MAKECMDGOALS)))
+    NODEJS_CLI_ARGS         := $(call getargs)
+    NODEJS_CLI_ARGS_ESCAPED := $(call escapeagrs, $(NODEJS_CLI_ARGS))
+    $(eval $(NODEJS_CLI_ARGS_ESCAPED):dummy;@:)
 endif
 node-cli:
 	$(NODE_CLI) $(NODE_CLI_ARGS) $(-*-command-variables-*-)
