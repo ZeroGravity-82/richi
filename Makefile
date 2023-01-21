@@ -1,7 +1,7 @@
 DOCKER_COMPOSE = docker compose
 PHP_CLI        = $(DOCKER_COMPOSE) run --rm richi-php-cli
 SYMFONY        = $(PHP_CLI) symfony
-NODE_CLI       = $(DOCKER_COMPOSE) run --rm richi-node
+NODEJS_CLI     = $(DOCKER_COMPOSE) run --rm richi-nodejs-cli
 
 getargs    = $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
 escapeagrs = $(subst :,\:,$(1))
@@ -80,5 +80,5 @@ ifeq (nodejs-cli,$(firstword $(MAKECMDGOALS)))
     NODEJS_CLI_ARGS_ESCAPED := $(call escapeagrs, $(NODEJS_CLI_ARGS))
     $(eval $(NODEJS_CLI_ARGS_ESCAPED):dummy;@:)
 endif
-node-cli:
-	$(NODE_CLI) $(NODE_CLI_ARGS) $(-*-command-variables-*-)
+nodejs-cli:
+	$(NODEJS_CLI) $(NODEJS_CLI_ARGS) $(-*-command-variables-*-)

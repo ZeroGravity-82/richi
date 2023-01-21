@@ -36,7 +36,7 @@ services:
       PHP_IDE_CONFIG: 'serverName=Docker'
     extra_hosts:
       - 'host.docker.internal:host-gateway'
-  richi-node:
+  richi-nodejs-cli:
     build:
       context: ./docker
       dockerfile: node.docker
