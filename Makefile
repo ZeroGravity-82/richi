@@ -10,7 +10,7 @@ escapeagrs = $(subst :,\:,$(1))
 
 ##
 ## Project maintenance ("make init", "make composer-install", "make db-init" or "make docker-up")
-## -------------------------------------------------
+## ----------------------------------------------------------------------------------------------
 all:
 	@echo 'Please provide a command, for example, "make docker-up"'
 init: docker-down-clear docker-pull docker-build docker-up
