@@ -9,8 +9,8 @@ RUN apt-get update && apt-get install -y unzip \
 RUN echo 'deb [trusted=yes] https://repo.symfony.com/apt/ /' | tee /etc/apt/sources.list.d/symfony-cli.list \
     && apt-get update && apt-get install -y symfony-cli
 
-# Clean the APT cache
-RUN apt-get clean
+# Clear APT cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists
 
 # PHP configuration
 COPY ./php-cli/conf.d /usr/local/etc/php/conf.d
