@@ -13,7 +13,7 @@ escapeagrs = $(subst :,\:,$(1))
 ## ----------------------------------------------------------------------------------------------
 all:
 	@echo 'Please provide a command, for example, "make docker-up"'
-init: docker-down-clear docker-pull docker-build docker-up
+init: docker-down-clear docker-pull docker-build composer-install docker-up
 db-init: migrations fixtures
 docker-up:
 	$(DOCKER_COMPOSE) up -d
@@ -29,6 +29,10 @@ composer-install:
 	$(PHP_CLI) composer install
 composer-update:
 	$(PHP_CLI) composer update
+composer-dumpautoload:
+	$(PHP_CLI) composer dumpautoload -o
+npm-install:
+	$(NODEJS_CLI) npm install
 migrations:
 	$(SYMFONY) console doctrine:migrations:migrate --no-interaction
 fixtures:
