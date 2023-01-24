@@ -13,6 +13,6 @@ RUN echo 'deb [trusted=yes] https://repo.symfony.com/apt/ /' | tee /etc/apt/sour
 RUN apt-get clean && rm -rf /var/lib/apt/lists
 
 # PHP configuration
-COPY ./php-cli/conf.d /usr/local/etc/php/conf.d
+COPY conf.d /usr/local/etc/php/conf.d
 
 WORKDIR /app

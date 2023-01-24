@@ -2,8 +2,8 @@ version: '3'
 services:
   richi-nginx:
     build:
-      context: ./docker
-      dockerfile: nginx.docker
+      context: ./docker/nginx
+      dockerfile: Dockerfile
     volumes:
       - .:/app
     ports:
@@ -13,8 +13,8 @@ services:
     restart: always
   richi-php-fpm:
     build:
-      context: ./docker
-      dockerfile: php-fpm.docker
+      context: ./docker/php-fpm
+      dockerfile: Dockerfile
     volumes:
       - .:/app
     environment:
@@ -24,8 +24,8 @@ services:
     restart: always
   richi-php-cli:
     build:
-      context: ./docker
-      dockerfile: php-cli.docker
+      context: ./docker/php-cli
+      dockerfile: Dockerfile
     volumes:
       - .:/app
       - composer:/root/.composer/cache
@@ -40,8 +40,8 @@ services:
       - 'cli-tools'        # the profile is needed in order not to start this service with "docker compose up" command
   richi-nodejs-cli:
     build:
-      context: ./docker
-      dockerfile: node.docker
+      context: ./docker/nodejs-cli
+      dockerfile: Dockerfile
     volumes:
       - .:/app
       - npm:/root/.npm
