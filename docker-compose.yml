@@ -36,6 +36,8 @@ services:
       PHP_IDE_CONFIG: 'serverName=Docker'
     extra_hosts:
       - 'host.docker.internal:host-gateway'
+    profiles:
+      - 'cli-tools'        # the profile is needed in order not to start this service with "docker compose up" command
   richi-nodejs-cli:
     build:
       context: ./docker
@@ -43,6 +45,8 @@ services:
     volumes:
       - .:/app
       - npm:/root/.npm
+    profiles:
+      - 'cli-tools'        # the profile is needed in order not to start this service with "docker compose up" command
   richi-mysql:
     image: mysql:5.7
     volumes:

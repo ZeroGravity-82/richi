@@ -24,7 +24,7 @@ docker-down-clear:
 docker-pull:
 	$(DOCKER_COMPOSE) pull
 docker-build:
-	$(DOCKER_COMPOSE) build
+	$(DOCKER_COMPOSE) --profile cli-tools build	   # also build images for cli-tools profile services
 composer-install:
 	$(PHP_CLI) composer install
 composer-update:
