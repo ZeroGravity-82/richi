@@ -13,7 +13,7 @@ escapeagrs = $(subst :,\:,$(1))
 ## ----------------------------------------------------------------------------------------------
 all:
 	@echo 'Please provide a command, for example, "make docker-up"'
-init: docker-down-clear docker-pull docker-build composer-install docker-up
+init: docker-down-clear docker-pull docker-build composer-install yarn-install yarn-dev docker-up
 db-init: migrations fixtures
 docker-up:
 	$(DOCKER_COMPOSE) up -d
