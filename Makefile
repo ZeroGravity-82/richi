@@ -31,8 +31,12 @@ composer-update:
 	$(PHP_CLI) composer update
 composer-dumpautoload:
 	$(PHP_CLI) composer dumpautoload -o
-npm-install:
-	$(NODEJS_CLI) npm install
+yarn-install:
+	$(NODEJS_CLI) yarn install
+yarn-dev:
+	$(NODEJS_CLI) yarn dev
+yarn-build:
+	$(NODEJS_CLI) yarn build
 migrations:
 	$(SYMFONY) console doctrine:migrations:migrate --no-interaction
 fixtures:
