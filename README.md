@@ -10,8 +10,11 @@ This project requires the Docker Compose plugin to be installed: <https://docs.d
 
 Run the following console commands before starting local development:
 ```bash
-export HOST_USER_UID=$(id -u) && export HOST_USER_GID=$(id -g)
+export HOST_USER_UID=$(id -u) && export HOST_USER_GID=$(id -g);
 make init
+
+# wait for the MySQL server to initialize (it usually takes a few minutes), then do the following:
+make db-init
 ```
 **Tip**: To avoid manually creating the HOST_USER_UID and HOST_USER_GID variables each time, just add their creation to the ~/.bashrc file.
 
