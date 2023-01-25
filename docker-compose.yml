@@ -15,6 +15,9 @@ services:
     build:
       context: ./docker/php-fpm
       dockerfile: Dockerfile
+      args:
+        - HOST_USER_UID=${HOST_USER_UID}
+        - HOST_USER_GID=${HOST_USER_GID}
     volumes:
       - .:/app
     environment:
@@ -26,9 +29,12 @@ services:
     build:
       context: ./docker/php-cli
       dockerfile: Dockerfile
+      args:
+        - HOST_USER_UID=${HOST_USER_UID}
+        - HOST_USER_GID=${HOST_USER_GID}
     volumes:
       - .:/app
-      - composer:/root/.composer/cache
+      - composer:/tmp/composer-cache
     ports:
       - '${PHP_CLI_XDEBUG_HOST_PORT}:9003'
     environment:
@@ -42,9 +48,13 @@ services:
     build:
       context: ./docker/nodejs-cli
       dockerfile: Dockerfile
+      args:
+        - HOST_USER_UID=${HOST_USER_UID}
+        - HOST_USER_GID=${HOST_USER_GID}
     volumes:
       - .:/app
-      - npm:/root/.npm
+      - npm:/tmp/npm-cache
+      - yarn:/tmp/yarn-cache
     profiles:
       - 'cli-tools'        # the profile is needed in order not to start this service with "docker compose up" command
   richi-mysql:
@@ -64,3 +74,4 @@ volumes:
   composer:
   mysql:
   npm:
+  yarn:
