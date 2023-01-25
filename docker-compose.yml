@@ -39,7 +39,7 @@ services:
       - '${PHP_CLI_XDEBUG_HOST_PORT}:9003'
     environment:
       APP_DEBUG: 1
-      PHP_IDE_CONFIG: 'serverName=Docker'
+      PHP_IDE_CONFIG: 'serverName=richi.docker'
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     profiles:
