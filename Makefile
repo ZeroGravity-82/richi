@@ -6,7 +6,7 @@ NODEJS_CLI     = $(DOCKER_COMPOSE) run --rm richi-nodejs-cli
 getargs    = $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
 escapeagrs = $(subst :,\:,$(1))
 
-.PHONY: dummy migrations tests
+.PHONY: dummy
 
 ##
 ## Project maintenance ("make init", "make composer-install", "make db-init" or "make docker-up")
