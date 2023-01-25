@@ -14,7 +14,7 @@ escapeagrs = $(subst :,\:,$(1))
 all:
 	@echo 'Please provide a command, for example, "make docker-up"'
 init: docker-down-clear docker-pull docker-build composer-install yarn-install yarn-dev docker-up
-db-init: migrations fixtures
+db-init: migrations
 docker-up:
 	$(DOCKER_COMPOSE) up -d
 docker-down:
@@ -39,8 +39,6 @@ yarn-build:
 	$(NODEJS_CLI) yarn build
 migrations:
 	$(SYMFONY) console doctrine:migrations:migrate --no-interaction
-fixtures:
-	$(SYMFONY) console doctrine:fixtures:load --no-interaction
 
 ##
 ## Code quality tests ("make tests")
