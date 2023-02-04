@@ -3,7 +3,9 @@ FROM php:7.2-cli
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=1.10.26 --quiet
 RUN apt-get update && apt-get install -y unzip \
     # extension required for MySQL
-    && docker-php-ext-install pdo_mysql
+    && docker-php-ext-install pdo_mysql \
+    # extension required for XDebug
+    && pecl install xdebug-3.1.2 && rm -rf /tmp/pear && docker-php-ext-enable xdebug
 
 # Install Symfony CLI
 RUN echo 'deb [trusted=yes] https://repo.symfony.com/apt/ /' | tee /etc/apt/sources.list.d/symfony-cli.list \
