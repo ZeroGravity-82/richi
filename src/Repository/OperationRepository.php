@@ -52,14 +52,14 @@ class OperationRepository extends BaseRepository
      * Calculates the sum of all the inflows for the accounts provided.
      *
      * @param Account[] $accounts
-     * @param DateTimeInterface|null $to
+     * @param DateTimeInterface $to
      *
      * @return AccountCash[]
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getAccountInflowSums(array $accounts, ?DateTimeInterface $to): array
+    public function getAccountInflowSums(array $accounts, DateTimeInterface $to): array
     {
         $groupedInflows = [];
 
@@ -73,7 +73,7 @@ GROUP BY target_id
 SQL;
 
         $accountIds = $this->getIds($accounts);
-        $to = $this->stringifyDate($to ?? new DateTime());
+        $to = $this->stringifyDate($to);
         $stmt = $connection->executeQuery(
             $sql,
             [$accountIds, $to],
@@ -93,14 +93,14 @@ SQL;
      * Calculates the sum of all the outflows for the accounts provided.
      *
      * @param Account[] $accounts
-     * @param DateTimeInterface|null $to
+     * @param DateTimeInterface $to
      *
      * @return AccountCash[]
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getAccountOutflowSums(array $accounts, ?DateTimeInterface $to): array
+    public function getAccountOutflowSums(array $accounts, DateTimeInterface $to): array
     {
         $groupedOutflows = [];
 
@@ -114,7 +114,7 @@ GROUP BY source_id
 SQL;
 
         $accountIds = $this->getIds($accounts);
-        $to = $this->stringifyDate($to ?? new DateTime());
+        $to = $this->stringifyDate($to);
         $stmt = $connection->executeQuery(
             $sql,
             [$accountIds, $to],

@@ -12,6 +12,7 @@ use App\Repository\FundRepository;
 use App\Repository\OperationRepository;
 use App\ValueObject\AccountCash;
 use App\ValueObject\FundCash;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -58,8 +59,8 @@ class BalanceMonitor
         $accountBalances = [];
 
         $accounts    = $this->accountRepo->findByUser($user);
-        $inflowSums  = $this->operationRepo->getAccountInflowSums($accounts, null);
-        $outflowSums = $this->operationRepo->getAccountOutflowSums($accounts, null);
+        $inflowSums  = $this->operationRepo->getAccountInflowSums($accounts, new DateTime());
+        $outflowSums = $this->operationRepo->getAccountOutflowSums($accounts, new DateTime());
 
         foreach ($accounts as $account) {
             // Consider initial balance
