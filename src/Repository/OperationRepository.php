@@ -11,8 +11,11 @@ use App\Enum\OperationTypeEnum;
 use App\ValueObject\AccountCash;
 use App\ValueObject\FundCash;
 use App\ValueObject\PersonObligation;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Connection;
+use PDO;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -49,13 +52,14 @@ class OperationRepository extends BaseRepository
      * Calculates the sum of all the inflows for the accounts provided.
      *
      * @param Account[] $accounts
+     * @param DateTimeInterface|null $to
      *
      * @return AccountCash[]
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getAccountInflowSums(array $accounts): array
+    public function getAccountInflowSums(array $accounts, ?DateTimeInterface $to): array
     {
         $groupedInflows = [];
 
@@ -64,12 +68,17 @@ class OperationRepository extends BaseRepository
 SELECT target_id as account_id,
        SUM(amount) as sum
 FROM operation
-WHERE target_id IN (?)
+WHERE target_id IN (?) AND date <= ?
 GROUP BY target_id
 SQL;
 
         $accountIds = $this->getIds($accounts);
-        $stmt       = $connection->executeQuery($sql, [$accountIds], [Connection::PARAM_INT_ARRAY]);
+        $to = $this->stringifyDate($to ?? new DateTime());
+        $stmt = $connection->executeQuery(
+            $sql,
+            [$accountIds, $to],
+            [Connection::PARAM_INT_ARRAY, PDO::PARAM_STR]
+        );
         foreach ($stmt->fetchAll() as $accountInflow) {
             $accountId        = $accountInflow['account_id'];
             $sum              = $accountInflow['sum'];
@@ -84,13 +93,14 @@ SQL;
      * Calculates the sum of all the outflows for the accounts provided.
      *
      * @param Account[] $accounts
+     * @param DateTimeInterface|null $to
      *
      * @return AccountCash[]
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getAccountOutflowSums(array $accounts): array
+    public function getAccountOutflowSums(array $accounts, ?DateTimeInterface $to): array
     {
         $groupedOutflows = [];
 
@@ -99,12 +109,17 @@ SQL;
 SELECT source_id as account_id,
        SUM(amount) as sum
 FROM operation
-WHERE source_id IN (?)
+WHERE source_id IN (?) AND date <= ?
 GROUP BY source_id
 SQL;
 
         $accountIds = $this->getIds($accounts);
-        $stmt       = $connection->executeQuery($sql, [$accountIds], [Connection::PARAM_INT_ARRAY]);
+        $to = $this->stringifyDate($to ?? new DateTime());
+        $stmt = $connection->executeQuery(
+            $sql,
+            [$accountIds, $to],
+            [Connection::PARAM_INT_ARRAY, PDO::PARAM_STR]
+        );
         foreach ($stmt->fetchAll() as $accountOutflow) {
             $accountId         = $accountOutflow['account_id'];
             $sum               = $accountOutflow['sum'];
@@ -256,5 +271,17 @@ SQL;
         }
 
         return $ids;
+    }
+
+    /**
+     * Returns formatted date string.
+     *
+     * @param DateTimeInterface $date
+     *
+     * @return string
+     */
+    private function stringifyDate(DateTimeInterface $date): string
+    {
+        return $date->format('Y-m-d');
     }
 }

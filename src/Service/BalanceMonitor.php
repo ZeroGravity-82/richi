@@ -58,8 +58,8 @@ class BalanceMonitor
         $accountBalances = [];
 
         $accounts    = $this->accountRepo->findByUser($user);
-        $inflowSums  = $this->operationRepo->getAccountInflowSums($accounts);
-        $outflowSums = $this->operationRepo->getAccountOutflowSums($accounts);
+        $inflowSums  = $this->operationRepo->getAccountInflowSums($accounts, null);
+        $outflowSums = $this->operationRepo->getAccountOutflowSums($accounts, null);
 
         foreach ($accounts as $account) {
             // Consider initial balance
