@@ -135,6 +135,7 @@ SQL;
      *
      * @param Fund[]  $funds
      * @param integer $type
+     * @param DateTimeInterface $to
      *
      * @return FundCash[]
      *
@@ -143,7 +144,7 @@ SQL;
      *
      * @see OperationTypeEnum
      */
-    public function getFundCashFlowSums(array $funds, int $type): array
+    public function getFundCashFlowSums(array $funds, int $type, DateTimeInterface $to): array
     {
         $groupedInflows = [];
 
@@ -152,13 +153,17 @@ SQL;
 SELECT fund_id,
        SUM(amount) as sum
 FROM operation
-WHERE fund_id IN (?)
-      AND type = (?)
+WHERE fund_id IN (?) AND type = (?) AND date <= ?
 GROUP BY fund_id
 SQL;
 
         $fundIds = $this->getIds($funds);
-        $stmt    = $connection->executeQuery($sql, [$fundIds, $type], [Connection::PARAM_INT_ARRAY]);
+        $to = $this->stringifyDate($to);
+        $stmt = $connection->executeQuery(
+            $sql,
+            [$fundIds, $type, $to],
+            [Connection::PARAM_INT_ARRAY, PDO::PARAM_INT, PDO::PARAM_STR]
+        );
         foreach ($stmt->fetchAll() as $fundCashFlow) {
             $fundId           = $fundCashFlow['fund_id'];
             $sum              = $fundCashFlow['sum'];

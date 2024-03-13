@@ -118,8 +118,8 @@ class BalanceMonitor
         $fundBalances = [];
 
         $funds       = $this->fundRepo->findByUser($user);
-        $incomeSums  = $this->operationRepo->getFundCashFlowSums($funds, OperationTypeEnum::TYPE_INCOME);
-        $expenseSums = $this->operationRepo->getFundCashFlowSums($funds, OperationTypeEnum::TYPE_EXPENSE);
+        $incomeSums  = $this->operationRepo->getFundCashFlowSums($funds, OperationTypeEnum::TYPE_INCOME, new DateTime());
+        $expenseSums = $this->operationRepo->getFundCashFlowSums($funds, OperationTypeEnum::TYPE_EXPENSE, new DateTime());
 
         foreach ($funds as $fund) {
             // Consider initial balance
