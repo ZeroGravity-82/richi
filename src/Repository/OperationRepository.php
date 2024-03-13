@@ -11,7 +11,6 @@ use App\Enum\OperationTypeEnum;
 use App\ValueObject\AccountCash;
 use App\ValueObject\FundCash;
 use App\ValueObject\PersonObligation;
-use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Connection;
