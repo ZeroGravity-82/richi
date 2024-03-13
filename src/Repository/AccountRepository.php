@@ -12,6 +12,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class AccountRepository extends BaseRepository
 {
+    const CREDIT_CARD_ACCOUNT_ID = 10;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Account::class);
@@ -28,7 +30,9 @@ class AccountRepository extends BaseRepository
     {
         $result = $this->createQueryBuilder('a')
             ->andWhere('a.user = :user')
+            ->andWhere('a.id <> :creditCardId') // TODO костыль, чтобы не учитывать кредитку в общей сумме средств (Total)
             ->setParameter('user', $user)
+            ->setParameter('creditCardId', self::CREDIT_CARD_ACCOUNT_ID)
             ->addOrderBy('a.name', 'ASC')
             ->getQuery()
             ->getResult();
