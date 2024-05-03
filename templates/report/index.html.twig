@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reports{% endblock %}
+
+{% block body %}
+    <h1>Expenses:</h1>
+    <table>
+        <thead>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+{#        {% for tag in tags %}#}
+{#            <tr>#}
+{#                <td>{{ tag.name }}</td>#}
+{#                <td>{{ tag.description }}</td>#}
+{#                <td>#}
+{#                    <a href="{{ path('tag_edit', {'id': tag.id}) }}">Edit</a>#}
+{#                    <a href="#"#}
+{#                       class="js-tag-delete"#}
+{#                       data-name="{{ tag.name }}"#}
+{#                       data-url="{{ path('tag_delete', {'id': tag.id}) }}">Delete</a>#}
+{#                </td>#}
+{#            </tr>#}
+{#        {% endfor %}#}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {{ encore_entry_script_tags('report') }}
+{% endblock %}
