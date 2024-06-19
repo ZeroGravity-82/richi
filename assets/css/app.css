@@ -1,3 +1,6 @@
 body {
     background-color: lightgray;
 }
+h1.edit {
+    color: red;
+}
