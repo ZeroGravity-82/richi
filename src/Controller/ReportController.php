@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -12,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/report")
  */
-class ReportController extends AbstractController
+class ReportController extends BaseController
 {
     /**
      * @Route("/", name="report_index", methods="GET")

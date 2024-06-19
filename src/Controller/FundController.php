@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Fund;
 use App\Form\FundType;
 use App\Service\BalanceMonitor;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @Route("/fund")
  */
-class FundController extends AbstractController
+class FundController extends BaseController
 {
     /** @var BalanceMonitor */
     private $balanceMonitor;
@@ -36,12 +36,13 @@ class FundController extends AbstractController
     /**
      * @Route("/", name="fund_index")
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $user         = $this->getUser();
-        $fundBalances = $this->balanceMonitor->getFundBalances($user);
+        $user = $this->getUser();
+        $to = $this->getTo($request);
+        $fundBalances = $this->balanceMonitor->getFundBalances($user, $to);
         $fundBalance  = $this->balanceMonitor->calculateFundBalance($fundBalances);
 
         return $this->render('fund/index.html.twig', [

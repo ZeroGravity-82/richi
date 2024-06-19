@@ -12,7 +12,7 @@ use App\Repository\FundRepository;
 use App\Repository\OperationRepository;
 use App\ValueObject\AccountCash;
 use App\ValueObject\FundCash;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -51,16 +51,17 @@ class BalanceMonitor
      * Returns array of account balances.
      *
      * @param UserInterface $user
+     * @param DateTimeImmutable $to
      *
      * @return AccountCash[]
      */
-    public function getAccountBalances(UserInterface $user): array
+    public function getAccountBalances(UserInterface $user, DateTimeImmutable $to): array
     {
         $accountBalances = [];
 
         $accounts    = $this->accountRepo->findByUser($user);
-        $inflowSums  = $this->operationRepo->getAccountInflowSums($accounts, new DateTime());
-        $outflowSums = $this->operationRepo->getAccountOutflowSums($accounts, new DateTime());
+        $inflowSums  = $this->operationRepo->getAccountInflowSums($accounts, $to);
+        $outflowSums = $this->operationRepo->getAccountOutflowSums($accounts, $to);
 
         foreach ($accounts as $account) {
             // Consider initial balance
@@ -110,16 +111,17 @@ class BalanceMonitor
      * Returns array of fund balances.
      *
      * @param UserInterface $user
+     * @param DateTimeImmutable $to
      *
      * @return FundCash[]
      */
-    public function getFundBalances(UserInterface $user): array
+    public function getFundBalances(UserInterface $user, DateTimeImmutable $to): array
     {
         $fundBalances = [];
 
         $funds       = $this->fundRepo->findByUser($user);
-        $incomeSums  = $this->operationRepo->getFundCashFlowSums($funds, OperationTypeEnum::TYPE_INCOME, new DateTime());
-        $expenseSums = $this->operationRepo->getFundCashFlowSums($funds, OperationTypeEnum::TYPE_EXPENSE, new DateTime());
+        $incomeSums  = $this->operationRepo->getFundCashFlowSums($funds, OperationTypeEnum::TYPE_INCOME, $to);
+        $expenseSums = $this->operationRepo->getFundCashFlowSums($funds, OperationTypeEnum::TYPE_EXPENSE, $to);
 
         foreach ($funds as $fund) {
             // Consider initial balance

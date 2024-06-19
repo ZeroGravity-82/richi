@@ -8,7 +8,7 @@ use App\Form\OperationType;
 use App\Repository\OperationRepository;
 use App\Service\BalanceMonitor;
 use App\Service\OperationList;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @Route("/operation")
  */
-class OperationController extends AbstractController
+class OperationController extends BaseController
 {
     /** @var BalanceMonitor */
     private $balanceMonitor;
@@ -47,22 +47,23 @@ class OperationController extends AbstractController
      *
      * @return Response
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $user            = $this->getUser();
-        $accountBalances = $this->balanceMonitor->getAccountBalances($user);
+        $user = $this->getUser();
+        $to = $this->getTo($request);
+        $accountBalances = $this->balanceMonitor->getAccountBalances($user, $to);
         $total           = $this->balanceMonitor->calculateTotal($accountBalances);
-        $fundBalances    = $this->balanceMonitor->getFundBalances($user);
+        $fundBalances    = $this->balanceMonitor->getFundBalances($user, $to);
         $fundBalance     = $this->balanceMonitor->calculateFundBalance($fundBalances);
 
         $user              = $this->getUser();
-        $groupedOperations = $this->operationList->getGroupedByDays($user);
+        $groupedOperations = $this->operationList->getGroupedByDays($user, $to);
         /** @var OperationRepository $operationRepo */
         $operationRepo = $this->getDoctrine()->getRepository(Operation::class);
-        $expenseSum    = $operationRepo->getUserExpenseSum($user);
-        $incomeSum     = $operationRepo->getUserIncomeSum($user);
+        $expenseSum    = $operationRepo->getUserExpenseSum($user, $to);
+        $incomeSum     = $operationRepo->getUserIncomeSum($user, $to);
 
         return $this->render('operation/index.html.twig', [
             'accountBalances'   => $accountBalances,

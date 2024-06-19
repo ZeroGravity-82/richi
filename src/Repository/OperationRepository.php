@@ -11,7 +11,7 @@ use App\Enum\OperationTypeEnum;
 use App\ValueObject\AccountCash;
 use App\ValueObject\FundCash;
 use App\ValueObject\PersonObligation;
-use DateTimeInterface;
+use DateTimeImmutable;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Connection;
 use PDO;
@@ -32,15 +32,18 @@ class OperationRepository extends BaseRepository
      * Returns an operation list for the user.
      *
      * @param UserInterface $user
-     * @param string|null   $sortOrder
+     * @param DateTimeImmutable $to
+     * @param string|null $sortOrder
      *
      * @return Operation[]
      */
-    public function findByUser(UserInterface $user, string $sortOrder = 'ASC'): array
+    public function findByUser(UserInterface $user, DateTimeImmutable $to, string $sortOrder = 'ASC'): array
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.user = :user')
+            ->andWhere('o.date <= :to')
             ->setParameter('user', $user)
+            ->setParameter('to', $to)
             ->orderBy('o.date', $sortOrder)
             ->addOrderBy('o.createdAt', $sortOrder)
             ->getQuery()
@@ -51,14 +54,14 @@ class OperationRepository extends BaseRepository
      * Calculates the sum of all the inflows for the accounts provided.
      *
      * @param Account[] $accounts
-     * @param DateTimeInterface $to
+     * @param DateTimeImmutable $to
      *
      * @return AccountCash[]
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getAccountInflowSums(array $accounts, DateTimeInterface $to): array
+    public function getAccountInflowSums(array $accounts, DateTimeImmutable $to): array
     {
         $groupedInflows = [];
 
@@ -92,14 +95,14 @@ SQL;
      * Calculates the sum of all the outflows for the accounts provided.
      *
      * @param Account[] $accounts
-     * @param DateTimeInterface $to
+     * @param DateTimeImmutable $to
      *
      * @return AccountCash[]
      *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getAccountOutflowSums(array $accounts, DateTimeInterface $to): array
+    public function getAccountOutflowSums(array $accounts, DateTimeImmutable $to): array
     {
         $groupedOutflows = [];
 
@@ -134,7 +137,7 @@ SQL;
      *
      * @param Fund[]  $funds
      * @param integer $type
-     * @param DateTimeInterface $to
+     * @param DateTimeImmutable $to
      *
      * @return FundCash[]
      *
@@ -143,7 +146,7 @@ SQL;
      *
      * @see OperationTypeEnum
      */
-    public function getFundCashFlowSums(array $funds, int $type, DateTimeInterface $to): array
+    public function getFundCashFlowSums(array $funds, int $type, DateTimeImmutable $to): array
     {
         $groupedInflows = [];
 
@@ -152,7 +155,7 @@ SQL;
 SELECT fund_id,
        SUM(amount) as sum
 FROM operation
-WHERE fund_id IN (?) AND type = (?) AND date <= ?
+WHERE fund_id IN (?) AND type = ? AND date <= ?
 GROUP BY fund_id
 SQL;
 
@@ -177,20 +180,23 @@ SQL;
      * Return sum for all the expenses of the user.
      *
      * @param UserInterface $user
+     * @param DateTimeImmutable $to
      *
      * @return integer
      */
-    public function getUserExpenseSum(UserInterface $user): int
+    public function getUserExpenseSum(UserInterface $user, DateTimeImmutable $to): int
     {
         $result = $this->createQueryBuilder('o')
             ->select('SUM(o.amount)')
             ->andWhere('o.user = :user')
             ->andWhere('o.type = :type')
             ->andWhere('o.fund IS NULL')
-            ->andWhere('o.date >= :startDate')
+            ->andWhere('o.date > :from')
+            ->andWhere('o.date <= :to')
             ->setParameter('user', $user)
             ->setParameter('type', OperationTypeEnum::TYPE_EXPENSE)
-            ->setParameter('startDate', new \DateTime('-30 days'))
+            ->setParameter('from', $to->modify('-30 days'))
+            ->setParameter('to', $to)
             ->getQuery()
             ->getSingleScalarResult();
 
@@ -201,20 +207,23 @@ SQL;
      * Return sum for all the incomes of the user.
      *
      * @param UserInterface $user
+     * @param DateTimeImmutable $to
      *
      * @return integer
      */
-    public function getUserIncomeSum(UserInterface $user): int
+    public function getUserIncomeSum(UserInterface $user, DateTimeImmutable $to): int
     {
         $result = $this->createQueryBuilder('o')
             ->select('SUM(o.amount)')
             ->andWhere('o.user = :user')
             ->andWhere('o.type = :type')
             ->andWhere('o.fund IS NULL')
-            ->andWhere('o.date >= :startDate')
+            ->andWhere('o.date > :from')
+            ->andWhere('o.date <= :to')
             ->setParameter('user', $user)
             ->setParameter('type', OperationTypeEnum::TYPE_INCOME)
-            ->setParameter('startDate', new \DateTime('-30 days'))
+            ->setParameter('from', $to->modify('-30 days'))
+            ->setParameter('to', $to)
             ->getQuery()
             ->getSingleScalarResult();
 
@@ -226,11 +235,12 @@ SQL;
      * loan).
      *
      * @param Person[] $persons
-     * @param integer  $type
+     * @param integer $type
+     * @param DateTimeImmutable $to
      *
      * @return PersonObligation[]
      */
-    public function getPersonObligations(array $persons, int $type): array
+    public function getPersonObligations(array $persons, int $type, DateTimeImmutable $to): array
     {
         $groupedDebts = [];
 
@@ -239,13 +249,17 @@ SQL;
 SELECT person_id,
        SUM(amount) as sum
 FROM operation
-WHERE person_id IN (?)
-      AND type = (?)
+WHERE person_id IN (?) AND type = ? AND date <= ?
 GROUP BY person_id
 SQL;
 
         $personIds = $this->getIds($persons);
-        $stmt      = $connection->executeQuery($sql, [$personIds, $type], [Connection::PARAM_INT_ARRAY]);
+        $to = $this->stringifyDate($to);
+        $stmt      = $connection->executeQuery(
+            $sql,
+            [$personIds, $type, $to],
+            [Connection::PARAM_INT_ARRAY, PDO::PARAM_INT, PDO::PARAM_STR]
+        );
         foreach ($stmt->fetchAll() as $personObligation) {
             $personId       = $personObligation['person_id'];
             $sum            = $personObligation['sum'];
@@ -280,11 +294,11 @@ SQL;
     /**
      * Returns formatted date string.
      *
-     * @param DateTimeInterface $date
+     * @param DateTimeImmutable $date
      *
      * @return string
      */
-    private function stringifyDate(DateTimeInterface $date): string
+    private function stringifyDate(DateTimeImmutable $date): string
     {
         return $date->format('Y-m-d');
     }

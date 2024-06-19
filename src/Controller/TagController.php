@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Tag;
 use App\Form\TagType;
 use App\Repository\TagRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +17,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @Route("/tag")
  */
-class TagController extends AbstractController
+class TagController extends BaseController
 {
     /**
      * @Route("/", name="tag_index", methods="GET")

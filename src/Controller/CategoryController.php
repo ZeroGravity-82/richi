@@ -6,7 +6,6 @@ use App\Entity\Category;
 use App\Enum\OperationTypeEnum;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +20,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @Route("/category")
  */
-class CategoryController extends AbstractController
+class CategoryController extends BaseController
 {
     /**
      * @Route("/", name="category_index", methods={"GET"})

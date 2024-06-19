@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Person;
 use App\Form\PersonType;
 use App\Repository\PersonRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +17,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @Route("/person")
  */
-class PersonController extends AbstractController
+class PersonController extends BaseController
 {
     /**
      * @Route("/", name="person_index", methods={"GET"})

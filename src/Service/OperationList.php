@@ -5,6 +5,7 @@ namespace App\Service;
 
 use App\Entity\Operation;
 use App\Repository\OperationRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -35,19 +36,20 @@ class OperationList
      * Return operation list for the user grouped by days.
      *
      * @param UserInterface $user
+     * @param DateTimeImmutable $to
      *
      * @return Operation[]
      */
-    public function getGroupedByDays(UserInterface $user): array
+    public function getGroupedByDays(UserInterface $user, DateTimeImmutable $to): array
     {
         $groupedOperations = [];
 
-        $allOperations = $this->operationRepo->findByUser($user, 'DESC');
+        $allOperations = $this->operationRepo->findByUser($user, $to, 'DESC');
         foreach ($allOperations as $operation) {
             $operationDate                                = $operation->getDate();
 
             // TODO replace with pagination
-            if ($operationDate < (new \DateTime('now'))->modify('-3 months')) {
+            if ($operationDate < $to->modify('-3 months')) {
                 break;
             }
             $operationDateTimestamp                       = $operationDate->getTimestamp();

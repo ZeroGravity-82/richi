@@ -8,6 +8,7 @@ use App\Enum\OperationTypeEnum;
 use App\Repository\OperationRepository;
 use App\Repository\PersonRepository;
 use App\ValueObject\PersonObligation;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -40,16 +41,17 @@ class DebtMonitor
 
     /**
      * @param UserInterface $user
+     * @param DateTimeImmutable $to
      *
      * @return PersonObligation[]
      */
-    public function getDebtList(UserInterface $user): array
+    public function getDebtList(UserInterface $user, DateTimeImmutable $to): array
     {
         $debtList = [];
 
         $persons    = $this->personRepo->findByUser($user);
-        $debts      = $this->operationRepo->getPersonObligations($persons, OperationTypeEnum::TYPE_DEBT);
-        $repayments = $this->operationRepo->getPersonObligations($persons, OperationTypeEnum::TYPE_REPAYMENT);
+        $debts      = $this->operationRepo->getPersonObligations($persons, OperationTypeEnum::TYPE_DEBT, $to);
+        $repayments = $this->operationRepo->getPersonObligations($persons, OperationTypeEnum::TYPE_REPAYMENT, $to);
 
         foreach ($persons as $person) {
             $personDebt = new PersonObligation($person, 0);

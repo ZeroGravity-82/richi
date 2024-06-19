@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Account;
 use App\Form\AccountType;
 use App\Service\BalanceMonitor;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +17,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @Route("/account")
  */
-class AccountController extends AbstractController
+class AccountController extends BaseController
 {
     /** @var BalanceMonitor */
     private $balanceMonitor;
@@ -38,14 +37,15 @@ class AccountController extends AbstractController
      *
      * @return Response
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
-        $user            = $this->getUser();
-        $accountBalances = $this->balanceMonitor->getAccountBalances($user);
+        $user = $this->getUser();
+        $to = $this->getTo($request);
+        $accountBalances = $this->balanceMonitor->getAccountBalances($user, $to);
         $total           = $this->balanceMonitor->calculateTotal($accountBalances);
-        $fundBalances    = $this->balanceMonitor->getFundBalances($user);
+        $fundBalances    = $this->balanceMonitor->getFundBalances($user, $to);
         $fundBalance     = $this->balanceMonitor->calculateFundBalance($fundBalances);
 
         return $this->render('account/index.html.twig', [
