@@ -61,9 +61,9 @@ class OperationController extends BaseController
         $user              = $this->getUser();
         $groupedOperations = $this->operationList->getGroupedByDays($user, $to);
         /** @var OperationRepository $operationRepo */
-        $operationRepo = $this->getDoctrine()->getRepository(Operation::class);
-        $expenseSumAvg = $operationRepo->getUserExpenseSumAveraged($user, $to);
-        $incomeSumAvg  = $operationRepo->getUserIncomeSumAveraged($user, $to);
+        $operationRepo   = $this->getDoctrine()->getRepository(Operation::class);
+        $expenseSumAvg3m = $operationRepo->getUserExpenseSumAvg($user, $to, 3);
+        $incomeSumAvg3m  = $operationRepo->getUserIncomeSumAvg($user, $to, 3);
 
         return $this->render('operation/index.html.twig', [
             'accountBalances'   => $accountBalances,
@@ -71,8 +71,8 @@ class OperationController extends BaseController
             'fundBalances'      => $fundBalances,
             'fundBalance'       => $fundBalance,
             'groupedOperations' => $groupedOperations,
-            'expenseSumAvg'     => $expenseSumAvg,
-            'incomeSumAvg'      => $incomeSumAvg,
+            'expenseSumAvg3m'   => $expenseSumAvg3m,
+            'incomeSumAvg3m'    => $incomeSumAvg3m,
         ]);
     }
 
