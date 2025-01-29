@@ -198,7 +198,7 @@ SQL;
             ->setParameter('from', $to->modify('-90 days'))
             ->setParameter('to', $to)
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleScalarResult() / 3;
 
         return $result ?? 0;
     }
@@ -225,7 +225,7 @@ SQL;
             ->setParameter('from', $to->modify('-90 days'))
             ->setParameter('to', $to)
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleScalarResult() / 3;
 
         return $result ?? 0;
     }
