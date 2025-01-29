@@ -198,7 +198,7 @@ SQL;
             ->setParameter('from', $to->modify('-90 days'))
             ->setParameter('to', $to)
             ->getQuery()
-            ->getSingleScalarResult() / 3;
+            ->getSingleScalarResult();
 
         return $result ?? 0;
     }
@@ -211,7 +211,7 @@ SQL;
      *
      * @return integer
      */
-    public function getUserIncomeSum(UserInterface $user, DateTimeImmutable $to): int
+    public function getUserIncomeSumAveraged(UserInterface $user, DateTimeImmutable $to): int
     {
         $result = $this->createQueryBuilder('o')
             ->select('SUM(o.amount)')
@@ -225,7 +225,7 @@ SQL;
             ->setParameter('from', $to->modify('-90 days'))
             ->setParameter('to', $to)
             ->getQuery()
-            ->getSingleScalarResult() / 3;
+            ->getSingleScalarResult();
 
         return $result ?? 0;
     }

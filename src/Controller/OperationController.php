@@ -63,7 +63,7 @@ class OperationController extends BaseController
         /** @var OperationRepository $operationRepo */
         $operationRepo = $this->getDoctrine()->getRepository(Operation::class);
         $expenseSumAvg = $operationRepo->getUserExpenseSumAveraged($user, $to);
-        $incomeSumAvg  = $operationRepo->getUserIncomeSum($user, $to);
+        $incomeSumAvg  = $operationRepo->getUserIncomeSumAveraged($user, $to);
 
         return $this->render('operation/index.html.twig', [
             'accountBalances'   => $accountBalances,
