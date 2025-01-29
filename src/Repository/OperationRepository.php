@@ -177,14 +177,14 @@ SQL;
     }
 
     /**
-     * Return sum for all the expenses of the user.
+     * Return 30 days expenses for the user averaged over 3 months.
      *
      * @param UserInterface $user
      * @param DateTimeImmutable $to
      *
      * @return integer
      */
-    public function getUserExpenseSum(UserInterface $user, DateTimeImmutable $to): int
+    public function getUserExpenseSumAveraged(UserInterface $user, DateTimeImmutable $to): int
     {
         $result = $this->createQueryBuilder('o')
             ->select('SUM(o.amount)')
@@ -195,16 +195,16 @@ SQL;
             ->andWhere('o.date <= :to')
             ->setParameter('user', $user)
             ->setParameter('type', OperationTypeEnum::TYPE_EXPENSE)
-            ->setParameter('from', $to->modify('-30 days'))
+            ->setParameter('from', $to->modify('-90 days'))
             ->setParameter('to', $to)
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleScalarResult() / 3;
 
         return $result ?? 0;
     }
 
     /**
-     * Return sum for all the incomes of the user.
+     * Return 30 days incomes for the user averaged over 3 months.
      *
      * @param UserInterface $user
      * @param DateTimeImmutable $to
@@ -222,10 +222,10 @@ SQL;
             ->andWhere('o.date <= :to')
             ->setParameter('user', $user)
             ->setParameter('type', OperationTypeEnum::TYPE_INCOME)
-            ->setParameter('from', $to->modify('-30 days'))
+            ->setParameter('from', $to->modify('-90 days'))
             ->setParameter('to', $to)
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleScalarResult() / 3;
 
         return $result ?? 0;
     }
