@@ -177,14 +177,14 @@ SQL;
     }
 
     /**
-     * Return 30 days expenses for the user averaged over specified month count (in thousands).
+     * Return 30 days expenses for the user averaged over specified month count (in thousands of roubles).
      *
      * @param UserInterface $user
      * @param DateTimeImmutable $to
      *
      * @return integer
      */
-    public function getUserExpenseSumAvg(UserInterface $user, DateTimeImmutable $to, int $monthCount): int
+    public function getUserExpenseAvg(UserInterface $user, DateTimeImmutable $to, int $monthCount): int
     {
         $result = $this->createQueryBuilder('o')
             ->select('SUM(o.amount)')
@@ -198,20 +198,20 @@ SQL;
             ->setParameter('from', $to->modify("-$monthCount months"))
             ->setParameter('to', $to)
             ->getQuery()
-            ->getSingleScalarResult() / $monthCount / 1000;
+            ->getSingleScalarResult() / $monthCount / 100000;
 
         return $result ?? 0;
     }
 
     /**
-     * Return 30 days incomes for the user averaged over specified month count (in thousands).
+     * Return 30 days incomes for the user averaged over specified month count (in thousands of roubles).
      *
      * @param UserInterface $user
      * @param DateTimeImmutable $to
      *
      * @return integer
      */
-    public function getUserIncomeSumAvg(UserInterface $user, DateTimeImmutable $to, int $monthCount): int
+    public function getUserIncomeAvg(UserInterface $user, DateTimeImmutable $to, int $monthCount): int
     {
         $result = $this->createQueryBuilder('o')
             ->select('SUM(o.amount)')
@@ -225,7 +225,7 @@ SQL;
             ->setParameter('from', $to->modify("-$monthCount months"))
             ->setParameter('to', $to)
             ->getQuery()
-            ->getSingleScalarResult() / $monthCount / 1000;
+            ->getSingleScalarResult() / $monthCount / 100000;
 
         return $result ?? 0;
     }

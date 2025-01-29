@@ -62,8 +62,12 @@ class OperationController extends BaseController
         $groupedOperations = $this->operationList->getGroupedByDays($user, $to);
         /** @var OperationRepository $operationRepo */
         $operationRepo   = $this->getDoctrine()->getRepository(Operation::class);
-        $expenseSumAvg3m = $operationRepo->getUserExpenseSumAvg($user, $to, 3);
-        $incomeSumAvg3m  = $operationRepo->getUserIncomeSumAvg($user, $to, 3);
+        $expenseAvg1m = $operationRepo->getUserExpenseAvg($user, $to, 1);
+        $expenseAvg3m = $operationRepo->getUserExpenseAvg($user, $to, 3);
+        $expenseAvg6m = $operationRepo->getUserExpenseAvg($user, $to, 6);
+        $incomeAvg1m  = $operationRepo->getUserIncomeAvg($user, $to, 1);
+        $incomeAvg3m  = $operationRepo->getUserIncomeAvg($user, $to, 3);
+        $incomeAvg6m  = $operationRepo->getUserIncomeAvg($user, $to, 6);
 
         return $this->render('operation/index.html.twig', [
             'accountBalances'   => $accountBalances,
@@ -71,8 +75,12 @@ class OperationController extends BaseController
             'fundBalances'      => $fundBalances,
             'fundBalance'       => $fundBalance,
             'groupedOperations' => $groupedOperations,
-            'expenseSumAvg3m'   => $expenseSumAvg3m,
-            'incomeSumAvg3m'    => $incomeSumAvg3m,
+            'expenseAvg1m'      => $expenseAvg1m,
+            'expenseAvg3m'      => $expenseAvg3m,
+            'expenseAvg6m'      => $expenseAvg6m,
+            'incomeAvg1m'       => $incomeAvg1m,
+            'incomeAvg3m'       => $incomeAvg3m,
+            'incomeAvg6m'       => $incomeAvg6m,
         ]);
     }
 
