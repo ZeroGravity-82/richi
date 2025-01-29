@@ -177,7 +177,7 @@ SQL;
     }
 
     /**
-     * Return 30 days expenses for the user averaged over specified month count.
+     * Return 30 days expenses for the user averaged over specified month count (in thousands).
      *
      * @param UserInterface $user
      * @param DateTimeImmutable $to
@@ -198,13 +198,13 @@ SQL;
             ->setParameter('from', $to->modify("-$monthCount months"))
             ->setParameter('to', $to)
             ->getQuery()
-            ->getSingleScalarResult() / $monthCount;
+            ->getSingleScalarResult() / $monthCount / 1000;
 
         return $result ?? 0;
     }
 
     /**
-     * Return 30 days incomes for the user averaged over specified month count.
+     * Return 30 days incomes for the user averaged over specified month count (in thousands).
      *
      * @param UserInterface $user
      * @param DateTimeImmutable $to
@@ -225,7 +225,7 @@ SQL;
             ->setParameter('from', $to->modify("-$monthCount months"))
             ->setParameter('to', $to)
             ->getQuery()
-            ->getSingleScalarResult() / $monthCount;
+            ->getSingleScalarResult() / $monthCount / 1000;
 
         return $result ?? 0;
     }
